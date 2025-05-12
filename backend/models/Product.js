@@ -26,6 +26,10 @@ const ProductSchema = new mongoose.Schema({
   color: {
     type: String,
   },
+  isPublished: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 export default mongoose.model('Product', ProductSchema);

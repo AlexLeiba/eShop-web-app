@@ -8,6 +8,7 @@ dotenv.config();
 const router = express.Router();
 
 router.post('/register', async (req, res) => {
+  //takes path,request handler
   const alreadyExists = await User.find({
     email: req.body.email,
   });
@@ -52,13 +53,15 @@ router.post('/login', async (req, res) => {
 
     // decrypt password and compare with the one user introduced
     const decryptedPassword = CryptoJS.AES.decrypt(
-      loggedUser.password,
+      loggedUser.password, //crypted password from DB
       process.env.SECRET_PASSPHRASE
     );
 
-    const hashedPassword = decryptedPassword.toString(CryptoJS.enc.Utf8);
+    const decryptedPasswordFromDB = decryptedPassword.toString(
+      CryptoJS.enc.Utf8
+    );
 
-    if (hashedPassword !== req.body.password) {
+    if (decryptedPasswordFromDB !== req.body.password) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
@@ -74,6 +77,7 @@ router.post('/login', async (req, res) => {
     );
 
     const { password, ...others } = loggedUser._doc;
+    //send token to client and user data
     res.status(200).json({
       data: {
         data: others,
@@ -83,10 +87,6 @@ router.post('/login', async (req, res) => {
   } catch (error) {
     res.status(500).json(error);
   }
-
-  // var decryptedPassword = CryptoJS.AES.decrypt(req.body.password, process.env.SECRET_PASSPHRASE);
-
-  // check if password is valid here
 });
 
 export default router;

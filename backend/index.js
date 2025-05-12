@@ -1,12 +1,19 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { mongodbConnect } from './config/mongodb.js';
-import userRoutes from './routes/users.js';
-import authRoutes from './routes/auth.js';
+
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
-dotenv.config();
+// ROUTES
+import userRoutes from './routes/users.js';
+import authRoutes from './routes/auth.js';
+import productRoutes from './routes/products.js';
+import cartRoutes from './routes/carts.js';
+import orderRoutes from './routes/orders.js';
+
+dotenv.config(); //to use .env file
+
 const app = express(); //initialize express app
 
 // MONGODB CONNECTION
@@ -25,6 +32,9 @@ app.get('/', (req, res) => {
 // ROUTES
 app.use('/api', authRoutes);
 app.use('/api', userRoutes);
+app.use('/api', productRoutes);
+app.use('/api', cartRoutes);
+app.use('/api', orderRoutes);
 
 ///// SERVER RUNNING//////
 const PORT = process.env.PORT || 4000;
