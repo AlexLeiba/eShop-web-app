@@ -15,7 +15,9 @@ export function CategoriesCard({
   return (
     <div
       {...props}
-      onClick={() => navigate(`/products?category=${data.title}`)}
+      onClick={() =>
+        navigate(`/products?category=${data.title.toLowerCase()}?sort=newest`)
+      }
     >
       <div
         key={data.id}

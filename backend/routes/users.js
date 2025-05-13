@@ -92,6 +92,7 @@ router.get('/user/:id', verifyTokenAuthorization, async (req, res) => {
 });
 
 // UPDATE USER DATA
+// TODO, to change only to admin
 router.put('/user/:id', verifyTokenAuthorization, async (req, res) => {
   try {
     if (req.body.password) {

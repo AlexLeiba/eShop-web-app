@@ -11,6 +11,7 @@ import authRoutes from './routes/auth.js';
 import productRoutes from './routes/products.js';
 import cartRoutes from './routes/carts.js';
 import orderRoutes from './routes/orders.js';
+import stripeRoutes from './routes/stripe.js';
 
 dotenv.config(); //to use .env file
 
@@ -35,6 +36,7 @@ app.use('/api', userRoutes);
 app.use('/api', productRoutes);
 app.use('/api', cartRoutes);
 app.use('/api', orderRoutes);
+app.use('/api', stripeRoutes);
 
 ///// SERVER RUNNING//////
 const PORT = process.env.PORT || 4000;

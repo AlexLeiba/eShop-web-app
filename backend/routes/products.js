@@ -9,26 +9,37 @@ const router = express.Router();
 
 // GET ALL PUBLISHED PRODUCTS
 router.get('/products', async (req, res) => {
-  const queryNew = req.query.new;
+  const queryNew = req.query.sort === 'newest';
   const queryCategory = req.query.category;
+  const querySize = req.query.size;
+  const queryColor = req.query.color;
+
+  const queryPage = req.query.page || 1;
+
+  // Pagination
+  const limitPerPage = 12; // Number of products per page
+  const skipProducts = (queryPage - 1) * limitPerPage; // Calculate the number of products to skip
+
+  // Filter object
+  const filter = {};
+  if (queryCategory) {
+    filter.categories = queryCategory; // Will match: { color: 'red' }
+  }
+  if (querySize) {
+    filter.size = querySize; // Will match: { size: 'M' }
+  }
+  if (queryColor) {
+    filter.color = queryColor; // Will match: { categories: 't-shirt' }
+  }
+
   try {
-    let filteredProducts;
-    if (queryNew) {
-      filteredProducts = await Product.find({
-        isPublished: true,
-      }).sort({ createdAt: -1 });
-    } else if (queryCategory) {
-      filteredProducts = await Product.find({
-        categories: {
-          $in: [queryCategory], //will fetch only products with category that matches the query
-        },
-        isPublished: true,
-      })
-        .sort({ createdAt: -1 })
-        .limit(5);
-    } else {
-      filteredProducts = await Product.find({ isPublished: true });
-    }
+    const filteredProducts = await Product.find({
+      isPublished: true,
+      ...filter,
+    })
+      .sort(queryNew ? { createdAt: -1 } : { createdAt: 1 })
+      .limit(limitPerPage)
+      .skip(skipProducts);
 
     if (!filteredProducts) {
       return res.status(404).json({ error: 'No products found' });

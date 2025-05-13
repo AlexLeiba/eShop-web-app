@@ -32,7 +32,7 @@ function Home() {
         <Container>
           <div className='flex justify-between items-center'>
             <h2 className='text-4xl font-bold'>Products</h2>
-            <Link to={'/products'}>
+            <Link to={'/products?sort=newest'}>
               <p className='text-2xl font-bold underline'>All products</p>
             </Link>
           </div>

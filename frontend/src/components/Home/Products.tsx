@@ -34,7 +34,7 @@ export function Products({ data }: ProductsProps) {
 
       <div className='grid grid-cols-4 gap-4 '>
         {data?.map((data) => {
-          return <ProductsCard data={data} key={data.id} />;
+          return <ProductsCard data={data} key={data._id} />;
         })}
       </div>
       <Spacer sm={8} md={8} lg={8} />

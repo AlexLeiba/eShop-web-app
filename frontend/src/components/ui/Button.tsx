@@ -6,7 +6,7 @@ const buttonVariants = cva(
   'w-full font-bold rounded-full py-2 px-4 text-md hover:opacity-80 cursor-pointer hover:shadow-gray-500 shadow flex items-center justify-center ',
   {
     variants: {
-      type: {
+      variant: {
         primary: 'bg-black text-white',
         secondary: 'bg-white text-black',
       },
@@ -21,21 +21,24 @@ const buttonVariants = cva(
 
 type Props = {
   children: React.ReactNode;
-  type?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary';
   size?: 'large' | 'medium' | 'small';
   className?: string;
+  type?: 'button' | 'submit' | 'reset';
 };
 export function Button({
   children,
-  type = 'primary',
+  variant = 'primary',
   size = 'medium',
   className,
+  type = 'button',
   ...props
 }: Props & React.HTMLAttributes<HTMLButtonElement>) {
   return (
     <button
+      type={type}
       {...props}
-      className={cn(buttonVariants({ type, size }), className)}
+      className={cn(buttonVariants({ variant, size }), className)}
     >
       {children}
     </button>

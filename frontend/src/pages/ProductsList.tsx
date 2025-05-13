@@ -7,12 +7,44 @@ import Filter from '../components/Products/Filter';
 import { Announcement } from '../components/ui/Announcement';
 
 import { Spacer } from '../components/ui/spacer';
-import { useSearchParams } from 'react-router-dom';
-import { productsData } from '../consts';
+import { useLocation, useSearchParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import React from 'react';
+import toast from 'react-hot-toast';
 
 function ProductsList() {
-  const [searchParams] = useSearchParams();
+  const location = useLocation();
+
+  const [productsData, setProductsData] = React.useState([]);
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const selectedCategory = searchParams.get('category');
+
+  useEffect(() => {
+    console.log('🚀 ~ ProductsList ~ searchParams:', searchParams.get('size'));
+
+    async function fetchData() {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/products${location.search}`
+        );
+        const { data } = await response.json();
+
+        setProductsData(data);
+      } catch (error: any) {
+        toast.error(error.message);
+      }
+    }
+    fetchData();
+  }, [searchParams]);
+
+  // reset sort to newest
+  useEffect(() => {
+    setSearchParams({
+      sort: 'newest',
+    });
+  }, []);
   return (
     <div className='flex min-h-screen flex-col'>
       {/* Navbar */}
@@ -30,7 +62,7 @@ function ProductsList() {
           <div className='flex justify-between items-center'>
             <h2 className='text-4xl font-bold'>
               Products{' '}
-              {selectedCategory && (
+              {selectedCategory && selectedCategory !== 'all' && (
                 <span className='text-2xl text-gray-500'>
                   {'/' + selectedCategory || ''}
                 </span>
@@ -50,12 +82,13 @@ function ProductsList() {
               <div className='flex gap-4'>
                 <Filter type='color' />
                 <Filter type='size' />
+                <Filter type='category' />
               </div>
             </div>
             <div className='flex align-center gap-2'>
               <p className='text-2xl font-semibold'>Sort :</p>
               <div className='flex gap-4'>
-                <Filter type='date' />
+                <Filter type='sort' />
               </div>
             </div>
           </div>

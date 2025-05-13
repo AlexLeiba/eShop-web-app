@@ -14,7 +14,7 @@ router.post('/register', async (req, res) => {
   });
 
   if (alreadyExists.length > 0) {
-    return res.status(400).json({ error: 'User already exists' });
+    return res.status(400).json({ data: null, error: 'User already exists' });
   }
 
   // encrypt password here ( hash passwords) and save in DB
@@ -24,10 +24,7 @@ router.post('/register', async (req, res) => {
   );
 
   const newUser = new User({
-    name: req.body.name || '',
-    lastName: req.body.lastName || '',
-    username: req.body.username,
-    email: req.body.email,
+    ...req.body,
     password: encryptedPassword.toString(),
   });
 
@@ -35,9 +32,9 @@ router.post('/register', async (req, res) => {
 
   try {
     newUser.save();
-    res.status(201).json({ data: others });
+    res.status(201).json({ error: null, data: others });
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({ error: error, data: null });
   }
 });
 
@@ -65,7 +62,7 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    // verufy jwt and send token
+    // verify jwt and send token
     const accessToken = jwt.sign(
       {
         id: loggedUser._id,
