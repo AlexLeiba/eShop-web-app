@@ -12,7 +12,7 @@ export function ProductsCard({ data }: Props) {
     // <Link to={`/product/${data.id}`}>
     <div
       key={data._id}
-      className='group relative  scale-100 hover:scale-101 shadow hover:shadow-2xl transition-all ease-in-out flex items-center gap-4 p-4 h-[300px] bg-white rounded-lg  overflow-hidden flex-col justify-between'
+      className='group relative  scale-100 hover:scale-101 shadow hover:shadow-2xl transition-all ease-in-out flex items-center gap-4 p-4 h-[300px] bg-white rounded-lg  overflow-hidden flex-col justify-between '
     >
       <div className='transition-all bg-transparent  group-hover:bg-gray-400/50 absolute top-0 left-0 right-0 bottom-0 h-full w-full flex justify-center items-center gap-2'>
         <div className='group-hover:flex hidden transition-all  gap-2'>

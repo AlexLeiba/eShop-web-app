@@ -11,27 +11,38 @@ import { useLocation, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import React from 'react';
 import toast from 'react-hot-toast';
+import type { ProductsType } from '../consts';
+
+export type ProductsDataType = {
+  data: ProductsType[];
+  count: number;
+};
 
 function ProductsList() {
   const location = useLocation();
 
-  const [productsData, setProductsData] = React.useState([]);
+  const [productsData, setProductsData] = React.useState<ProductsDataType>({
+    data: [],
+    count: 0,
+  });
+  console.log('🚀 ~ ProductsList ~ productsData:', productsData);
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const selectedCategory = searchParams.get('category');
 
   useEffect(() => {
-    console.log('🚀 ~ ProductsList ~ searchParams:', searchParams.get('size'));
-
     async function fetchData() {
       try {
         const response = await fetch(
           `${import.meta.env.VITE_BACKEND_URL}/api/products${location.search}`
         );
-        const { data } = await response.json();
+        const responseData: ProductsDataType = await response.json();
 
-        setProductsData(data);
+        setProductsData({
+          data: responseData.data,
+          count: responseData.count,
+        });
       } catch (error: any) {
         toast.error(error.message);
       }
@@ -40,11 +51,11 @@ function ProductsList() {
   }, [searchParams]);
 
   // reset sort to newest
-  useEffect(() => {
-    setSearchParams({
-      sort: 'newest',
-    });
-  }, []);
+  // useEffect(() => {
+  //   setSearchParams({
+  //     sort: 'newest',
+  //   });
+  // }, []);
   return (
     <div className='flex min-h-screen flex-col'>
       {/* Navbar */}
@@ -95,7 +106,7 @@ function ProductsList() {
 
           {/* Products */}
           <Spacer size={8} />
-          <Products data={productsData} />
+          <Products productsData={productsData} type='products-list' />
         </Container>
         <Spacer sm={16} md={24} lg={24} />
 

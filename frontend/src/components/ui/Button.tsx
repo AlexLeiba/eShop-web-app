@@ -25,6 +25,7 @@ type Props = {
   size?: 'large' | 'medium' | 'small';
   className?: string;
   type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
 };
 export function Button({
   children,
@@ -32,10 +33,12 @@ export function Button({
   size = 'medium',
   className,
   type = 'button',
+  disabled = false,
   ...props
 }: Props & React.HTMLAttributes<HTMLButtonElement>) {
   return (
     <button
+      disabled={disabled}
       type={type}
       {...props}
       className={cn(buttonVariants({ variant, size }), className)}

@@ -17,7 +17,7 @@ export function Container({
       {...props}
       className={cn(
         'flex flex-col',
-        fluid ? 'w-full h-full' : 'h-full max-w-5xl mx-auto px-4',
+        fluid ? 'w-full h-full' : 'w-full h-full max-w-5xl mx-auto px-4',
         className
       )}
     >

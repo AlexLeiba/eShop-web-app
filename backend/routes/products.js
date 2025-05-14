@@ -20,6 +20,8 @@ router.get('/products', async (req, res) => {
   const limitPerPage = 12; // Number of products per page
   const skipProducts = (queryPage - 1) * limitPerPage; // Calculate the number of products to skip
 
+  const queryLimit = req.query.limit || limitPerPage; // Default limit is 12
+
   // Filter object
   const filter = {};
   if (queryCategory) {
@@ -33,19 +35,22 @@ router.get('/products', async (req, res) => {
   }
 
   try {
+    const allProducts = await Product.find();
+    const count = allProducts.length;
+
     const filteredProducts = await Product.find({
       isPublished: true,
       ...filter,
     })
       .sort(queryNew ? { createdAt: -1 } : { createdAt: 1 })
-      .limit(limitPerPage)
+      .limit(queryLimit)
       .skip(skipProducts);
 
     if (!filteredProducts) {
       return res.status(404).json({ error: 'No products found' });
     }
 
-    res.status(200).json({ data: filteredProducts });
+    res.status(200).json({ data: filteredProducts, count: count });
   } catch (error) {
     res.status(500).json({ Error: error.message });
   }

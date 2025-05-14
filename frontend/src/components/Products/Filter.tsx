@@ -44,41 +44,41 @@ function Filter({ type, label }: Props) {
     switch (type) {
       case 'color':
         return [
-          { value: '1', title: 'All Colors' },
-          { value: '2', title: 'Red' },
-          { value: '3', title: 'Blue' },
-          { value: '4', title: 'Green' },
-          { value: '5', title: 'Yellow' },
-          { value: '6', title: 'Pink' },
-          { value: '7', title: 'Purple' },
-          { value: '8', title: 'Black' },
-          { value: '9', title: 'White' },
+          { value: 'allColors', title: 'All Colors' },
+          { value: 'red', title: 'Red' },
+          { value: 'blue', title: 'Blue' },
+          { value: 'green', title: 'Green' },
+          { value: 'yellow', title: 'Yellow' },
+          { value: 'pink', title: 'Pink' },
+          { value: 'purple', title: 'Purple' },
+          { value: 'black', title: 'Black' },
+          { value: 'white', title: 'White' },
         ];
 
       case 'size':
         return [
-          { value: '1', title: 'All Sizes' },
-          { value: '2', title: 'XS' },
-          { value: '2', title: 'S' },
-          { value: '3', title: 'M' },
-          { value: '4', title: 'L' },
-          { value: '5', title: 'XL' },
-          { value: '6', title: 'XXL' },
+          { value: 'allSizes', title: 'All Sizes' },
+          { value: 'xs', title: 'XS' },
+          { value: 's', title: 'S' },
+          { value: 'm', title: 'M' },
+          { value: 'l', title: 'L' },
+          { value: 'xl', title: 'XL' },
+          { value: 'xxl', title: 'XXL' },
         ];
 
       case 'sort':
         return [
-          { value: '1', title: 'Newest' },
-          { value: '2', title: 'Oldest' },
+          { value: 'newest', title: 'Newest' },
+          { value: 'oldest', title: 'Oldest' },
         ];
       case 'category':
         return [
-          { value: '1', title: 'All Categories' },
-          { value: '2', title: 'Accessories' },
-          { value: '3', title: 'Bags' },
-          { value: '4', title: 'Shoes' },
-          { value: '5', title: 'Shirts' },
-          { value: '6', title: 'Pants' },
+          { value: 'allCategories', title: 'All Categories' },
+          { value: 'accessories', title: 'Accessories' },
+          { value: 'bags', title: 'Bags' },
+          { value: 'shoes', title: 'Shoes' },
+          { value: 'shirts', title: 'Shirts' },
+          { value: 'pants', title: 'Pants' },
         ];
 
       default:
@@ -88,6 +88,7 @@ function Filter({ type, label }: Props) {
   return (
     <div>
       <Select
+        value={searchParams.get(type) || ''}
         handleSelect={setSelected}
         label={label}
         data={handleTypeOfFilter()}

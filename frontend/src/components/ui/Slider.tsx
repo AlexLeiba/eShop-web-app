@@ -1,13 +1,14 @@
 import React from 'react';
 import SlideButton from './SlideButton';
-import { homeSliderColors, type ProductsType } from '../../consts';
+import { homeSliderColors } from '../../consts';
 import { Button } from './Button';
 import { Link } from 'react-router-dom';
 import { cn } from '../../lib/utils';
 import { Container } from '../Grid/Container';
+import type { ProductsDataType } from '../../pages/ProductsList';
 
 type SliderProps = {
-  data: ProductsType[];
+  data: ProductsDataType['data'];
 };
 export function Slider({ data }: SliderProps) {
   const [slide, setSlide] = React.useState(0);
@@ -39,16 +40,16 @@ export function Slider({ data }: SliderProps) {
         onClick={() => handleSlide('next')}
       />
 
-      {data?.slice(0, 3).map((data) => {
+      {data?.slice(0, 3).map((item, index) => {
         return (
           <Container
             style={{
               minWidth: '100vw',
               transform: `translateX(${slide === 0 ? 0 : -(slide * 100)}vw)`,
               transition: 'transform 0.5s ease-in-out',
-              backgroundColor: homeSliderColors[data.id - 1],
+              backgroundColor: homeSliderColors[index],
             }}
-            key={data.id}
+            key={item._id}
             className={cn(
               'pt-[152px] overflow-hidden h-[700px] text-black bg-white flex items-center'
             )}
@@ -56,17 +57,17 @@ export function Slider({ data }: SliderProps) {
             <div className='grid grid-cols-2 items-center'>
               <img
                 className='w-[700px] h-[500px] object-contain'
-                src={data.image}
-                alt={data.title}
+                src={item.image}
+                alt={item.title}
               />
               <div className='flex gap-4 flex-col'>
                 <h1 className='text-5xl font-bold'>
-                  {data.title.toUpperCase()}
+                  {item.title.toUpperCase()}
                 </h1>
-                <p className='text-xl'>{data.description}</p>
-                <Link to={data.buttonLink}>
-                  <Button className='w-[200px]' size='large' type='primary'>
-                    {data.buttonTitle}
+                <p className='text-xl'>{item.description}</p>
+                <Link to={`/product/${item._id}`}>
+                  <Button className='w-[200px]' size='large' variant='primary'>
+                    <p className='text-2xl'>Shop now</p>
                   </Button>
                 </Link>
               </div>
