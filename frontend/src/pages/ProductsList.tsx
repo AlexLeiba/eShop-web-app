@@ -11,7 +11,13 @@ import { useLocation, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import React from 'react';
 import toast from 'react-hot-toast';
-import type { ProductsType } from '../consts';
+import {
+  filterCategories,
+  filterColors,
+  filterSizes,
+  filterSort,
+  type ProductsType,
+} from '../consts';
 
 export type ProductsDataType = {
   data: ProductsType[];
@@ -30,6 +36,7 @@ function ProductsList() {
   const [searchParams] = useSearchParams();
 
   const selectedCategory = searchParams.get('category');
+  console.log('🚀 ~ ProductsList ~ selectedCategory:', selectedCategory);
 
   useEffect(() => {
     async function fetchData() {
@@ -50,12 +57,6 @@ function ProductsList() {
     fetchData();
   }, [searchParams]);
 
-  // reset sort to newest
-  // useEffect(() => {
-  //   setSearchParams({
-  //     sort: 'newest',
-  //   });
-  // }, []);
   return (
     <div className='flex min-h-screen flex-col'>
       {/* Navbar */}
@@ -91,15 +92,15 @@ function ProductsList() {
             <div className='flex align-center gap-2'>
               <p className='text-2xl font-semibold'>Filter :</p>
               <div className='flex gap-4'>
-                <Filter type='color' />
-                <Filter type='size' />
-                <Filter type='category' />
+                <Filter type='color' data={filterColors} />
+                <Filter type='size' data={filterSizes} />
+                <Filter type='category' data={filterCategories} />
               </div>
             </div>
             <div className='flex align-center gap-2'>
               <p className='text-2xl font-semibold'>Sort :</p>
               <div className='flex gap-4'>
-                <Filter type='sort' />
+                <Filter type='sort' data={filterSort} />
               </div>
             </div>
           </div>

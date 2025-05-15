@@ -1,26 +1,35 @@
-import React, { type SetStateAction } from 'react';
+import React from 'react';
 import { cn } from '../../lib/utils';
 
 type Props = {
   colors: string[];
+  setColor: React.Dispatch<
+    React.SetStateAction<{
+      color: string;
+      size: string;
+      quantity: number;
+    }>
+  >;
+
+  selectedColor: string;
 };
-function Colors({ colors }: Props) {
-  const [selected, setSelected] = React.useState<SetStateAction<string>>('');
+function Colors({ colors, setColor, selectedColor }: Props) {
+  // const [selected, setSelected] = React.useState<SetStateAction<string>>('');
   return (
     <div className='flex gap-2'>
-      {colors.map((color) => {
+      {colors?.map((color) => {
         return (
           <div key={color} className='flex gap-1 transition-all'>
             <div
-              onClick={() => setSelected(color)}
+              onClick={() => setColor((prev) => ({ ...prev, color: color }))}
               className={cn(
-                selected === color && 'border border-black',
+                selectedColor === color && 'border border-black',
                 'size-6 rounded-full  cursor-pointer hover:opacity-50 '
               )}
               style={{ backgroundColor: color }}
             ></div>
 
-            {selected === color && <p>{color}</p>}
+            {selectedColor === color && <p>{color}</p>}
           </div>
         );
       })}

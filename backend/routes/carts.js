@@ -11,6 +11,7 @@ dotenv.config();
 const router = express.Router();
 
 // GET CART
+// TODO: ADD THIS: verifyTokenAuthorization
 router.get('/cart', verifyTokenAuthorization, async (req, res) => {
   try {
     const cart = await Cart.findOne({ userId: req.user.id });
@@ -50,14 +51,28 @@ router.put('/cart/:productId', verifyTokenAuthorization, async (req, res) => {
     const findCart = await Cart.findOne({ userId: req.user.id }); //check if cart exists
 
     if (findCart) {
-      // UPDATE IF CART EXISTS
+      // UPDATE IF CART EXISTS ( only increase quantity if was added an existing in cart element with the same ID/color/size)
+      // const updatedCart = await Cart.findOneAndUpdate(
+      //   {
+      //     userId: req.user.id,
+      //     products: { $elemMatch: { productId: queryProductId } },
+      //   },
+      //   {
+      //     $set: { 'products.$[elem].quantity': req.body.quantity },
+      //   },
+      //   {
+      //     arrayFilters: [{ 'elem.productId': queryProductId }],
+      //     new: true,
+      //   }
+      // );
+
+      // before check if added element exists in cart/ if exists update its quantity/ alse add new
       const updatedCart = await Cart.findOneAndUpdate(
         { userId: req.user.id },
         {
-          $set: { 'products.$[elem].quantity': req.body.quantity },
+          $push: { products: { productId: queryProductId, ...req.body } },
         },
         {
-          arrayFilters: [{ 'elem.productId': queryProductId }],
           new: true,
         }
       );
@@ -70,9 +85,7 @@ router.put('/cart/:productId', verifyTokenAuthorization, async (req, res) => {
         products: [
           {
             productId: queryProductId,
-            quantity: req.body.quantity || 1,
-            size: req.body.size || '', //if not changed will be taken from first product size
-            color: req.body.color || '', //if not changed will be taken from first product color
+            ...req.body,
           },
         ],
       });

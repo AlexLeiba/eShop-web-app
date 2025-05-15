@@ -1,45 +1,14 @@
-import shopgirl1 from './assets/shopgirl1.webp';
-import shopgirl2 from './assets/shopgirl2.webp';
-import shopgirl3 from './assets/shopgirl3.webp';
+import shirt from './assets/shirt1.webp';
+import jacket from './assets/jaket3.webp';
+import shoes from './assets/shoes-nike.webp';
 
-// slider data
-export const homeSliderData = [
-  {
-    id: 1,
-    image: shopgirl1,
-    title: 'Summer Sale',
-    description: ' Harry up , get discount on your next purchase',
-    price: '$19.99',
-    buttonLink: '/shop',
-    buttonTitle: 'Shop Now',
-  },
-  {
-    id: 2,
-    image: shopgirl2,
-    title: 'Summer Fashion',
-    description: ' Harry up , get discount on your next purchase',
-    price: '$19.99',
-    buttonLink: '/shop',
-    buttonTitle: 'Shop Now',
-  },
-  {
-    id: 3,
-    image: shopgirl3,
-    title: 'Summer Accessories',
-    description: ' Harry up , get discount on your next purchase',
-    price: '$19.99',
-    buttonLink: '/shop',
-    buttonTitle: 'Shop Now',
-  },
-];
-
-export const homeSliderColors = ['#eef692', '#d4b044', '#4e78b7'];
+export const homeSliderColors = ['#eef692', '#d4b044', '#aeb4be'];
 
 // categories
 export const categoiesData = [
   {
     id: 1,
-    image: shopgirl3,
+    image: jacket,
     title: 'Jakets',
     description: ' Harry up , get discount on your next purchase',
 
@@ -48,7 +17,7 @@ export const categoiesData = [
   },
   {
     id: 2,
-    image: shopgirl3,
+    image: shirt,
     title: 'Shirts',
     description: ' Harry up , get discount on your next purchase',
 
@@ -57,7 +26,7 @@ export const categoiesData = [
   },
   {
     id: 3,
-    image: shopgirl3,
+    image: shoes,
     title: 'Shoes',
     description: ' Harry up , get discount on your next purchase',
 
@@ -71,21 +40,54 @@ export type CategoriesType = (typeof categoiesData)[0];
 // products
 export const productsData = [
   {
-    _id: '68235f4e2aebe8ad712207c3',
-    title: 'Leather Backpack',
-    description:
-      'Durable leather backpack with multiple compartments and a padded laptop sleeve.',
-    price: 89.99,
-    image: 'https://example.com/images/leather-backpack.jpg',
-    categories: ['accessories', 'bags'],
-    size: ['S'],
-    color: ['brown', 'black'],
+    _id: '',
+    title: '',
+    description: '',
+    price: 1,
+    image: '',
+    categories: [''],
+    size: [''],
+    color: [''],
     isPublished: true,
     inStock: true,
-    createdAt: '2025-05-13T15:03:42.462Z',
-    updatedAt: '2025-05-13T15:03:42.462Z',
+    createdAt: '',
+    updatedAt: '',
+    featured: false,
+    featuredBackgroundColor: '',
     __v: 0,
   },
 ];
 
-export type ProductsType = (typeof productsData)[0];
+export type ProductsType = {
+  _id: string;
+  title: string;
+  description: string;
+  price: number;
+  image: string;
+  categories: string[];
+  size: string[];
+  color: string[];
+  isPublished: boolean;
+  inStock: boolean;
+  createdAt: string;
+  updatedAt: string;
+  featured: boolean;
+  featuredBackgroundColor: string;
+  quantity: number;
+  __v: number;
+};
+
+// FILTERS AND SORTS DATA
+export const filterColors = [
+  'White',
+  'Black',
+  'Red',
+  'Blue',
+  'Green',
+  'Purple',
+  'Yellow',
+];
+
+export const filterSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+export const filterCategories = ['Jakets', 'Shirts', 'Shoes'];
+export const filterSort = ['Newest', 'Oldest'];

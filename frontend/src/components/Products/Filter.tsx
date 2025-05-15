@@ -5,8 +5,9 @@ import { useSearchParams } from 'react-router-dom';
 type Props = {
   type: 'color' | 'size' | 'sort' | 'category';
   label?: string;
+  data: string[];
 };
-function Filter({ type, label }: Props) {
+function Filter({ type, label, data }: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [selected, setSelected] = React.useState<SetStateAction<string>>('');
 
@@ -43,28 +44,31 @@ function Filter({ type, label }: Props) {
   function handleTypeOfFilter() {
     switch (type) {
       case 'color':
-        return [
-          { value: 'allColors', title: 'All Colors' },
-          { value: 'red', title: 'Red' },
-          { value: 'blue', title: 'Blue' },
-          { value: 'green', title: 'Green' },
-          { value: 'yellow', title: 'Yellow' },
-          { value: 'pink', title: 'Pink' },
-          { value: 'purple', title: 'Purple' },
-          { value: 'black', title: 'Black' },
-          { value: 'white', title: 'White' },
+        const colorData = [
+          {
+            value: 'allColors',
+            title: 'All Colors',
+          },
         ];
+        data.forEach((item) => {
+          colorData.push({
+            value: item.replace(/\s+/g, '').toLowerCase(),
+            title: item,
+          });
+        });
+
+        return colorData;
 
       case 'size':
-        return [
-          { value: 'allSizes', title: 'All Sizes' },
-          { value: 'xs', title: 'XS' },
-          { value: 's', title: 'S' },
-          { value: 'm', title: 'M' },
-          { value: 'l', title: 'L' },
-          { value: 'xl', title: 'XL' },
-          { value: 'xxl', title: 'XXL' },
-        ];
+        const sizeData = [{ value: 'allSizes', title: 'All Sizes' }];
+        data.forEach((item) => {
+          sizeData.push({
+            value: item.replace(/\s+/g, '').toLowerCase(),
+            title: item,
+          });
+        });
+
+        return sizeData;
 
       case 'sort':
         return [
@@ -72,14 +76,17 @@ function Filter({ type, label }: Props) {
           { value: 'oldest', title: 'Oldest' },
         ];
       case 'category':
-        return [
+        const categoryData = [
           { value: 'allCategories', title: 'All Categories' },
-          { value: 'accessories', title: 'Accessories' },
-          { value: 'bags', title: 'Bags' },
-          { value: 'shoes', title: 'Shoes' },
-          { value: 'shirts', title: 'Shirts' },
-          { value: 'pants', title: 'Pants' },
         ];
+        data.forEach((item) => {
+          categoryData.push({
+            value: item.replace(/\s+/g, '').toLowerCase(),
+            title: item,
+          });
+        });
+
+        return categoryData;
 
       default:
         return [];

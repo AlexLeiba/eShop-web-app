@@ -2,12 +2,16 @@ import { Link } from 'react-router-dom';
 import type { ProductsType } from '../../consts';
 import { Button } from '../ui/Button';
 import { IconEye, IconHeart, IconShoppingCart } from '@tabler/icons-react';
+import { addToCart } from '../../store/cart/reducer';
+import { useDispatch } from 'react-redux';
+import { addToWithList } from '../../store/wishList/reducer';
 
 type Props = {
   data: ProductsType;
 };
 
 export function ProductsCard({ data }: Props) {
+  const dispatch = useDispatch();
   return (
     // <Link to={`/product/${data.id}`}>
     <div
@@ -16,16 +20,29 @@ export function ProductsCard({ data }: Props) {
     >
       <div className='transition-all bg-transparent  group-hover:bg-gray-400/50 absolute top-0 left-0 right-0 bottom-0 h-full w-full flex justify-center items-center gap-2'>
         <div className='group-hover:flex hidden transition-all  gap-2'>
-          <Link to={'/cart'}>
-            <Button className='w-[40px] p-1 bg-black text-white flex items-center justify-center scale-100 hover:scale-105 transition-all '>
-              <IconShoppingCart />
-            </Button>
-          </Link>
-          <Link to={'/wishlist'}>
-            <Button className='w-[40px] p-1 bg-black text-white flex items-center justify-center scale-100 hover:scale-105 transition-all '>
-              <IconHeart />
-            </Button>
-          </Link>
+          <Button
+            onClick={() =>
+              dispatch(
+                addToCart({
+                  ...data,
+                  color: data.color[0],
+                  size: data.size[0],
+                  quantity: 1,
+                }) // TODO: add amount to cart
+              )
+            }
+            className='w-[40px] p-1 bg-black text-white flex items-center justify-center scale-100 hover:scale-105 transition-all '
+          >
+            <IconShoppingCart />
+          </Button>
+
+          <Button
+            onClick={() => dispatch(addToWithList(data))}
+            className='w-[40px] p-1 bg-black text-white flex items-center justify-center scale-100 hover:scale-105 transition-all '
+          >
+            <IconHeart />
+          </Button>
+
           <Link to={`/product/${data._id}`}>
             <Button className='w-[40px] p-1 bg-black text-white flex items-center justify-center scale-100 hover:scale-105 transition-all '>
               <IconEye />

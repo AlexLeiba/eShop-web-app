@@ -38,10 +38,13 @@ export function Products({ productsData, type }: ProductsProps) {
       <Spacer sm={8} md={8} lg={8} />
 
       {type === 'products-list' && (
-        <p>
-          Page: {searchParams.get('page')} /{' '}
-          {Math.round(productsData.count / limitPerPage)}
-        </p>
+        <div className='flex gap-4 items-center'>
+          <p className='text-1xl font-bold'>Found: {productsData.count}</p>
+          <p>
+            Page: {searchParams.get('page')} /{' '}
+            {Math.round(productsData.count / limitPerPage)}
+          </p>
+        </div>
       )}
       <Spacer size={2} />
 

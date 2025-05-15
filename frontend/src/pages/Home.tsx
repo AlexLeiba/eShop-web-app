@@ -12,28 +12,47 @@ import { categoiesData } from '../consts';
 import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import React from 'react';
+import type { ProductsDataType } from './ProductsList';
 
 function Home() {
-  const [productsData, setProductsData] = React.useState({
+  const [productsData, setProductsData] = React.useState<ProductsDataType>({
     data: [],
     count: 0,
   });
-  // const [categoriesData, setCategoriesData] = React.useState({
-  //   data: [],
-  //   count: 0,
-  // });
+
+  const [featuredProductsData, setFeaturedProductsData] =
+    React.useState<ProductsDataType>({
+      data: [],
+      count: 0,
+    });
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(
+        // get products
+        const responseProductsData = await fetch(
           `${import.meta.env.VITE_BACKEND_URL}/api/products?sort=newest&limit=8`
         );
-        const responseProducts = await response.json();
+        const parsedProductsData: ProductsDataType =
+          await responseProductsData.json();
 
         setProductsData({
-          data: responseProducts.data,
-          count: responseProducts.count,
+          data: parsedProductsData.data,
+          count: parsedProductsData.count,
+        });
+
+        // get featured products
+
+        const responseFeaturedProductsData = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/featured-products`
+        );
+
+        const parsedFeaturedProductsData: ProductsDataType =
+          await responseFeaturedProductsData.json();
+
+        setFeaturedProductsData({
+          data: parsedFeaturedProductsData.data,
+          count: parsedFeaturedProductsData.data.length,
         });
       } catch (error: any) {
         toast.error(error.message);
@@ -49,7 +68,7 @@ function Home() {
       <div className='flex flex-grow-1 flex-col'>
         {/* FEATURED PRODUCTS HERO SLIDER */}
         <Container fluid>
-          <Slider data={productsData.data} />
+          <Slider data={featuredProductsData.data} />
         </Container>
         <Spacer sm={16} md={24} lg={24} />
 

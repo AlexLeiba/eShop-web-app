@@ -12,6 +12,7 @@ import productRoutes from './routes/products.js';
 import cartRoutes from './routes/carts.js';
 import orderRoutes from './routes/orders.js';
 import stripeRoutes from './routes/stripe.js';
+import wishListRoutes from './routes/wishList.js';
 
 dotenv.config(); //to use .env file
 
@@ -37,6 +38,7 @@ app.use('/api', productRoutes);
 app.use('/api', cartRoutes);
 app.use('/api', orderRoutes);
 app.use('/api', stripeRoutes);
+app.use('/api', wishListRoutes);
 
 ///// SERVER RUNNING//////
 const PORT = process.env.PORT || 4000;

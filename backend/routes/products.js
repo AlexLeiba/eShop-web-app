@@ -1,5 +1,8 @@
 import express from 'express';
-import { verifyTokenAuthorizationAndAdmin } from '../config/verifyToken.js';
+import {
+  verifyTokenAuthorization,
+  verifyTokenAuthorizationAndAdmin,
+} from '../config/verifyToken.js';
 import Product from '../models/Product.js';
 
 import dotenv from 'dotenv';
@@ -35,7 +38,8 @@ router.get('/products', async (req, res) => {
   }
 
   try {
-    const allProducts = await Product.find();
+    const allProducts = await Product.find({ isPublished: true, ...filter }); //Returns all products count filtered except pagination limits
+
     const count = allProducts.length;
 
     const filteredProducts = await Product.find({
@@ -50,12 +54,28 @@ router.get('/products', async (req, res) => {
       return res.status(404).json({ error: 'No products found' });
     }
 
-    res.status(200).json({ data: filteredProducts, count: count });
+    res.status(200).json({ data: filteredProducts, count: allProducts.length });
   } catch (error) {
     res.status(500).json({ Error: error.message });
   }
 });
 
+//GET SINGLE PRODUCT
+router.get('/products/:productId', async (req, res) => {
+  const productId = req.params.productId;
+  try {
+    const product = await Product.findOne({
+      _id: productId,
+      isPublished: true,
+    });
+    if (!product) {
+      return res.status(404).json({ error: 'No product was found' });
+    }
+    res.status(200).json({ data: product });
+  } catch (error) {
+    res.status(500).json({ Error: error.message });
+  }
+});
 //GET ALL PRODUCTS (ONLY ADMIN)
 router.get(
   '/all-products',
@@ -72,6 +92,23 @@ router.get(
     }
   }
 );
+
+// GET FEATURED PRODUCTS
+
+router.get('/featured-products', async (req, res) => {
+  try {
+    const response = await Product.find({ isPublished: true, featured: true })
+      .limit(5)
+      .sort({ createdAt: -1 });
+
+    if (!response) {
+      return res.status(404).json({ error: 'No products found' });
+    }
+    res.status(200).json({ data: response });
+  } catch (error) {
+    res.status(500).json({ Error: error.message });
+  }
+});
 
 // ADD PRODUCT (ONLY ADMIN)
 router.post('/product', verifyTokenAuthorizationAndAdmin, async (req, res) => {

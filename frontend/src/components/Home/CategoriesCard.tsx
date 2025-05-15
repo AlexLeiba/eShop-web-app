@@ -16,14 +16,20 @@ export function CategoriesCard({
     <div
       {...props}
       onClick={() =>
-        navigate(`/products?category=${data.title.toLowerCase()}?sort=newest`)
+        navigate(
+          `/products?category=${data.title.toLowerCase()}&sort=newest&page=1`
+        )
       }
     >
       <div
         key={data.id}
         className='w-full scale-100 hover:scale-101 shadow hover:shadow-2xl transition-all ease-in-out flex items-center gap-4 p-4 h-[400px] bg-white rounded-lg  overflow-hidden flex-col justify-between'
       >
-        <img className='w-full' src={data.image} alt={data.title} />
+        <img
+          className='w-full h-[220px] object-contain'
+          src={data.image}
+          alt={data.title}
+        />
 
         <div className='flex flex-col gap-4'>
           <h2 className='text-3xl font-bold'>{data.title}</h2>

@@ -28,11 +28,13 @@ function App() {
             {/* Private routes */}
             <Route
               path='/wishlist'
-              element={!isUserLogged ? <Navigate to='/login' /> : <Wishlist />}
+              element={<Wishlist />}
+              // !isUserLogged ? <Navigate to='/login' /> :
             />
             <Route
               path='/cart'
-              element={!isUserLogged ? <Navigate to='/login' /> : <Cart />}
+              element={<Cart />}
+              // !isUserLogged ? <Navigate to='/login' /> :
             />
 
             {/* Auth routes */}

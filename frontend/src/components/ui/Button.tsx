@@ -3,7 +3,7 @@ import React from 'react';
 import { cn } from '../../lib/utils';
 
 const buttonVariants = cva(
-  'w-full font-bold rounded-full py-2 px-4 text-md hover:opacity-80 cursor-pointer hover:shadow-gray-500 shadow flex items-center justify-center ',
+  'w-full font-bold rounded-full py-2 px-4 text-md hover:opacity-80 cursor-pointer hover:shadow-gray-500 shadow flex items-center justify-center disabled:bg-gray-300 disabled:hover:shadow-none disabled:shadow-none disabled:hover:opacity-100',
   {
     variants: {
       variant: {

@@ -7,14 +7,9 @@ type Props = {
   total: number;
   subtotal: number;
   shipping: number;
-  shippingDiscount: number;
+  items: number;
 };
-export function OrderSummary({
-  total,
-  subtotal,
-  shipping,
-  shippingDiscount,
-}: Props) {
+export function OrderSummary({ total, subtotal, shipping, items }: Props) {
   async function handleMakePayment() {
     const bodyProductDataToCheckout = [
       {
@@ -80,14 +75,17 @@ export function OrderSummary({
           <p className='text-xl'>${subtotal}</p>
         </div>
         <div className='flex gap-2 items-center'>
+          <p className='text-xl'>
+            <b>Items:</b>
+          </p>
+          <p className='text-xl'>{items}</p>
+        </div>
+        <div className='flex gap-2 items-center'>
           <p className='text-xl'>Shipping:</p>
           <p className='text-xl'>${shipping}</p>
         </div>
-        <div className='flex gap-2 items-center'>
-          <p className='text-xl'>Shipping Discount:</p>
-          <p className='text-xl'>${shippingDiscount}</p>
-        </div>
 
+        <Spacer size={8} />
         <div className='flex gap-2 items-center'>
           <p className='text-xl'>
             <b>Total:</b>
@@ -96,7 +94,11 @@ export function OrderSummary({
         </div>
       </div>
       <Spacer size={8} />
-      <Button onClick={handleMakePayment} className='w-[250px]'>
+      <Button
+        disabled={total === 0}
+        onClick={handleMakePayment}
+        className='w-[250px]'
+      >
         Place Order
       </Button>
     </div>

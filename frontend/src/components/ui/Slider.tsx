@@ -1,6 +1,5 @@
 import React from 'react';
 import SlideButton from './SlideButton';
-import { homeSliderColors } from '../../consts';
 import { Button } from './Button';
 import { Link } from 'react-router-dom';
 import { cn } from '../../lib/utils';
@@ -40,14 +39,14 @@ export function Slider({ data }: SliderProps) {
         onClick={() => handleSlide('next')}
       />
 
-      {data?.slice(0, 3).map((item, index) => {
+      {data?.slice(0, 3).map((item) => {
         return (
           <Container
             style={{
               minWidth: '100vw',
               transform: `translateX(${slide === 0 ? 0 : -(slide * 100)}vw)`,
               transition: 'transform 0.5s ease-in-out',
-              backgroundColor: homeSliderColors[index],
+              backgroundColor: item.featuredBackgroundColor,
             }}
             key={item._id}
             className={cn(

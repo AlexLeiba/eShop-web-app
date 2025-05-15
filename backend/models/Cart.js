@@ -22,6 +22,20 @@ const CartSchema = new mongoose.Schema(
         color: {
           type: String,
         },
+        title: {
+          type: String,
+        },
+        price: {
+          type: Number,
+        },
+
+        image: {
+          type: String,
+        },
+        language: {
+          type: String,
+          default: 'en',
+        },
       },
     ],
   },

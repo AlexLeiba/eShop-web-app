@@ -1,7 +1,15 @@
 import mongoose from 'mongoose';
 
-const ProductSchema = new mongoose.Schema(
+const WishListSchema = new mongoose.Schema(
   {
+    userId: {
+      type: String,
+      required: true,
+    },
+    productId: {
+      type: String,
+      required: true,
+    },
     title: {
       type: String,
       required: true,
@@ -57,4 +65,4 @@ const ProductSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model('Product', ProductSchema);
+export default mongoose.model('WishList', WishListSchema);

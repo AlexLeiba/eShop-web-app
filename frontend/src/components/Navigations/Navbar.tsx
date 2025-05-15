@@ -6,8 +6,16 @@ import { ShoppingCart } from './ShoppingCart';
 import { LanguagesSelect } from './LanguagesSelect';
 import { Container } from '../Grid/Container';
 import { WishList } from './WishList';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../store/store';
 
 export function Navbar() {
+  const state = useSelector((state: RootState) => {
+    return state;
+  });
+  const cartQuantity = state.cart.quantity;
+  const withListQuantity = state.wishList.length;
+
   const [search, setSearch] = React.useState('');
 
   const navLinks = [
@@ -58,12 +66,12 @@ export function Navbar() {
 
             {/* Wish list */}
             <div title='Wish List'>
-              <WishList />
+              <WishList quantity={withListQuantity} />
             </div>
 
             {/* Cart */}
             <div title='Cart'>
-              <ShoppingCart />
+              <ShoppingCart quantity={cartQuantity} />
             </div>
           </div>
         </div>

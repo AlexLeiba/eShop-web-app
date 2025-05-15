@@ -1,22 +1,33 @@
 import { IconMinus, IconPlus } from '@tabler/icons-react';
-import React, { type SetStateAction } from 'react';
+import React from 'react';
 
 type Props = {
-  setAmount: React.Dispatch<SetStateAction<number>>;
+  setAmount: React.Dispatch<
+    React.SetStateAction<{
+      color: string;
+      size: string;
+      quantity: number;
+    }>
+  >;
   amount: number;
 };
 function AddAmount({ setAmount, amount }: Props) {
   function handleAmount(type: 'minus' | 'plus') {
     if (type === 'minus') {
       setAmount((prev) => {
-        if (prev > 1) {
-          return prev - 1;
-        }
-        return prev;
+        return {
+          ...prev,
+          quantity: prev.quantity > 1 ? prev.quantity - 1 : prev.quantity,
+        };
       });
     }
     if (type === 'plus') {
-      setAmount((prev) => prev + 1);
+      setAmount((prev) => {
+        return {
+          ...prev,
+          quantity: prev.quantity + 1,
+        };
+      });
     }
   }
   return (
