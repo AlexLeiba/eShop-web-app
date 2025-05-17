@@ -5,6 +5,8 @@ export const LoginSchema = z.object({
   password: z.string().min(8, 'Password must be at least 8 characters long'),
 });
 
+export type LoginType = z.infer<typeof LoginSchema>;
+
 export const RegisterSchema = z
   .object({
     name: z.string().optional(),
@@ -20,3 +22,5 @@ export const RegisterSchema = z
     message: 'Passwords do not match',
     path: ['confirmPassword'],
   });
+
+export type RegisterType = z.infer<typeof RegisterSchema>;

@@ -10,10 +10,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 router.post(
   '/create-checkout-session',
-
+  verifyTokenAuthorization,
   async (req, res) => {
     const productsData = req.body;
-    console.log('🚀 ~ productsData:\n\n\n\n', productsData);
+    console.log('🚀 ~ productsData:', productsData);
 
     try {
       if (!productsData) {
@@ -24,7 +24,7 @@ router.post(
           price_data: {
             currency: 'usd',
             product_data: {
-              name: product.name,
+              name: product.title,
               images: [product.image],
             },
             unit_amount: Math.round(product.price * 100), // Convert to cents

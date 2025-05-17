@@ -23,8 +23,10 @@ function Colors({ colors, setColor, selectedColor }: Props) {
             <div
               onClick={() => setColor((prev) => ({ ...prev, color: color }))}
               className={cn(
-                selectedColor === color && 'border border-black',
-                'size-6 rounded-full  cursor-pointer hover:opacity-50 '
+                selectedColor === color
+                  ? 'border border-black '
+                  : 'border-gray-300 border',
+                'size-6 rounded-full  cursor-pointer hover:opacity-50 shadow-md  '
               )}
               style={{ backgroundColor: color }}
             ></div>

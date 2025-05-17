@@ -2,6 +2,18 @@ import mongoose from 'mongoose';
 
 const ProductSchema = new mongoose.Schema(
   {
+    roTitle: {
+      type: String,
+    },
+    enTitle: {
+      type: String,
+    },
+    roDescription: {
+      type: String,
+    },
+    enDescription: {
+      type: String,
+    },
     title: {
       type: String,
       required: true,
@@ -24,6 +36,7 @@ const ProductSchema = new mongoose.Schema(
     size: {
       type: Array,
     },
+
     color: {
       type: Array,
     },

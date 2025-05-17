@@ -10,15 +10,22 @@ import { ScrollToTop } from './lib/utils';
 import SuccessPaymentPage from './pages/payments/SuccessPaymentPage';
 import ErrorPaymentPage from './pages/payments/ErrorPaymentPage';
 import { Toaster } from 'react-hot-toast';
+import { SetDefaultLanguage } from './components/Language/SetDefaultLanguage';
+import { useSelector } from 'react-redux';
+import type { RootState } from './store/store';
 
 function App() {
-  const isUserLogged = false;
+  const userData = useSelector((state: RootState) => state.user.userData?.data);
+
+  const sessionToken = userData?.token || '';
+
   return (
     <>
       <div>
         <Toaster />
         <BrowserRouter>
           <ScrollToTop />
+          <SetDefaultLanguage />
           <Routes>
             {/* Public routes */}
             <Route path='/' element={<Home />} />
@@ -28,23 +35,21 @@ function App() {
             {/* Private routes */}
             <Route
               path='/wishlist'
-              element={<Wishlist />}
-              // !isUserLogged ? <Navigate to='/login' /> :
+              element={sessionToken ? <Wishlist /> : <Navigate to='/login' />}
             />
             <Route
               path='/cart'
-              element={<Cart />}
-              // !isUserLogged ? <Navigate to='/login' /> :
+              element={sessionToken ? <Cart /> : <Navigate to='/login' />}
             />
 
             {/* Auth routes */}
             <Route
               path='/login'
-              element={isUserLogged ? <Navigate to='/' /> : <Login />}
+              element={sessionToken ? <Navigate to='/' /> : <Login />}
             />
             <Route
               path='/register'
-              element={isUserLogged ? <Navigate to='/' /> : <Register />}
+              element={sessionToken ? <Navigate to='/' /> : <Register />}
             />
 
             {/* Payment Stripe */}

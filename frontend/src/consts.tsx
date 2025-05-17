@@ -76,6 +76,25 @@ export type ProductsType = {
   quantity: number;
   __v: number;
 };
+export type ProductsInCartType = {
+  productId: string;
+  _id: string;
+  title: string;
+  description: string;
+  price: number;
+  image: string;
+  categories: string;
+  size: string;
+  color: string;
+  isPublished: boolean;
+  inStock: boolean;
+  createdAt: string;
+  updatedAt: string;
+  featured: boolean;
+  featuredBackgroundColor: string;
+  quantity: number;
+  __v: number;
+};
 
 // FILTERS AND SORTS DATA
 export const filterColors = [
@@ -91,3 +110,14 @@ export const filterColors = [
 export const filterSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 export const filterCategories = ['Jakets', 'Shirts', 'Shoes'];
 export const filterSort = ['Newest', 'Oldest'];
+
+export const languages = [
+  {
+    name: 'English',
+    slug: 'EN',
+  },
+  {
+    name: 'Romanian',
+    slug: 'RO',
+  },
+];

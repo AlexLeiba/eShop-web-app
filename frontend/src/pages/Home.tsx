@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Container } from '../components/Grid/Container';
 import { Categories } from '../components/Home/Categories';
 import { Newsletter } from '../components/Home/Newsletter';
@@ -15,10 +15,12 @@ import React from 'react';
 import type { ProductsDataType } from './ProductsList';
 
 function Home() {
+  const { pathname } = useLocation();
   const [productsData, setProductsData] = React.useState<ProductsDataType>({
     data: [],
     count: 0,
   });
+  const [loading, setLoading] = React.useState(true);
 
   const [featuredProductsData, setFeaturedProductsData] =
     React.useState<ProductsDataType>({
@@ -27,11 +29,15 @@ function Home() {
     });
 
   useEffect(() => {
+    const language = localStorage.getItem('language') || 'en';
     async function fetchData() {
       try {
+        setLoading(true);
         // get products
         const responseProductsData = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/products?sort=newest&limit=8`
+          `${
+            import.meta.env.VITE_BACKEND_URL
+          }/api/products?sort=newest&limit=8&language=${language?.toLowerCase()}`
         );
         const parsedProductsData: ProductsDataType =
           await responseProductsData.json();
@@ -44,7 +50,9 @@ function Home() {
         // get featured products
 
         const responseFeaturedProductsData = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/featured-products`
+          `${
+            import.meta.env.VITE_BACKEND_URL
+          }/api/featured-products?language=${language?.toLowerCase()}`
         );
 
         const parsedFeaturedProductsData: ProductsDataType =
@@ -56,11 +64,13 @@ function Home() {
         });
       } catch (error: any) {
         toast.error(error.message);
+      } finally {
+        setLoading(false);
       }
     }
 
     fetchData();
-  }, []);
+  }, [pathname]);
   return (
     <div className='flex min-h-screen flex-col'>
       <Navbar />
@@ -86,7 +96,11 @@ function Home() {
               <p className='text-2xl font-bold underline'>All products</p>
             </Link>
           </div>
-          <Products type='dashboard' productsData={productsData} />
+          <Products
+            loading={loading}
+            type='dashboard'
+            productsData={productsData}
+          />
         </Container>
 
         {/* NEWSLETTER */}

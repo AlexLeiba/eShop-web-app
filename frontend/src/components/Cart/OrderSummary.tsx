@@ -1,42 +1,34 @@
+import { useSelector } from 'react-redux';
+import type { CartItemsType } from '../../store/cart/reducer';
 import { Button } from '../ui/Button';
 import { Spacer } from '../ui/spacer';
 
 import { loadStripe } from '@stripe/stripe-js';
+import type { RootState } from '../../store/store';
 
 type Props = {
   total: number;
   subtotal: number;
   shipping: number;
   items: number;
+  cartProducts: CartItemsType[];
 };
-export function OrderSummary({ total, subtotal, shipping, items }: Props) {
-  async function handleMakePayment() {
-    const bodyProductDataToCheckout = [
-      {
-        productId: 'hereIsProductId1',
-        price: 50,
-        quantity: 1,
-        name: 'Product 1',
-        image: 'https://via.placeholder.com/150',
-      },
-      {
-        productId: 'hereIsProductId2',
-        price: 50,
-        quantity: 3,
-        name: 'Product 2',
-        image: 'https://via.placeholder.com/150',
-      },
-      {
-        productId: 'hereIsProductId3',
-        price: 50,
-        quantity: 2,
-        name: 'Product 3',
-        image: 'https://via.placeholder.com/150',
-      },
-    ];
+export function OrderSummary({
+  total,
+  subtotal,
+  shipping,
+  items,
+  cartProducts,
+}: Props) {
+  const userData = useSelector(
+    (state: RootState) => state.user?.userData?.data
+  );
+  const sessionToken = userData?.token || '';
 
+  async function handleMakePayment() {
     const headers = {
       'Content-Type': 'application/json',
+      token: `Bearer ${sessionToken}`,
     };
 
     const stripe = await loadStripe(
@@ -49,7 +41,7 @@ export function OrderSummary({ total, subtotal, shipping, items }: Props) {
         {
           method: 'POST',
           headers,
-          body: JSON.stringify(bodyProductDataToCheckout),
+          body: JSON.stringify(cartProducts),
         }
       );
 

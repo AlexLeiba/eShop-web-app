@@ -1,61 +1,68 @@
-import React, { useEffect } from 'react';
 import { IconShoppingCart, IconX } from '@tabler/icons-react';
 import AddAmount from '../Products/AddAmount';
 import { Button } from '../ui/Button';
-import { removeFromCart, type CartItemsType } from '../../store/cart/reducer';
+import { type CartItemsType } from '../../store/cart/reducer';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SelectedColor from '../Cart/SelectedColor';
+import { deleteFromCart } from '../../store/cart/apiCalls';
+import type { RootState } from '../../store/store';
+import toast from 'react-hot-toast';
 
 type Props = {
-  cartData: CartItemsType;
+  productData: CartItemsType;
   type: 'cart' | 'wishList';
 };
-export function CartCard({ cartData, type }: Props) {
+export function CartCard({ productData, type }: Props) {
   const dispatch = useDispatch();
-  const [amount, setAmount] = React.useState({
-    quantity: cartData.quantity,
-    color: '',
-    size: '',
-  });
+  const userData = useSelector((state: RootState) => state.user.userData?.data);
+  const sessionToken = userData?.token || '';
 
-  useEffect(() => {
-    setAmount({
-      quantity: cartData.quantity,
-      color: cartData.color,
-      size: cartData.size,
+  async function handleRemove() {
+    const response = await deleteFromCart({
+      dispatch,
+      token: sessionToken,
+      productId: productData._id,
     });
-  }, [cartData]);
 
-  function handleRemove() {
-    dispatch(removeFromCart({ ...cartData, quantity: amount.quantity }));
+    if (response?.error) {
+      toast.error(response.error);
+    }
+    if (response?.data) {
+      toast.success('Product was removed from cart');
+    }
   }
   return (
     <div className='flex gap-8  shadow rounded-md py-4 pl-4 pr-8 relative'>
-      <Link to={`/product/${cartData._id}`}>
+      <Link to={`/product/${productData._id}`}>
         <div>
           <img
             className='h-[160px] w-[300px] object-contain'
-            src={cartData.image}
-            alt={cartData.title}
+            src={productData.image}
+            alt={productData.title}
           />
         </div>
       </Link>
 
       <div className='flex flex-col justify-between w-full'>
-        <p className='text-xl '>
-          <b className='text-semibold'>Product:</b> {cartData.title}
+        <p className='text-xl line-clamp-1'>
+          <b className='text-semibold'>Product:</b> {productData.title}
+        </p>
+        <p className='text-xl line-clamp-1'>
+          <b className='text-semibold'>ID:</b> {productData._id}
         </p>
         <p className='text-xl '>
-          <b className='text-semibold'>ID:</b> {cartData._id}
+          <b className='text-semibold'>Size:</b>{' '}
+          {productData.size.toUpperCase()}
         </p>
-        <p className='text-xl '>
-          <b className='text-semibold'>Size:</b> {cartData.size}
-        </p>
-        <SelectedColor color={cartData.color} />
+        <SelectedColor color={productData.color} />
         <div className='flex justify-between w-full'>
           <div className='flex gap-4 items-center'>
-            <AddAmount setAmount={setAmount} amount={amount.quantity} />
+            <AddAmount
+              quantity={productData.quantity}
+              productId={productData._id}
+              type='cartPage'
+            />
             {type === 'wishList' && (
               <Button>
                 Add to cart <IconShoppingCart className='ml-2' />
@@ -64,7 +71,7 @@ export function CartCard({ cartData, type }: Props) {
           </div>
 
           <div>
-            <p className='text-3xl '>${cartData.price}</p>
+            <p className='text-3xl line-clamp-1'>${productData.price}</p>
           </div>
         </div>
       </div>

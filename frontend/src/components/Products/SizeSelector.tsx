@@ -15,7 +15,6 @@ type Props = {
   size: string;
 };
 export function SizeSelector({ label, data, size, setSize }: Props) {
-  //   const [selected, setSelected] = React.useState<SetStateAction<string>>('');
   function handleTypeOfFilter() {
     const sizeData = [{ value: 'Selectsize', title: 'Select size' }];
     data?.forEach((item) => {

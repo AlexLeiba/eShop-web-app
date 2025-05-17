@@ -1,10 +1,12 @@
 import { IconShoppingCart, IconX } from '@tabler/icons-react';
 import { Button } from '../ui/Button';
-import { addToCart } from '../../store/cart/reducer';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import type { ProductsType } from '../../consts';
-import { removeFromWishList } from '../../store/wishList/reducer';
+import { updateCart } from '../../store/cart/apiCalls';
+import type { RootState } from '../../store/store';
+import toast from 'react-hot-toast';
+import { deleteFromWishlist } from '../../store/wishList/apiCalls';
 
 type Props = {
   data: ProductsType;
@@ -12,20 +14,43 @@ type Props = {
 };
 export function WishListCard({ data, type }: Props) {
   const dispatch = useDispatch();
+  const userData = useSelector((state: RootState) => state.user.userData?.data);
+  const sessionToken = userData?.token || '';
 
-  function handleRemove() {
-    dispatch(removeFromWishList({ ...data }));
+  async function handleRemove() {
+    const response = await deleteFromWishlist({
+      dispatch,
+      productId: data._id,
+      token: sessionToken,
+    });
+
+    if (response?.error) {
+      toast.error(response.error);
+    }
+    if (response?.data) {
+      toast.success('Product removed');
+    }
   }
 
-  function handleAddToCart() {
-    dispatch(
-      addToCart({
-        ...data,
-        color: data.color[0],
-        size: data.size[0],
+  async function handleAddToCart(product: ProductsType) {
+    const response = await updateCart({
+      dispatch,
+      product: {
+        ...product,
+        color: product.color[0],
+        size: product.size[0],
         quantity: 1,
-      })
-    );
+        categories: product.categories[0], // Use the first category as a string
+        productId: product._id,
+      },
+      token: sessionToken,
+    });
+    if (response?.error) {
+      toast.error(response.error);
+    }
+    if (response?.data) {
+      toast.success('Product added to cart');
+    }
   }
   return (
     <div className='flex gap-8  shadow rounded-md py-4 pl-4 pr-8 relative'>
@@ -41,15 +66,15 @@ export function WishListCard({ data, type }: Props) {
 
       <div className='flex flex-col justify-between w-full'>
         <div className='flex flex-col gap-2'>
-          <p className='text-xl font-bold '>{data.title}</p>
+          <p className='text-xl font-bold line-clamp-1'>{data.title}</p>
 
-          <p className='text-xl '>{data.description}</p>
+          <p className='text-xl line-clamp-2 '>{data.description}</p>
         </div>
 
         <div className='flex justify-between w-full'>
           <div className='flex gap-4 items-center'>
             {type === 'wishList' && (
-              <Button onClick={handleAddToCart}>
+              <Button onClick={() => handleAddToCart(data)}>
                 Add to cart <IconShoppingCart className='ml-2' />
               </Button>
             )}

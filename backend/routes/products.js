@@ -12,6 +12,7 @@ const router = express.Router();
 
 // GET ALL PUBLISHED PRODUCTS
 router.get('/products', async (req, res) => {
+  const queryLanguage = req.query.language; //TODO: ADD THIS: verifyTokenAuthorization
   const queryNew = req.query.sort === 'newest';
   const queryCategory = req.query.category;
   const querySize = req.query.size;
@@ -38,13 +39,16 @@ router.get('/products', async (req, res) => {
   }
 
   try {
-    const allProducts = await Product.find({ isPublished: true, ...filter }); //Returns all products count filtered except pagination limits
-
-    const count = allProducts.length;
+    const allProducts = await Product.find({
+      isPublished: true,
+      ...filter,
+      language: queryLanguage,
+    }); //Returns all products count filtered except pagination limits
 
     const filteredProducts = await Product.find({
       isPublished: true,
       ...filter,
+      language: queryLanguage,
     })
       .sort(queryNew ? { createdAt: -1 } : { createdAt: 1 })
       .limit(queryLimit)
@@ -54,7 +58,43 @@ router.get('/products', async (req, res) => {
       return res.status(404).json({ error: 'No products found' });
     }
 
+    // const localizationProducts = filteredProducts.map((product) => {
+    //   return {
+    //     ...product,
+    //     title: queryLanguage === 'ro' ? product.roTitle : product.enTitle,
+    //     description:
+    //       queryLanguage === 'ro'
+    //         ? product.roDescription
+    //         : product.enDescription,
+    //   };
+    // });
+
     res.status(200).json({ data: filteredProducts, count: allProducts.length });
+  } catch (error) {
+    res.status(500).json({ Error: error.message });
+  }
+});
+
+// GET 5 FOUND PUBLISHED PRODUCTS IN SEARCH
+router.get('/search-products', async (req, res) => {
+  const searchTerm = req.query.search;
+  const queryLanguage = req.query.language;
+
+  if (!searchTerm) return;
+  try {
+    const response = await Product.find({
+      isPublished: true,
+      title: { $regex: searchTerm, $options: 'i' },
+      language: queryLanguage,
+    })
+      .limit(5)
+      .sort({ createdAt: -1 });
+
+    if (!response) {
+      return res.status(404).json({ error: 'No products found' });
+    }
+
+    res.status(200).json({ data: response });
   } catch (error) {
     res.status(500).json({ Error: error.message });
   }
@@ -96,8 +136,14 @@ router.get(
 // GET FEATURED PRODUCTS
 
 router.get('/featured-products', async (req, res) => {
+  const queryLanguage = req.query.language || 'en'; //TODO: ADD THIS: verifyTokenAuthorization
+
   try {
-    const response = await Product.find({ isPublished: true, featured: true })
+    const response = await Product.find({
+      isPublished: true,
+      featured: true,
+      language: queryLanguage,
+    })
       .limit(5)
       .sort({ createdAt: -1 });
 

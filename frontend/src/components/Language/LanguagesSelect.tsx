@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { languages } from '../../consts';
 
 export function LanguagesSelect() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -6,18 +7,15 @@ export function LanguagesSelect() {
   const [selectLanguages, setSelectLanguage] = React.useState('EN');
   const [open, setOpen] = React.useState(false);
 
-  const languages = [
-    {
-      name: 'English',
-      slug: 'EN',
-    },
-    {
-      name: 'Romanian',
-      slug: 'RO',
-    },
-  ];
-
   React.useEffect(() => {
+    const language = localStorage.getItem('language');
+
+    if (!language) {
+      setSelectLanguage('EN');
+    } else {
+      setSelectLanguage(language);
+    }
+
     document.addEventListener('click', (e) => {
       if (
         containerRef.current &&
@@ -33,12 +31,15 @@ export function LanguagesSelect() {
   function handleLanguageChange(language: string) {
     setSelectLanguage(language);
     setOpen(!open);
+
+    localStorage.setItem('language', language);
+    window.location.reload();
   }
   return (
     <div className='relative' ref={containerRef}>
       <div
         onClick={() => setOpen(!open)}
-        className='hover:text-white relative rounded-full w-8 h-8 flex justify-center items-center hover:bg-gray-500 transition-all cursor-pointer'
+        className='hover:text-white shadow-md relative rounded-full w-8 h-8 flex justify-center items-center hover:bg-gray-500 transition-all cursor-pointer'
       >
         <p>{selectLanguages}</p>
       </div>

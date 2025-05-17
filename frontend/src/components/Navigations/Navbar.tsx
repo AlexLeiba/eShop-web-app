@@ -1,22 +1,21 @@
-import React from 'react';
-import { SearchInput } from '../ui/SearchInput';
 import { Logo } from './Logo';
 import { NavLinks } from './NavLinks';
 import { ShoppingCart } from './ShoppingCart';
-import { LanguagesSelect } from './LanguagesSelect';
+import { LanguagesSelect } from '../Language/LanguagesSelect';
 import { Container } from '../Grid/Container';
 import { WishList } from './WishList';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../store/store';
+import SearchSelector from './SearchSelector';
+import { MyAccountDropdown } from './MyAccountDropdown';
+import type { UserType } from '../../store/userData/reducer';
 
 export function Navbar() {
-  const state = useSelector((state: RootState) => {
-    return state;
-  });
+  const state = useSelector((state: RootState) => state);
+  const userData = useSelector((state: RootState) => state.user.userData?.data);
+  const sessionToken = userData?.token || '';
   const cartQuantity = state.cart.quantity;
-  const withListQuantity = state.wishList.length;
-
-  const [search, setSearch] = React.useState('');
+  const withListQuantity = state?.wishlist?.data?.length;
 
   const navLinks = [
     {
@@ -37,14 +36,7 @@ export function Navbar() {
             <LanguagesSelect />
 
             {/* Search */}
-            <SearchInput
-              label={''}
-              placeholder={''}
-              value={search}
-              onChange={setSearch}
-              error={''}
-              type={'text'}
-            />
+            <SearchSelector />
           </div>
 
           {/* Logo */}
@@ -54,16 +46,6 @@ export function Navbar() {
 
           {/* Links */}
           <div className='flex flex-1 items-center justify-end gap-4'>
-            {navLinks.map((navLink) => {
-              return (
-                <NavLinks
-                  key={navLink.slug}
-                  name={navLink.name}
-                  slug={navLink.slug}
-                />
-              );
-            })}
-
             {/* Wish list */}
             <div title='Wish List'>
               <WishList quantity={withListQuantity} />
@@ -73,6 +55,24 @@ export function Navbar() {
             <div title='Cart'>
               <ShoppingCart quantity={cartQuantity} />
             </div>
+
+            {sessionToken ? (
+              <>
+                <MyAccountDropdown
+                  userData={userData?.data as UserType['data']['data']}
+                />
+              </>
+            ) : (
+              navLinks.map((navLink) => {
+                return (
+                  <NavLinks
+                    key={navLink.slug}
+                    name={navLink.name}
+                    slug={navLink.slug}
+                  />
+                );
+              })
+            )}
           </div>
         </div>
       </Container>

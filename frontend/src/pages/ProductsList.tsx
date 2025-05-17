@@ -31,18 +31,21 @@ function ProductsList() {
     data: [],
     count: 0,
   });
-  console.log('🚀 ~ ProductsList ~ productsData:', productsData);
+  const [loading, setLoading] = React.useState(true);
 
   const [searchParams] = useSearchParams();
 
   const selectedCategory = searchParams.get('category');
-  console.log('🚀 ~ ProductsList ~ selectedCategory:', selectedCategory);
 
   useEffect(() => {
+    setLoading(true);
+    const language = localStorage.getItem('language');
     async function fetchData() {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/products${location.search}`
+          `${import.meta.env.VITE_BACKEND_URL}/api/products?language=${
+            language?.toLowerCase() || 'en'
+          }&${location.search}`
         );
         const responseData: ProductsDataType = await response.json();
 
@@ -52,6 +55,8 @@ function ProductsList() {
         });
       } catch (error: any) {
         toast.error(error.message);
+      } finally {
+        setLoading(false);
       }
     }
     fetchData();
@@ -107,7 +112,11 @@ function ProductsList() {
 
           {/* Products */}
           <Spacer size={8} />
-          <Products productsData={productsData} type='products-list' />
+          <Products
+            loading={loading}
+            productsData={productsData}
+            type='products-list'
+          />
         </Container>
         <Spacer sm={16} md={24} lg={24} />
 

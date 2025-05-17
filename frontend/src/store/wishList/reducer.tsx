@@ -1,25 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { ProductsType } from '../../consts';
 
-const initialState: ProductsType[] = [];
+const initialState: { data: ProductsType[] } = { data: [] };
 
 export const wishListSlice = createSlice({
-  name: 'cart',
+  name: 'wishlist',
   initialState,
   reducers: {
+    getWishlist: (state, action) => {
+      state.data = action.payload;
+    },
     addToWithList: (state, action) => {
-      const isProductAlreadyInList = state.find((item) => {
-        return item._id === action.payload._id;
-      });
-
-      if (isProductAlreadyInList?._id) {
-        return state;
-      }
-
-      state.push(action.payload);
+      state.data = action.payload;
     },
     removeFromWishList: (state, action) => {
-      return state.filter((item) => item._id !== action.payload._id);
+      state.data = action.payload;
     },
     clearWishList: () => {
       return initialState;
@@ -28,7 +23,7 @@ export const wishListSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { addToWithList, removeFromWishList, clearWishList } =
+export const { addToWithList, removeFromWishList, clearWishList, getWishlist } =
   wishListSlice.actions;
 
 export default wishListSlice.reducer;

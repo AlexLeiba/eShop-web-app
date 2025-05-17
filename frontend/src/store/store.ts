@@ -1,13 +1,36 @@
-import { configureStore } from '@reduxjs/toolkit';
-import cart from './cart/reducer';
-import wishList from './wishList/reducer';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import cartReducer from './cart/reducer';
+import wishListReducer from './wishList/reducer';
+import userDataReducer from './userData/reducer';
+
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; //will save in localStorage
+
+const persistConfig = {
+  key: 'root',
+  storage,
+};
+
+const rootReducer = combineReducers({
+  cart: cartReducer,
+  wishlist: wishListReducer,
+  user: userDataReducer,
+});
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-  reducer: {
-    cart,
-    wishList,
-  },
+  devTools: import.meta.env.VITE_ENV !== 'production',
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
+      },
+    }),
 });
+
+export const persistor = persistStore(store); //will persist and rehydrate store ( The store will be save to local storage)
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

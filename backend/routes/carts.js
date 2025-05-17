@@ -11,13 +11,12 @@ dotenv.config();
 const router = express.Router();
 
 // GET CART
-// TODO: ADD THIS: verifyTokenAuthorization
 router.get('/cart', verifyTokenAuthorization, async (req, res) => {
   try {
     const cart = await Cart.findOne({ userId: req.user.id });
 
     if (!cart) {
-      return res.status(404).json({ error: 'No cart found' });
+      return res.status(404).json({ error: 'No cart was found' });
     }
 
     res.status(200).json({ data: cart });
@@ -51,21 +50,6 @@ router.put('/cart/:productId', verifyTokenAuthorization, async (req, res) => {
     const findCart = await Cart.findOne({ userId: req.user.id }); //check if cart exists
 
     if (findCart) {
-      // UPDATE IF CART EXISTS ( only increase quantity if was added an existing in cart element with the same ID/color/size)
-      // const updatedCart = await Cart.findOneAndUpdate(
-      //   {
-      //     userId: req.user.id,
-      //     products: { $elemMatch: { productId: queryProductId } },
-      //   },
-      //   {
-      //     $set: { 'products.$[elem].quantity': req.body.quantity },
-      //   },
-      //   {
-      //     arrayFilters: [{ 'elem.productId': queryProductId }],
-      //     new: true,
-      //   }
-      // );
-
       // before check if added element exists in cart/ if exists update its quantity/ alse add new
       const updatedCart = await Cart.findOneAndUpdate(
         { userId: req.user.id },
@@ -98,33 +82,129 @@ router.put('/cart/:productId', verifyTokenAuthorization, async (req, res) => {
   }
 });
 
-// ADD NEW PRODUCT IN EXISTING CART
+// ADD NEW PRODUCT IN CART/ CREATE CART IF NOT EXISTS
 router.put(
   '/cart/product-new/:productId',
   verifyTokenAuthorization,
   async (req, res) => {
-    const queryProductId = req.params.productId;
+    const productId = req.params.productId;
 
     try {
-      if (!queryProductId) {
+      if (!productId) {
         return res.status(400).json({ error: 'No product ID provided' });
       }
 
-      if (queryProductId) {
-        const updatedCart = await Cart.findOneAndUpdate(
-          { userId: req.user.id },
-          {
-            $push: { products: { productId: queryProductId, quantity: 1 } },
-          },
-          {
-            new: true,
-          }
-        );
+      const isCartExists = await Cart.findOne({ userId: req.user.id });
 
-        res.status(201).json({ data: updatedCart });
+      if (!isCartExists) {
+        // CREATE A NEW CART IF NOT EXISTS
+        const newCartElemen = new Cart({
+          userId: req.user.id,
+          products: [
+            {
+              ...req.body,
+            },
+          ],
+        });
+
+        newCartElemen.save();
+        res.status(201).json({ data: newCartElemen });
+        return;
+      }
+
+      if (isCartExists) {
+        // UPDATE CART IF EXISTS
+        const isProductAlreadyInCart = await Cart.findOne({
+          userId: req.user.id,
+          products: {
+            $elemMatch: {
+              _id: productId,
+              color: req.body.color,
+              size: req.body.size,
+            },
+          },
+        }).lean();
+
+        if (!isProductAlreadyInCart) {
+          // PRODUCT IS NOT N CART
+          const updatedCart = await Cart.findOneAndUpdate(
+            { userId: req.user.id },
+            {
+              $push: { products: { ...req.body } },
+            },
+
+            {
+              new: true,
+            }
+          );
+          res.status(201).json({ data: updatedCart });
+          return;
+        }
+
+        if (isProductAlreadyInCart) {
+          // IF PRODUCT EXISTS IN CART UPDATE ONLY QUANTITY
+
+          const updatedCart = await Cart.findOneAndUpdate(
+            { userId: req.user.id, 'products._id': productId },
+            {
+              $inc: {
+                //$inc will add body value to the prev one
+                'products.$[elem].quantity': req.body.quantity,
+              },
+            },
+            {
+              new: true,
+              arrayFilters: [{ 'elem._id': productId }],
+            }
+          );
+
+          res.status(201).json({ data: updatedCart });
+          return;
+        }
       }
     } catch (error) {
       res.status(400).json({ Error: error.message });
+    }
+  }
+);
+
+// UPDATE CART ELEMENT QUANTITY
+router.put(
+  '/cart/product-quantity/:productId/:quantity',
+  verifyTokenAuthorization,
+  async (req, res) => {
+    const paramProductId = req.params.productId;
+    const paramQuantity = req.params.quantity;
+    console.log('🚀 ~ req.body.quantity:\n\n\n', paramQuantity);
+
+    if (!paramProductId) {
+      return res.status(400).json({ error: 'No cart element ID provided' });
+    }
+    try {
+      const findCart = await Cart.findOne({ userId: req.user.id }); //check if cart exists
+      if (!findCart) {
+        return res.status(404).json({ error: 'Cart not found' });
+      }
+
+      if (findCart) {
+        // before check if added element exists in cart/ if exists update its quantity/ alse add new
+        const updatedCart = await Cart.findOneAndUpdate(
+          { userId: req.user.id },
+          {
+            $inc: {
+              'products.$[elem].quantity': paramQuantity,
+            },
+          },
+          {
+            new: true,
+            arrayFilters: [{ 'elem._id': paramProductId }],
+          }
+        );
+
+        return res.status(201).json({ data: updatedCart });
+      }
+    } catch (error) {
+      res.status(500).json({ Error: error.message });
     }
   }
 );
@@ -155,11 +235,14 @@ router.put(
           return res.status(404).json({ error: 'Cart element not found' });
         }
 
+        const allProducts = await Cart.find({ userId: req.user.id });
+
+        if (!allProducts) {
+          return res.status(404).json({ error: 'Cart not found' });
+        }
+
         res.status(200).json({
-          data: {
-            message: 'Cart element deleted successfully',
-            data: deletedCartElement,
-          },
+          data: allProducts,
         });
       }
     } catch (error) {
@@ -167,5 +250,21 @@ router.put(
     }
   }
 );
+
+// DELETE ALL ELEMENTS FROM CART
+router.delete('/cart', verifyTokenAuthorization, async (req, res) => {
+  const userId = req.user.id;
+  const cart = await Cart.findOneAndDelete({ userId });
+  if (!cart) {
+    return res.status(404).json({ error: 'Cart not found' });
+  }
+
+  res.status(200).json({ data: cart });
+
+  try {
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 export default router;

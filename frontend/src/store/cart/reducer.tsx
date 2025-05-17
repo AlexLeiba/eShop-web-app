@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import type { ProductsType } from '../../consts';
 
 export type CartType = {
   quantity: number;
@@ -6,7 +7,7 @@ export type CartType = {
   products: CartItemsType[];
 };
 export type CartItemsType = {
-  _id: number;
+  _id: string;
   title: string;
   price: number;
   quantity: number;
@@ -26,52 +27,93 @@ export const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addToCart: (state, action) => {
-      state.quantity += 1;
+    getCartData: (state, action) => {
+      state.products = action.payload.products;
 
-      const isProductAlreadyInCart = state.products.find((item) => {
-        return (
-          item._id === action.payload._id &&
-          item.size === action.payload.size &&
-          item.color === action.payload.color
-        );
-      });
+      const quantityAndTotalPrice = {
+        quantity: 0,
+        total: 0,
+      };
 
-      // EXISTS
-      if (isProductAlreadyInCart?._id) {
-        state.products.forEach((item) => {
-          if (item._id === isProductAlreadyInCart?._id) {
-            item.quantity += action.payload.quantity;
-          }
-        });
-      } else {
-        // IS NEW
-        state.products.push(action.payload);
-      }
-      state.total = state.products.reduce(
-        (acc, curr) => acc + curr.price * curr.quantity,
-        0
-      );
-    },
-    removeFromCart: (state, action) => {
-      if (state.products.length === 0) {
-        return initialState;
-      }
-      state.quantity -= 1;
-
-      state.products = state.products.filter((item) => {
-        if (
-          item._id + item.size + item.color !==
-          action.payload._id + action.payload.size + action.payload.color
-        ) {
-          return item;
+      action.payload.products?.forEach((item: ProductsType) => {
+        if (item.quantity === 1) {
+          quantityAndTotalPrice.quantity += 1;
+          quantityAndTotalPrice.total += item.price;
+        }
+        if (item.quantity > 1) {
+          quantityAndTotalPrice.quantity += item.quantity;
+          quantityAndTotalPrice.total += item.price * item.quantity;
         }
       });
 
-      state.total = state.products.reduce(
-        (acc, curr) => acc + curr.price * curr.quantity,
-        0
-      );
+      state.quantity = quantityAndTotalPrice.quantity;
+      state.total = quantityAndTotalPrice.total;
+    },
+    addToCart: (state, action) => {
+      state.products = action.payload.products; //add products to state.products array
+
+      const quantityAndTotalPrice = {
+        quantity: 0,
+        total: 0,
+      };
+
+      action.payload.products?.forEach((item: ProductsType) => {
+        if (item.quantity === 1) {
+          quantityAndTotalPrice.quantity += 1;
+          quantityAndTotalPrice.total += item.price;
+        }
+        if (item.quantity > 1) {
+          quantityAndTotalPrice.quantity += item.quantity;
+          quantityAndTotalPrice.total += item.price * item.quantity;
+        }
+      });
+
+      state.quantity = quantityAndTotalPrice.quantity; //add quantity to state.quantity
+      state.total = quantityAndTotalPrice.total; //add total to state.total
+    },
+    removeFromCart: (state, action) => {
+      state.products = action.payload[0].products; //add products to state.products array
+
+      const quantityAndTotalPrice = {
+        quantity: 0,
+        total: 0,
+      };
+
+      action.payload[0].products?.forEach((item: ProductsType) => {
+        if (item.quantity === 1) {
+          quantityAndTotalPrice.quantity += 1;
+          quantityAndTotalPrice.total += item.price;
+        }
+        if (item.quantity > 1) {
+          quantityAndTotalPrice.quantity += item.quantity;
+          quantityAndTotalPrice.total += item.price * item.quantity;
+        }
+      });
+
+      state.quantity = quantityAndTotalPrice.quantity; //add quantity to state.quantity
+      state.total = quantityAndTotalPrice.total; //add total to state.total
+    },
+    addQuantityToCart: (state, action) => {
+      state.products = action.payload.products; //add products to state.products array
+
+      const quantityAndTotalPrice = {
+        quantity: 0,
+        total: 0,
+      };
+
+      action.payload.products?.forEach((item: ProductsType) => {
+        if (item.quantity === 1) {
+          quantityAndTotalPrice.quantity += 1;
+          quantityAndTotalPrice.total += item.price;
+        }
+        if (item.quantity > 1) {
+          quantityAndTotalPrice.quantity += item.quantity;
+          quantityAndTotalPrice.total += item.price * item.quantity;
+        }
+      });
+
+      state.quantity = quantityAndTotalPrice.quantity; //add quantity to state.quantity
+      state.total = quantityAndTotalPrice.total; //add total to state.total
     },
     clearCart: () => {
       return initialState;
@@ -80,6 +122,12 @@ export const cartSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { addToCart, removeFromCart, clearCart } = cartSlice.actions;
+export const {
+  addToCart,
+  removeFromCart,
+  clearCart,
+  getCartData,
+  addQuantityToCart,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;

@@ -4,12 +4,14 @@ import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import { Button } from '../ui/Button';
 import { useSearchParams } from 'react-router-dom';
 import type { ProductsDataType } from '../../pages/ProductsList';
+import { Loader } from '../ui/Loader';
 
 type ProductsProps = {
   productsData: ProductsDataType;
   type: 'dashboard' | 'products-list';
+  loading: boolean;
 };
-export function Products({ productsData, type }: ProductsProps) {
+export function Products({ productsData, type, loading }: ProductsProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const limitPerPage = 12;
 
@@ -23,6 +25,7 @@ export function Products({ productsData, type }: ProductsProps) {
 
       params.set('page', prevPage.toString());
       setSearchParams(params);
+      window.scrollTo(0, 0);
     } else {
       const nextPage = (Number(searchParams.get('page')) || 0) + 1;
       // NEXT PAGE
@@ -30,9 +33,11 @@ export function Products({ productsData, type }: ProductsProps) {
         // TODO: return all products counted from backend/ check on change page if : limitPerPage * PAGE < ALLProducts
         params.set('page', nextPage.toString());
         setSearchParams(params);
+        window.scrollTo(0, 0);
       }
     }
   }
+
   return (
     <>
       <Spacer sm={8} md={8} lg={8} />
@@ -42,17 +47,23 @@ export function Products({ productsData, type }: ProductsProps) {
           <p className='text-1xl font-bold'>Found: {productsData.count}</p>
           <p>
             Page: {searchParams.get('page')} /{' '}
-            {Math.round(productsData.count / limitPerPage)}
+            {Math.round(productsData.count / limitPerPage) || 1}
           </p>
         </div>
       )}
       <Spacer size={2} />
 
-      <div className='grid grid-cols-4 gap-4  '>
-        {productsData.data?.map((data) => {
-          return <ProductsCard data={data} key={data._id} />;
-        })}
-      </div>
+      <Loader loading={loading} className='h-[200px]'>
+        <div className='grid grid-cols-4 gap-4  '>
+          {productsData?.data && productsData.data.length > 0 ? (
+            productsData.data?.map((data) => {
+              return <ProductsCard data={data} key={data._id} />;
+            })
+          ) : (
+            <p>No products found</p>
+          )}
+        </div>
+      </Loader>
       <Spacer sm={8} md={8} lg={8} />
       {type === 'products-list' && (
         <div className='flex justify-between items-center gap-4'>

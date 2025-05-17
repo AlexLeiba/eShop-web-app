@@ -1,8 +1,21 @@
 'use server';
 
-import { LoginSchema, RegisterSchema } from '../lib/schemas';
+import {
+  LoginSchema,
+  RegisterSchema,
+  type LoginType,
+  type RegisterType,
+} from '../lib/schemas';
 
-export async function loginAction(_: any, formData: FormData) {
+export async function loginAction(
+  _: any,
+  formData: FormData
+): Promise<{
+  success: boolean;
+  data: LoginType | null;
+  errorForm: any;
+  errorRequest: any;
+}> {
   const formParsedData = Object.fromEntries(formData.entries());
 
   const validatedValues = LoginSchema.safeParse(formParsedData);
@@ -22,37 +35,23 @@ export async function loginAction(_: any, formData: FormData) {
     };
   }
 
-  try {
-    const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/login`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formParsedData),
-      }
-    );
-
-    const { data, error } = await response.json();
-
-    return {
-      success: response.ok,
-      data: data,
-      errorForm: null,
-      errorRequest: error,
-    };
-  } catch (error) {
-    return {
-      success: false,
-      data: null,
-      errorForm: null,
-      errorRequest: error,
-    };
-  }
+  return {
+    success: true,
+    data: validatedValues.data,
+    errorForm: null,
+    errorRequest: null,
+  };
 }
 
-export async function registerAction(_: any, formData: FormData) {
+export async function registerAction(
+  _: any,
+  formData: FormData
+): Promise<{
+  success: boolean;
+  data: RegisterType | null;
+  errorForm: any;
+  errorRequest: any;
+}> {
   const formParsedData = Object.fromEntries(formData.entries());
 
   const validatedValues = RegisterSchema.safeParse(formParsedData);
@@ -66,44 +65,16 @@ export async function registerAction(_: any, formData: FormData) {
 
     return {
       success: false,
-      data: formParsedData,
+      data: null,
       errorForm: parsedErrors[0],
       errorRequest: null,
     };
   }
 
-  try {
-    const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/register`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formParsedData),
-      }
-    );
-    const { data, error } = await response.json();
-
-    return {
-      success: response.ok,
-      data: data,
-      errorForm: null,
-      errorRequest: error,
-    };
-  } catch (error) {
-    console.log('🚀 ~ registerAction ~ error:', error);
-    return {
-      success: false,
-      data: null,
-      errorForm: null,
-      errorRequest: error,
-    };
-  }
-
-  //   return {
-  //     success: true,
-  //     data: formParsedData,
-  //     error: null,
-  //   }
+  return {
+    success: true,
+    data: validatedValues.data,
+    errorForm: null,
+    errorRequest: null,
+  };
 }
