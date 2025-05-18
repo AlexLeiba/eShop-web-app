@@ -15,9 +15,10 @@ import {
   filterCategories,
   filterColors,
   filterSizes,
-  filterSort,
+  sortOptions,
   type ProductsType,
 } from '../consts';
+import { useTranslation } from 'react-i18next';
 
 export type ProductsDataType = {
   data: ProductsType[];
@@ -25,6 +26,7 @@ export type ProductsDataType = {
 };
 
 function ProductsList() {
+  const { t } = useTranslation('translation', { keyPrefix: 'ProductsPage' });
   const location = useLocation();
 
   const [productsData, setProductsData] = React.useState<ProductsDataType>({
@@ -78,7 +80,7 @@ function ProductsList() {
         <Container>
           <div className='flex justify-between items-center'>
             <h2 className='text-4xl font-bold'>
-              Products{' '}
+              {t('title')}
               {selectedCategory && selectedCategory !== 'all' && (
                 <span className='text-2xl text-gray-500'>
                   {'/' + selectedCategory || ''}
@@ -95,7 +97,7 @@ function ProductsList() {
           {/* Filters */}
           <div className='flex justify-between items-center '>
             <div className='flex align-center gap-2'>
-              <p className='text-2xl font-semibold'>Filter :</p>
+              <p className='text-2xl font-semibold'>{t('filter')} :</p>
               <div className='flex gap-4'>
                 <Filter type='color' data={filterColors} />
                 <Filter type='size' data={filterSizes} />
@@ -103,9 +105,9 @@ function ProductsList() {
               </div>
             </div>
             <div className='flex align-center gap-2'>
-              <p className='text-2xl font-semibold'>Sort :</p>
+              <p className='text-2xl font-semibold'>{t('sort')} :</p>
               <div className='flex gap-4'>
-                <Filter type='sort' data={filterSort} />
+                <Filter type='sort' data={sortOptions} />
               </div>
             </div>
           </div>

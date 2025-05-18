@@ -18,8 +18,10 @@ import {
 import toast from 'react-hot-toast';
 import React from 'react';
 import { Loader } from '../components/ui/Loader';
+import { useTranslation } from 'react-i18next';
 
 function Wishlist() {
+  const { t } = useTranslation('translation', { keyPrefix: 'WishlistPage' });
   const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(true);
   const userData = useSelector((state: RootState) => state.user.userData?.data);
@@ -39,7 +41,7 @@ function Wishlist() {
       toast.error(response.error);
     }
     if (response?.data) {
-      toast.success('Wishlist was cleared successfully');
+      toast.success(t('toast.clearedList'));
     }
   }
 
@@ -48,7 +50,6 @@ function Wishlist() {
       setLoading(true);
       const response = await fetchWishlist({ dispatch, token: sessionToken });
 
-      console.log('🚀 ~ fetchData ~ response:', response);
       if (response?.error) {
         toast.error(response.error);
       }
@@ -71,7 +72,7 @@ function Wishlist() {
       <div className=''>
         <Container>
           <div className='flex gap-2 justify-center items-center'>
-            <h1 className='text-4xl font-medium text-center'>Wish List</h1>
+            <h1 className='text-4xl font-medium text-center'> {t('title')} </h1>
             <IconHeart size={32} />
           </div>
           <Loader loading={loading} className='h-[152px]'>
@@ -81,8 +82,9 @@ function Wishlist() {
                 {wishListData.length > 0 && (
                   <div className='flex justify-between'>
                     <Link to='/products?sort=newest&page=1'>
-                      <Button className='w-[200px]' variant='secondary'>
-                        <IconChevronLeft className='ml-2' /> Continue shopping
+                      <Button className='w-[250px]' variant='secondary'>
+                        <IconChevronLeft className='ml-2' />
+                        {t('continueShoppingButton')}
                       </Button>
                     </Link>
 
@@ -91,7 +93,7 @@ function Wishlist() {
                       variant='secondary'
                       className='w-[150px]'
                     >
-                      Clear list
+                      {t('clearListButton')}
                       <IconTrash className='ml-2 text-red-500' />
                     </Button>
                   </div>
@@ -111,15 +113,12 @@ function Wishlist() {
                   {wishListData.length === 0 && (
                     <div className='flex flex-col items-center justify-center'>
                       <h2 className='text-2xl font-bold'>
-                        Your wish list is empty
+                        {t('wishlistEmpty')}
                       </h2>
-                      <Link
-                        to='/products?sort=newest&page=1'
-                        className='w-[250px]'
-                      >
+                      <Link to='/products?sort=newest&page=1'>
                         <Spacer size={4} />
                         <Button className='w-[250px]' variant='secondary'>
-                          Continue shopping
+                          {t('continueShoppingButton')}
                         </Button>
                       </Link>
                     </div>

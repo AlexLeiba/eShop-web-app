@@ -5,11 +5,13 @@ import { Link } from 'react-router-dom';
 import { cn } from '../../lib/utils';
 import { Container } from '../Grid/Container';
 import type { ProductsDataType } from '../../pages/ProductsList';
+import { useTranslation } from 'react-i18next';
 
 type SliderProps = {
   data: ProductsDataType['data'];
 };
 export function Slider({ data }: SliderProps) {
+  const { t } = useTranslation('translation', { keyPrefix: 'DashboardPage' });
   const [slide, setSlide] = React.useState(0);
 
   function handleSlide(direction: 'prev' | 'next') {
@@ -73,7 +75,7 @@ export function Slider({ data }: SliderProps) {
                       size='large'
                       variant='primary'
                     >
-                      <p className='text-2xl'>Shop now</p>
+                      <p className='text-2xl'>{t('shopNowButton')}</p>
                     </Button>
                   </Link>
                 </div>

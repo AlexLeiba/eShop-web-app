@@ -1,28 +1,49 @@
+import { useTranslation } from 'react-i18next';
 import { Container } from '../Grid/Container';
 import { Spacer } from '../ui/spacer';
 import { Logo } from './Logo';
+import {
+  IconBrandGithub,
+  IconBrandLinkedin,
+  IconMail,
+} from '@tabler/icons-react';
 
 export function Footer() {
+  const { t } = useTranslation('translation', { keyPrefix: 'FooterSection' });
   const links = [
     {
-      name: 'Terms & Conditions',
-      slug: '/terms',
+      name: t('links.products'),
+      slug: '/products',
     },
     {
-      name: 'Privacy Policy',
-      slug: '/privacy',
-    },
-    {
-      name: 'Contact Us',
-      slug: '/contact',
-    },
-    {
-      name: 'Wishlist',
+      name: t('links.wishlist'),
       slug: '/wishlist',
     },
     {
-      name: 'Cart',
+      name: t('links.cart'),
       slug: '/cart',
+    },
+    {
+      name: t('links.termsAndConditions'),
+      slug: '/terms',
+    },
+  ];
+  const contactLinks = [
+    {
+      name: t('contact.email'),
+      icon: <IconMail />,
+      slug: 'mailto:info@example.com',
+    },
+
+    {
+      name: t('contact.github'),
+      icon: <IconBrandGithub />,
+      slug: 'https://github.com/alex-ro/my-vite-app',
+    },
+    {
+      name: t('contact.linkedin'),
+      icon: <IconBrandLinkedin />,
+      slug: 'https://www.linkedin.com/in/alex-ro/',
     },
   ];
   return (
@@ -32,16 +53,10 @@ export function Footer() {
         <div>
           <Logo />
           <Spacer sm={2} md={2} lg={2} />
-          <p>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolorum
-            aut minima in quibusdam laborum nisi nam veniam repudiandae
-            blanditiis quod.
-          </p>
         </div>
 
-        {/* center */}
         <div>
-          <h4 className='text-2xl font-bold'>Links</h4>
+          <h4 className='text-2xl font-bold'>{t('links.title')}</h4>
           <Spacer sm={2} md={2} lg={2} />
           {links.map((link) => {
             return (
@@ -54,14 +69,13 @@ export function Footer() {
           })}
         </div>
 
-        {/* right */}
-        {/* center */}
         <div>
-          <h4 className='text-2xl font-bold'>Contact</h4>
+          <h4 className='text-2xl font-bold'>{t('contact.title')}</h4>
           <Spacer sm={2} md={2} lg={2} />
-          {links.map((link) => {
+          {contactLinks.map((link) => {
             return (
-              <div key={link.slug}>
+              <div key={link.name} className='flex items-center gap-1'>
+                <div>{link.icon}</div>
                 <a href={link.slug} className=' text-md'>
                   {link.name}
                 </a>

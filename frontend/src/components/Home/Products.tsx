@@ -5,6 +5,7 @@ import { Button } from '../ui/Button';
 import { useSearchParams } from 'react-router-dom';
 import type { ProductsDataType } from '../../pages/ProductsList';
 import { Loader } from '../ui/Loader';
+import { useTranslation } from 'react-i18next';
 
 type ProductsProps = {
   productsData: ProductsDataType;
@@ -12,6 +13,7 @@ type ProductsProps = {
   loading: boolean;
 };
 export function Products({ productsData, type, loading }: ProductsProps) {
+  const { t } = useTranslation('translation', { keyPrefix: 'ProductsPage' });
   const [searchParams, setSearchParams] = useSearchParams();
   const limitPerPage = 12;
 
@@ -44,9 +46,11 @@ export function Products({ productsData, type, loading }: ProductsProps) {
 
       {type === 'products-list' && (
         <div className='flex gap-4 items-center'>
-          <p className='text-1xl font-bold'>Found: {productsData.count}</p>
+          <p className='text-1xl font-bold'>
+            {t('found')}: {productsData.count}
+          </p>
           <p>
-            Page: {searchParams.get('page')} /{' '}
+            {t('page')}: {searchParams.get('page')} /{' '}
             {Math.round(productsData.count / limitPerPage) || 1}
           </p>
         </div>
@@ -60,7 +64,7 @@ export function Products({ productsData, type, loading }: ProductsProps) {
               return <ProductsCard data={data} key={data._id} />;
             })
           ) : (
-            <p>No products found</p>
+            <p>{t('noProductsFound')}</p>
           )}
         </div>
       </Loader>

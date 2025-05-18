@@ -1,17 +1,23 @@
-import React, { useEffect, type SetStateAction } from 'react';
+import React, { type SetStateAction } from 'react';
 import { Select } from '../ui/Select';
 import { useSearchParams } from 'react-router-dom';
 
 type Props = {
   type: 'color' | 'size' | 'sort' | 'category';
   label?: string;
-  data: string[];
+  data: { [key: string]: { value: string; title: string }[] };
 };
 function Filter({ type, label, data }: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [selected, setSelected] = React.useState<SetStateAction<string>>('');
+  const [lang, setLang] = React.useState<'en' | 'ro'>('en');
 
-  useEffect(() => {
+  React.useEffect(() => {
+    const language = localStorage.getItem('language') || 'en';
+    setLang(language === 'RO' ? 'ro' : 'en');
+  }, []);
+
+  React.useEffect(() => {
     handleAddQueryParams();
   }, [selected]);
 
@@ -44,49 +50,15 @@ function Filter({ type, label, data }: Props) {
   function handleTypeOfFilter() {
     switch (type) {
       case 'color':
-        const colorData = [
-          {
-            value: 'allColors',
-            title: 'All Colors',
-          },
-        ];
-        data.forEach((item) => {
-          colorData.push({
-            value: item.replace(/\s+/g, '').toLowerCase(),
-            title: item,
-          });
-        });
-
-        return colorData;
+        return data[lang];
 
       case 'size':
-        const sizeData = [{ value: 'allSizes', title: 'All Sizes' }];
-        data.forEach((item) => {
-          sizeData.push({
-            value: item.replace(/\s+/g, '').toLowerCase(),
-            title: item,
-          });
-        });
-
-        return sizeData;
+        return data[lang];
 
       case 'sort':
-        return [
-          { value: 'newest', title: 'Newest' },
-          { value: 'oldest', title: 'Oldest' },
-        ];
+        return data[lang];
       case 'category':
-        const categoryData = [
-          { value: 'allCategories', title: 'All Categories' },
-        ];
-        data.forEach((item) => {
-          categoryData.push({
-            value: item.replace(/\s+/g, '').toLowerCase(),
-            title: item,
-          });
-        });
-
-        return categoryData;
+        return data[lang];
 
       default:
         return [];

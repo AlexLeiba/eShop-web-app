@@ -8,8 +8,10 @@ import { Logo } from '../../components/Navigations/Logo';
 import { LanguagesSelect } from '../../components/Language/LanguagesSelect';
 import { RegisterSchema } from '../../lib/schemas';
 import { IconLoader } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 
 function Register() {
+  const { t } = useTranslation('translation', { keyPrefix: 'RegisterPage' });
   const navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
 
@@ -72,7 +74,7 @@ function Register() {
         const responseData = await response.json();
 
         if (responseData.data) {
-          toast.success('User was registered successfully');
+          toast.success(t('toast.registeredSuccessfully'));
           navigate('/login');
         }
         if (responseData.error) {
@@ -99,7 +101,7 @@ function Register() {
         >
           <div className='flex flex-col gap-4'>
             <div className='flex justify-between'>
-              <h1 className='text-4xl font-semibold'>Register</h1>
+              <h1 className='text-4xl font-semibold'>{t('title')}</h1>
               <div className='flex gap-4 items-center'>
                 <LanguagesSelect />
                 <Logo />
@@ -108,8 +110,8 @@ function Register() {
 
             <div className='flex gap-4'>
               <Input
-                label='Name'
-                placeholder='Enter your name'
+                label={`${t('firstName.label')}`}
+                placeholder={t('firstName.placeholder')}
                 name='name'
                 value={formData.name as string}
                 onChange={(e: React.FormEvent<HTMLInputElement>) =>
@@ -118,8 +120,8 @@ function Register() {
                 error={formDataErrors.name as string}
               />
               <Input
-                label='Last Name'
-                placeholder='Enter your last name'
+                label={`${t('lastName.label')}`}
+                placeholder={t('lastName.placeholder')}
                 name='lastName'
                 value={formData.lastName}
                 onChange={(e: React.FormEvent<HTMLInputElement>) =>
@@ -130,8 +132,8 @@ function Register() {
             </div>
             <div className='flex gap-4'>
               <Input
-                label='Username *'
-                placeholder='Enter your username'
+                label={`${t('username.label')} *`}
+                placeholder={t('username.placeholder')}
                 name='userName'
                 value={formData.userName}
                 onChange={(e: React.FormEvent<HTMLInputElement>) =>
@@ -140,8 +142,8 @@ function Register() {
                 error={formDataErrors.userName as string}
               />
               <Input
-                label='Email *'
-                placeholder='Enter your email'
+                label={`${t('email.label')} *`}
+                placeholder={t('email.placeholder')}
                 name='email'
                 value={formData.email}
                 onChange={(e: React.FormEvent<HTMLInputElement>) =>
@@ -152,8 +154,8 @@ function Register() {
             </div>
             <div className='flex gap-4'>
               <Input
-                label='Password *'
-                placeholder='Enter your password'
+                label={`${t('password.label')} *`}
+                placeholder={t('password.placeholder')}
                 name='password'
                 value={formData.password}
                 onChange={(e: React.FormEvent<HTMLInputElement>) =>
@@ -162,8 +164,8 @@ function Register() {
                 error={formDataErrors.password as string}
               />
               <Input
-                label='Confirm Password *'
-                placeholder='Enter your password'
+                label={`${t('confirmPassword.label')} *`}
+                placeholder={t('confirmPassword.placeholder')}
                 name='confirmPassword'
                 value={formData.confirmPassword}
                 onChange={(e: React.FormEvent<HTMLInputElement>) =>
@@ -173,22 +175,25 @@ function Register() {
               />
             </div>
             <p className='text-sm text-gray-500'>
-              Already have an account?{' '}
+              {t('alreadyHaveAccount')}{' '}
               <a href='/login' className='cursor-pointer underline'>
-                Login
+                {t('login')}
               </a>
             </p>
 
             <p className='text-sm text-gray-500'>
-              By creating an account you agree to our{' '}
-              <a className='cursor-pointer underline'>Terms and Conditions</a>
+              {t('byCreatingAccount')}{' '}
+              <a className='cursor-pointer underline'>
+                {' '}
+                {t('termsAndConditions')}
+              </a>
             </p>
           </div>
           <Button disabled={loading} type='submit'>
             {loading ? (
               <IconLoader className='ml-2 animate-spin' />
             ) : (
-              'Register'
+              t('registerButton')
             )}
           </Button>
         </form>

@@ -11,8 +11,11 @@ import { LoginSchema } from '../../lib/schemas';
 import { useNavigate } from 'react-router-dom';
 import type { RootState } from '../../store/store';
 import { IconLoader } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 
 function Login() {
+  const { t } = useTranslation('translation', { keyPrefix: 'LoginPage' });
+
   const loginState = useSelector((state: RootState) => state?.user);
 
   const dispatch = useDispatch();
@@ -61,15 +64,13 @@ function Login() {
       });
 
       if (responseLogin?.data) {
-        toast.success('User was logged in successfully');
+        toast.success(t('toast.loginSuccessful'));
         navigate('/');
       }
       if (responseLogin?.error) {
         toast.error(responseLogin.error);
       }
     }
-
-    console.log('🚀 ~ handleSubmit ~ formData:', formData);
   }
 
   return (
@@ -85,7 +86,7 @@ function Login() {
         >
           <div className='flex flex-col gap-4'>
             <div className='flex justify-between'>
-              <h1 className='text-4xl font-semibold'>Login</h1>
+              <h1 className='text-4xl font-semibold'>{t('title')}</h1>
               <div className='flex gap-4 items-center'>
                 <LanguagesSelect />
                 <Logo />
@@ -93,8 +94,8 @@ function Login() {
             </div>
 
             <Input
-              label='Email *'
-              placeholder='Enter your email'
+              label={`${t('email.label')} *`}
+              placeholder={t('email.placeholder')}
               name='email'
               error={formDataErrors.email as string}
               value={formData.email as string}
@@ -104,8 +105,8 @@ function Login() {
             />
 
             <Input
-              label='Password *'
-              placeholder='Enter your password'
+              label={`${t('password.label')} *`}
+              placeholder={t('password.placeholder')}
               name='password'
               error={formDataErrors.password as string}
               value={formData.password as string}
@@ -115,22 +116,24 @@ function Login() {
             />
 
             <p className='text-sm text-gray-500'>
-              Do not have an account?{' '}
+              {t('doNotHaveAccount')}{' '}
               <a href='/register' className='cursor-pointer underline'>
-                Register
+                {t('register')}
               </a>
             </p>
 
             <p className='text-sm text-gray-500'>
-              By creating an account you agree to our{' '}
-              <a className='cursor-pointer underline'>Terms and Conditions</a>
+              {t('byCreatingAccount')}{' '}
+              <a className='cursor-pointer underline'>
+                {t('termsAndConditions')}
+              </a>{' '}
             </p>
           </div>
           <Button disabled={loginState.isFetching} type='submit'>
             {loginState.isFetching ? (
               <IconLoader className='ml-2 animate-spin' />
             ) : (
-              'Login'
+              t('loginButton')
             )}
           </Button>
         </form>

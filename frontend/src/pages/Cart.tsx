@@ -19,8 +19,10 @@ import { Loader } from '../components/ui/Loader';
 import { clearAllCartProducts, fetchCartData } from '../store/cart/apiCalls';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 function Cart() {
+  const { t } = useTranslation('translation', { keyPrefix: 'CartPage' });
   const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(true);
 
@@ -38,7 +40,7 @@ function Cart() {
       toast.error(response.error);
     }
     if (response?.data) {
-      toast.success('Cart was cleared successfully');
+      toast.success(t('toast.clearedCart'));
     }
   }
 
@@ -69,7 +71,7 @@ function Cart() {
       <div className=''>
         <Container>
           <div className='flex gap-2 justify-center items-center'>
-            <h1 className='text-4xl font-medium text-center'>Your Cart</h1>
+            <h1 className='text-4xl font-medium text-center'> {t('title')}</h1>
             <IconShoppingCart size={32} />
           </div>
 
@@ -80,8 +82,9 @@ function Cart() {
                 {cartData?.products?.length > 0 && (
                   <div className='flex justify-between'>
                     <Link to='/products?sort=newest&page=1'>
-                      <Button className='w-[200px]' variant='secondary'>
-                        <IconChevronLeft className='ml-2' /> Continue shopping
+                      <Button className='w-[250px]' variant='secondary'>
+                        <IconChevronLeft className='ml-2' />{' '}
+                        {t('continueShoppingButton')}
                       </Button>
                     </Link>
 
@@ -90,7 +93,8 @@ function Cart() {
                       className='w-[150px]'
                       variant='secondary'
                     >
-                      Clear cart <IconTrash className='ml-2 text-red-500' />
+                      {t('clearCartButton')}{' '}
+                      <IconTrash className='ml-2 text-red-500' />
                     </Button>
                   </div>
                 )}
@@ -107,11 +111,12 @@ function Cart() {
                   })}
                   {cartData?.products.length === 0 && (
                     <div className='flex flex-col items-center justify-center'>
-                      <h2 className='text-2xl font-bold'>Your cart is empty</h2>
+                      <h2 className='text-2xl font-bold'>{t('emptyCart')}</h2>
                       <Spacer size={4} />
                       <Link to='/products?sort=newest&page=1'>
-                        <Button className='w-[200px]' variant='secondary'>
-                          <IconChevronLeft className='ml-2' /> Continue shopping
+                        <Button className='w-[250px]' variant='secondary'>
+                          <IconChevronLeft className='ml-2' />
+                          {t('continueShoppingButton')}
                         </Button>
                       </Link>
                     </div>

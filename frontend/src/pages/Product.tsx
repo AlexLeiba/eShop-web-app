@@ -24,8 +24,10 @@ import { Loader } from '../components/ui/Loader';
 import type { RootState } from '../store/store';
 import { updateWishlist } from '../store/wishList/apiCalls';
 import { updateCart } from '../store/cart/apiCalls';
+import { useTranslation } from 'react-i18next';
 
 function Product() {
+  const { t } = useTranslation('translation', { keyPrefix: 'ProductPage' });
   const dispatch = useDispatch();
 
   const userData = useSelector((state: RootState) => state.user.userData?.data);
@@ -146,7 +148,7 @@ function Product() {
       toast.error(response.error);
     }
     if (response?.data) {
-      toast.success('Product added to cart');
+      toast.success(t('toasts.addedToCart'));
       setIsInCart(true);
     }
   }
@@ -162,7 +164,7 @@ function Product() {
       toast.error(response.error);
     }
     if (response?.data) {
-      toast.success('Product added to wishlist');
+      toast.success(t('toasts.addedToWishlist'));
       setIsFavorite(true);
     }
   }
@@ -206,7 +208,7 @@ function Product() {
               <p className='text-3xl'>${product.price}</p>
               <Spacer size={12} />
               <div className='flex items-center gap-2'>
-                <p className='text-xl'>Color</p>
+                <p className='text-xl'>{t('color')}</p>
                 <Colors
                   selectedColor={itemFeatures.color}
                   setColor={setItemFeatures}
@@ -215,7 +217,7 @@ function Product() {
               </div>
               <Spacer size={6} />
               <div className='flex items-center gap-2'>
-                <p className='text-xl'>Size</p>
+                <p className='text-xl'>{t('size')}</p>
                 <SizeSelector
                   setSize={setItemFeatures}
                   size={itemFeatures.size}
@@ -236,12 +238,12 @@ function Product() {
               <Button onClick={() => handleAddToCart(product)}>
                 {isInCart ? (
                   <>
-                    Added to cart
+                    {t('addedToCart')}
                     <IconShoppingCartFilled className='ml-2 text-green-500' />
                   </>
                 ) : (
                   <>
-                    Add to cart
+                    {t('addToCartButton')}
                     <IconShoppingCart className='ml-2' />
                   </>
                 )}
@@ -254,12 +256,12 @@ function Product() {
               >
                 {isFavorite ? (
                   <>
-                    Added to wishlist
+                    {t('addedToWishlist')}
                     <IconHeartFilled className='ml-2 text-red-500' />
                   </>
                 ) : (
                   <>
-                    Add to wishlist
+                    {t('addToWishlistButton')}
                     <IconHeart className='ml-2' />
                   </>
                 )}

@@ -8,13 +8,14 @@ import { Navbar } from '../components/Navigations/Navbar';
 import { Announcement } from '../components/ui/Announcement';
 import { Slider } from '../components/ui/Slider';
 import { Spacer } from '../components/ui/spacer';
-import { categoiesData } from '../consts';
 import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import React from 'react';
 import type { ProductsDataType } from './ProductsList';
+import { useTranslation } from 'react-i18next';
 
 function Home() {
+  const { t } = useTranslation('translation', { keyPrefix: 'DashboardPage' });
   const { pathname } = useLocation();
   const [productsData, setProductsData] = React.useState<ProductsDataType>({
     data: [],
@@ -84,16 +85,18 @@ function Home() {
 
         {/* CATEGORIES */}
         <Container>
-          <Categories data={categoiesData} />
+          <Categories />
         </Container>
         <Spacer sm={16} md={24} lg={24} />
 
         {/* PRODUCTS */}
         <Container>
           <div className='flex justify-between items-center'>
-            <h2 className='text-4xl font-bold'>Products</h2>
+            <h2 className='text-4xl font-bold'>{t('ProductsSection.title')}</h2>
             <Link to={'/products?sort=newest&page=1'}>
-              <p className='text-2xl font-bold underline'>All products</p>
+              <p className='text-2xl font-bold underline'>
+                {t('ProductsSection.allProducts')}
+              </p>
             </Link>
           </div>
           <Products

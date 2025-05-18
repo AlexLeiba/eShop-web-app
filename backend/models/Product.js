@@ -22,6 +22,9 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    moreInfo: {
+      type: String,
+    },
     price: {
       type: Number,
       required: true,
@@ -29,6 +32,9 @@ const ProductSchema = new mongoose.Schema(
     image: {
       type: String,
       required: true,
+    },
+    images: {
+      type: Array,
     },
     categories: {
       type: Array,

@@ -8,12 +8,14 @@ import SelectedColor from '../Cart/SelectedColor';
 import { deleteFromCart } from '../../store/cart/apiCalls';
 import type { RootState } from '../../store/store';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   productData: CartItemsType;
   type: 'cart' | 'wishList';
 };
 export function CartCard({ productData, type }: Props) {
+  const { t } = useTranslation('translation', { keyPrefix: 'CartPage' });
   const dispatch = useDispatch();
   const userData = useSelector((state: RootState) => state.user.userData?.data);
   const sessionToken = userData?.token || '';
@@ -46,13 +48,13 @@ export function CartCard({ productData, type }: Props) {
 
       <div className='flex flex-col justify-between w-full'>
         <p className='text-xl line-clamp-1'>
-          <b className='text-semibold'>Product:</b> {productData.title}
+          <b className='text-semibold'> {t('product')}:</b> {productData.title}
         </p>
         <p className='text-xl line-clamp-1'>
           <b className='text-semibold'>ID:</b> {productData._id}
         </p>
         <p className='text-xl '>
-          <b className='text-semibold'>Size:</b>{' '}
+          <b className='text-semibold'>{t('size')}:</b>{' '}
           {productData.size.toUpperCase()}
         </p>
         <SelectedColor color={productData.color} />
