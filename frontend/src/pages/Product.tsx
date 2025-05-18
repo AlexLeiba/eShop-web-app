@@ -123,13 +123,13 @@ function Product() {
       (!itemFeatures.size || itemFeatures.size === 'Selectsize') &&
       !itemFeatures.color
     ) {
-      toast.error('Please select Size and Color');
+      toast.error(t('toasts.selectSizeAndColor'));
       return;
     } else if (!itemFeatures.size || itemFeatures.size === 'Selectsize') {
-      toast.error('Please select Size');
+      toast.error(t('toasts.selectSize'));
       return;
     } else if (!itemFeatures.color) {
-      return toast.error('Please select Color');
+      return toast.error(t('toasts.selectColor'));
     }
 
     const response = await updateCart({

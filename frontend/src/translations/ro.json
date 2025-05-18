@@ -1,125 +1,174 @@
 {
   "LoginPage": {
-    "title": "Login",
-    "email": "Email",
-    "password": "Password",
-    "loginButton": "Login",
-    "doNotHaveAccount": "Don't have an account?",
-    "register": "Register",
-    "byCreatingAccount": "By creating an account, you agree to our",
-    "termsAndConditions": "Terms and Conditions",
-    "forgotPassword": "Forgot Password?",
+    "title": "Logare",
+    "email": {
+      "label": "Email-ul",
+      "placeholder": "Introdu email-ul"
+    },
+    "password": {
+      "label": "Parola",
+      "placeholder": "Introdu parola"
+    },
+    "loginButton": "Logare",
+    "doNotHaveAccount": "Inca nu ai cont?",
+    "register": "Inregistreaza-te",
+    "byCreatingAccount": "Crearea unui cont, sunteti de acord cu",
+    "termsAndConditions": "Termenii si conditiile",
+    "forgotPassword": "Ai uitat parola?",
     "toast": {
-      "loginSuccessful": "Welcome back"
+      "loginSuccessful": "Bine ai revenit"
     }
   },
   "RegisterPage": {
-    "title": "Register",
-    "firstName": "First Name",
-    "lastName": "Last Name",
-    "username": "Username",
-    "email": "Email",
-    "password": "Password",
-    "confirmPassword": "Confirm Password",
-    "registerButton": "Register",
-    "alreadyHaveAccount": "Already have an account?",
-    "login": "Login",
-    "byCreatingAccount": "By creating an account, you agree to our",
-    "termsAndConditions": "Terms and Conditions",
-    "forgotPassword": "Forgot Password?",
+    "title": "Inregistrare",
+    "firstName": {
+      "label": "Numele",
+      "placeholder": "Introdu numele"
+    },
+    "lastName": {
+      "label": "Prenumele",
+      "placeholder": "Introdu prenumele"
+    },
+    "username": {
+      "label": "Numele de utilizator",
+      "placeholder": "Introdu numele de utilizator"
+    },
+    "email": {
+      "label": "Email-ul",
+      "placeholder": "Introdu email-ul"
+    },
+    "password": {
+      "label": "Parola",
+      "placeholder": "Introdu parola"
+    },
+    "confirmPassword": {
+      "label": "Confirma parola",
+      "placeholder": "Introdu parola"
+    },
+    "registerButton": "Inregistreaza-te",
+    "alreadyHaveAccount": "Deja ai cont?",
+    "login": "Logheaza-te",
+    "byCreatingAccount": "Cu crearea unui cont, sunteti de acord cu",
+    "termsAndConditions": "Termenii si conditiile",
+    "forgotPassword": "Ai uitat parola?",
     "toast": {
-      "registeredSuccessfully": "Registered successfully"
+      "registeredSuccessfully": "Ati fost inregistrat cu succes"
     }
   },
   "DashboardPage": {
-    "shopNowButton": "Shop Now",
+    "shopNowButton": "Cumpara acum",
     "CategoriesSection": {
-      "title": "Categories",
+      "title": "Categoriile",
       "categoriesData": {
         "jakets": {
-          "title": "Jackets",
-          "description": "Jackets"
+          "title": "Jachete",
+          "description": "Jachete elegante si sportive"
         },
         "shirts": {
-          "title": "Shirts",
-          "description": "Shirts"
+          "title": "Camase",
+          "description": "Camase elegante si confortabile"
         },
         "shoes": {
-          "title": "Shoes",
-          "description": "Shoes"
+          "title": "Pantofi",
+          "description": "Pantofi eleganti si sportivi"
         }
       }
     },
     "ProductsSection": {
-      "title": "Products",
-      "allProducts": "All Products"
+      "title": "Produsele",
+      "allProducts": "Toate produsele"
     },
     "NewsLetterSection": {
       "title": "Newsletter",
-      "description": "Subscribe to our newsletter to get the latest updates"
+      "description": "Aboneaza-ma la newsletter pentru a primi ultimele actualizari",
+      "placeholder": "Email-ul tau"
     }
   },
   "ProductsPage": {
-    "title": "Products",
-    "filter": "Filter",
-    "page": "Page",
-    "sort": "Sort",
-    "found": "Found"
+    "title": "Produsele",
+    "filter": "Filtru",
+    "page": "Pagina",
+    "sort": "Sortare",
+    "found": "Sa-u găsit",
+    "noProductsFound": "Nu s-au găsit produse",
+    "toast": {
+      "productAddedToCart": "Produsul a fost adaugat in cosul de cumparaturi",
+      "productAddedToWishlist": "Produsul a fost adaugat la favorite"
+    }
   },
   "ProductPage": {
-    "addToCartButton": "Add to Cart",
-    "addToWishlistButton": "Add to Wishlist",
-    "color": "Color",
-    "size": "Size",
-    "moreInfo": "More Info",
+    "addToCartButton": "Adauga in cos",
+    "addedToCart": "Adaugat in cos",
+    "addToWishlistButton": "Adauga la favorite",
+    "addedToWishlist": "Adaugat in favorite",
+    "color": "Culoarea",
+    "size": "Marimea",
+    "moreInfo": "Mai multe informații",
     "toasts": {
-      "selectSizeAndColor": "Select Size and Color",
-      "selectSize": "Select Size",
-      "selectColor": "Select Color",
-      "addedToCart": "Product added to cart",
-      "addedToWishlist": "Product added to wishlist"
+      "selectSizeAndColor": "Selecteaza marimea si culoarea",
+      "selectSize": "Selecteaza marimea",
+      "selectColor": "Selecteaza culoarea",
+      "addedToCart": "Produsul a fost adaugat in cosul de cumparaturi",
+      "addedToWishlist": "Produsul a fost adaugat in lista de favorite"
     }
   },
   "CartPage": {
-    "title": "Your Cart",
-    "continueShoppingButton": "Continue Shopping",
-    "clearCartButton": "Clear Cart",
-    "placeOrderButton": "Place Order",
-    "orderSummary": "Order Summary",
-    "items": "Items",
+    "title": "Cosul de cumparaturi",
+    "continueShoppingButton": "Continua cumparaturile",
+    "clearCartButton": "Sterge cosul",
+    "placeOrderButton": "Plaseaza comanda",
+    "orderSummary": "Rezumat comanda",
+    "items": "Articole",
     "total": "Total",
-    "shipping": "Shipping",
-    "subtotal": "Subtotal",
-    "size": "Size",
+    "shipping": "Expediere",
+    "subtotal": "Subtotalul",
+    "size": "Marimea",
+    "product": "Produsul",
+    "emptyCart": "Cosul de cumparaturi este gol",
     "toast": {
-      "clearedCart": "Cart was cleared successfully"
+      "clearedCart": "Cosul de cumparaturi a fost sters cu succes",
+      "productRemoved": "Produsul a fost sters"
     }
   },
   "WishlistPage": {
-    "title": "Your Wishlist",
-    "continueShoppingButton": "Continue Shopping",
-    "addToCartButton": "Add to Cart",
-    "clearListButton": "Clear list",
+    "title": "Lista de favorite",
+    "continueShoppingButton": "Continua cumparaturile",
+    "addToCartButton": "Adauga in cos",
+    "clearListButton": "Sterge lista",
+    "wishlistEmpty": "Lista de favorite este goala",
     "toast": {
-      "clearedList": "Wishlist was cleared successfully"
+      "clearedList": "Lista de favorite a fost stearsa cu succes",
+      "productRemoved": "Produsul a fost sters",
+      "productAddedToWishlist": "Produsul a fost adaugat in cosul de cumparaturi"
     }
   },
+
   "FooterSection": {
-    "termsAndConditions": "Terms and Conditions",
-    "privacyPolicy": "Privacy Policy",
-    "contactUs": "Contact Us",
-    "wishlist": "Wishlist",
-    "cart": "Cart"
+    "links": {
+      "title": "Lincurile",
+
+      "wishlist": "Lista de favorite",
+      "cart": "Cosul de cumparaturi",
+      "products": "Produsele",
+      "termsAndConditions": "Termenii si conditiile"
+    },
+    "contact": {
+      "title": "Contact",
+      "email": "Email",
+      "github": "Github",
+      "linkedin": "Linkedin"
+    }
   },
   "HeaderSection": {
-    "login": "Login",
-    "register": "Register",
-    "searchPlaceholder": "Search...",
+    "login": "Logare",
+    "register": "Inregistrare",
+    "searchPlaceholder": "Cauta...",
+    "noProductsFound": "Nu s-au găsit produse",
     "MyAccount": {
-      "username": "Username",
-      "fullName": "Full Name",
+      "username": "Numele de utilizator",
+      "fullName": "Numele complet",
       "email": "Email",
-      "role": "Role",
+      "role": "Rolul",
       "logout": "Logout"
     }
   }

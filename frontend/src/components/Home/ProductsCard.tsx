@@ -7,12 +7,14 @@ import { updateWishlist } from '../../store/wishList/apiCalls';
 import type { RootState } from '../../store/store';
 import toast from 'react-hot-toast';
 import { updateCart } from '../../store/cart/apiCalls';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   data: ProductsType;
 };
 
 export function ProductsCard({ data }: Props) {
+  const { t } = useTranslation('translation', { keyPrefix: 'ProductsPage' });
   const userData = useSelector((state: RootState) => state.user.userData?.data);
   const sessionToken = userData?.token || '';
   const dispatch = useDispatch();
@@ -34,7 +36,7 @@ export function ProductsCard({ data }: Props) {
       toast.error(response.error);
     }
     if (response?.data) {
-      toast.success('Product added to cart');
+      toast.success(t('toast.productAddedToCart'));
     }
   }
 
@@ -49,7 +51,7 @@ export function ProductsCard({ data }: Props) {
       toast.error(response.error);
     }
     if (response?.data) {
-      toast.success('Product added to wishlist');
+      toast.success(t('toast.productAddedToWishlist'));
     }
   }
   return (

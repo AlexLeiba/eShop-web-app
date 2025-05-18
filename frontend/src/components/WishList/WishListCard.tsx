@@ -7,12 +7,14 @@ import { updateCart } from '../../store/cart/apiCalls';
 import type { RootState } from '../../store/store';
 import toast from 'react-hot-toast';
 import { deleteFromWishlist } from '../../store/wishList/apiCalls';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   data: ProductsType;
   type: 'cart' | 'wishList';
 };
 export function WishListCard({ data, type }: Props) {
+  const { t } = useTranslation('translation', { keyPrefix: 'WishlistPage' });
   const dispatch = useDispatch();
   const userData = useSelector((state: RootState) => state.user.userData?.data);
   const sessionToken = userData?.token || '';
@@ -28,7 +30,7 @@ export function WishListCard({ data, type }: Props) {
       toast.error(response.error);
     }
     if (response?.data) {
-      toast.success('Product removed');
+      toast.success(t('toast.productRemoved'));
     }
   }
 
@@ -49,7 +51,7 @@ export function WishListCard({ data, type }: Props) {
       toast.error(response.error);
     }
     if (response?.data) {
-      toast.success('Product added to cart');
+      toast.success(t('toast.productAddedToWishlist'));
     }
   }
   return (
@@ -75,7 +77,8 @@ export function WishListCard({ data, type }: Props) {
           <div className='flex gap-4 items-center'>
             {type === 'wishList' && (
               <Button onClick={() => handleAddToCart(data)}>
-                Add to cart <IconShoppingCart className='ml-2' />
+                {t('addToCartButton')}
+                <IconShoppingCart className='ml-2' />
               </Button>
             )}
           </div>

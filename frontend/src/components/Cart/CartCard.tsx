@@ -31,7 +31,7 @@ export function CartCard({ productData, type }: Props) {
       toast.error(response.error);
     }
     if (response?.data) {
-      toast.success('Product was removed from cart');
+      toast.success(t('toast.productRemoved'));
     }
   }
   return (

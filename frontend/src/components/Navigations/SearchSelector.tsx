@@ -4,8 +4,10 @@ import { type ProductsType } from '../../consts';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { IconLoader } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 
 function SearchSelector() {
+  const { t } = useTranslation('translation', { keyPrefix: 'HeaderSection' });
   const navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
   const [search, setSearch] = React.useState('');
@@ -28,7 +30,7 @@ function SearchSelector() {
             }/api/search-products?search=${search}&language=${language?.toLowerCase()}`
           );
           const { data } = await response.json();
-          console.log('🚀 ~ fetchData ~ data:', data);
+
           setProductsData(data);
         } catch (error: any) {
           toast.error(error.message);
@@ -60,7 +62,7 @@ function SearchSelector() {
     <div className='relative w-full' ref={containerRef}>
       <SearchInput
         label={''}
-        placeholder={''}
+        placeholder={t('searchPlaceholder')}
         value={search}
         onChange={handleSearch}
         error={''}
@@ -94,7 +96,7 @@ function SearchSelector() {
               );
             })
           ) : (
-            <p>No products found</p>
+            <p>{t('noProductsFound')}</p>
           )}
         </div>
       )}

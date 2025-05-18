@@ -90,7 +90,11 @@
     "page": "Page",
     "sort": "Sort",
     "found": "Found",
-    "noProductsFound": "No products found"
+    "noProductsFound": "No products found",
+    "toast": {
+      "productAddedToCart": "Product added to cart",
+      "productAddedToWishlist": "Product added to wishlist"
+    }
   },
   "ProductPage": {
     "addToCartButton": "Add to Cart",
@@ -132,7 +136,9 @@
     "clearListButton": "Clear list",
     "wishlistEmpty": "Your wish list is empty",
     "toast": {
-      "clearedList": "Wishlist was cleared successfully"
+      "clearedList": "Wishlist was cleared successfully",
+      "productRemoved": "Product was removed",
+      "productAddedToWishlist": "Product was added to wishlist"
     }
   },
   "FooterSection": {
@@ -155,6 +161,7 @@
     "login": "Login",
     "register": "Register",
     "searchPlaceholder": "Search...",
+    "noProductsFound": "No products found",
     "MyAccount": {
       "username": "Username",
       "fullName": "Full Name",

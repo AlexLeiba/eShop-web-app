@@ -9,8 +9,10 @@ import type { RootState } from '../../store/store';
 import SearchSelector from './SearchSelector';
 import { MyAccountDropdown } from './MyAccountDropdown';
 import type { UserType } from '../../store/userData/reducer';
+import { useTranslation } from 'react-i18next';
 
 export function Navbar() {
+  const { t } = useTranslation('translation', { keyPrefix: 'HeaderSection' });
   const state = useSelector((state: RootState) => state);
   const userData = useSelector((state: RootState) => state.user.userData?.data);
   const sessionToken = userData?.token || '';
@@ -19,11 +21,11 @@ export function Navbar() {
 
   const navLinks = [
     {
-      name: 'Register',
+      name: t('register'),
       slug: '/register',
     },
     {
-      name: 'Login',
+      name: t('login'),
       slug: '/login',
     },
   ];

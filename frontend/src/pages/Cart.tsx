@@ -90,7 +90,7 @@ function Cart() {
 
                     <Button
                       onClick={handleClearList}
-                      className='w-[150px]'
+                      className='w-[200px]'
                       variant='secondary'
                     >
                       {t('clearCartButton')}{' '}
