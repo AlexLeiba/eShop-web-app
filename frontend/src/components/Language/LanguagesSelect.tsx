@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { languages } from '../../consts';
+import i18next from 'i18next';
 
 export function LanguagesSelect() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -33,11 +34,18 @@ export function LanguagesSelect() {
     setOpen(!open);
 
     localStorage.setItem('language', language);
-    window.location.reload();
+
+    i18next.changeLanguage(language.toLowerCase(), (err, t) => {
+      if (err)
+        return console.log('something went wrong changing translation', err);
+      t('key'); // -> same as i18next.t
+    });
+    // window.location.reload();
   }
   return (
     <div className='relative' ref={containerRef}>
       <div
+        title='Language'
         onClick={() => setOpen(!open)}
         className='hover:text-white shadow-md relative rounded-full w-8 h-8 flex justify-center items-center hover:bg-gray-500 transition-all cursor-pointer'
       >

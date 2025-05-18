@@ -74,39 +74,41 @@ function Product() {
           });
         }
 
-        //  CART ELEMENT
-        const responseCart = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/cart`,
-          {
-            headers: {
-              token: `Bearer ${sessionToken}`,
-            },
-          }
-        );
-        const responseCartData = await responseCart.json();
+        if (sessionToken) {
+          //  CART ELEMENT
+          const responseCart = await fetch(
+            `${import.meta.env.VITE_BACKEND_URL}/api/cart`,
+            {
+              headers: {
+                token: `Bearer ${sessionToken}`,
+              },
+            }
+          );
+          const responseCartData = await responseCart.json();
 
-        const isProductInCart = responseCartData?.data?.products?.find(
-          (item: ProductsType) => item._id === productId
-        );
-        if (isProductInCart) {
-          setIsInCart(true);
-        }
-        // WISH LIST ELEMENT
-        const responseWishList = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/wishlist`,
-          {
-            headers: {
-              token: `Bearer ${sessionToken}`,
-            },
+          const isProductInCart = responseCartData?.data?.products?.find(
+            (item: ProductsType) => item._id === productId
+          );
+          if (isProductInCart) {
+            setIsInCart(true);
           }
-        );
-        const responseWishListData = await responseWishList.json();
+          // WISH LIST ELEMENT
+          const responseWishList = await fetch(
+            `${import.meta.env.VITE_BACKEND_URL}/api/wishlist`,
+            {
+              headers: {
+                token: `Bearer ${sessionToken}`,
+              },
+            }
+          );
+          const responseWishListData = await responseWishList.json();
 
-        const isProductInWishList = responseWishListData?.data?.find(
-          (item: ProductsType) => item._id === productId
-        );
-        if (isProductInWishList) {
-          setIsFavorite(true);
+          const isProductInWishList = responseWishListData?.data?.find(
+            (item: ProductsType) => item._id === productId
+          );
+          if (isProductInWishList) {
+            setIsFavorite(true);
+          }
         }
       } catch (error: any) {
         toast.error(error.message);
@@ -235,7 +237,10 @@ function Product() {
                 />
               </div>
               <Spacer size={6} />
-              <Button onClick={() => handleAddToCart(product)}>
+              <Button
+                onClick={() => handleAddToCart(product)}
+                disabled={!sessionToken}
+              >
                 {isInCart ? (
                   <>
                     {t('addedToCart')}
@@ -250,7 +255,7 @@ function Product() {
               </Button>
               <Spacer size={6} />
               <Button
-                disabled={isFavorite}
+                disabled={isFavorite || !sessionToken}
                 variant='secondary'
                 onClick={() => handleAddToWishList(product)}
               >

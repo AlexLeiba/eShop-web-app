@@ -36,7 +36,7 @@ export function MyAccountDropdown({ userData }: Props) {
   }
 
   return (
-    <div className='relative' ref={containerRef}>
+    <div className='relative' ref={containerRef} title='My Account'>
       <div
         onClick={() => setOpen(!open)}
         className={cn(

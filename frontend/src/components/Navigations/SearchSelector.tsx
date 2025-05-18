@@ -59,7 +59,7 @@ function SearchSelector() {
   }, []);
 
   return (
-    <div className='relative w-full' ref={containerRef}>
+    <div className='relative w-full' ref={containerRef} title='Search Products'>
       <SearchInput
         label={''}
         placeholder={t('searchPlaceholder')}
