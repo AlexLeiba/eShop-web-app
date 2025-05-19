@@ -126,7 +126,8 @@
     "product": "Product",
     "emptyCart": "Your cart is empty",
     "toast": {
-      "clearedCart": "Cart was cleared successfully"
+      "clearedCart": "Cart was cleared successfully",
+      "productRemoved": "Product was removed"
     }
   },
   "WishlistPage": {

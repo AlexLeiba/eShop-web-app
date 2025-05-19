@@ -85,6 +85,8 @@ export async function updateCart({
 type DeleteFromCartProps = {
   productId: string;
   token: string;
+  color: string;
+  size: string;
   dispatch: React.Dispatch<Action>;
 };
 
@@ -92,12 +94,14 @@ export async function deleteFromCart({
   dispatch,
   token,
   productId,
+  color,
+  size,
 }: DeleteFromCartProps) {
   try {
     const response = await fetch(
       `${
         import.meta.env.VITE_BACKEND_URL
-      }/api/cart/product-delete/${productId}`,
+      }/api/cart/product-delete/${productId}/${color}/${size}`,
       {
         method: 'PUT',
         headers: {
@@ -158,18 +162,22 @@ type AddCartProductQuantityProps = {
   token: string;
   productId: string;
   quantity: number;
+  size: string;
+  color: string;
 };
 export async function changeCartProductQuantity({
   dispatch,
   productId,
   quantity,
   token,
+  size,
+  color,
 }: AddCartProductQuantityProps) {
   try {
     const response = await fetch(
       `${
         import.meta.env.VITE_BACKEND_URL
-      }/api/cart/product-quantity/${productId}/${quantity}`,
+      }/api/cart/product-quantity/${productId}/${quantity}/${size}/${color}`,
       {
         method: 'PUT',
         headers: {

@@ -8,16 +8,26 @@ type Props = {
   type?: 'cartPage' | 'productPage';
   productId?: string;
   quantity?: number;
-  setAmount?: React.Dispatch<
+  setProductData?: React.Dispatch<
     React.SetStateAction<{
       color: string;
       size: string;
       quantity: number;
     }>
   >;
-  amount?: number;
+  productData?: {
+    color: string;
+    size: string;
+    quantity: number;
+  };
 };
-function AddAmount({ type, productId, quantity, setAmount, amount }: Props) {
+function AddAmount({
+  type,
+  productId,
+  quantity,
+  setProductData,
+  productData,
+}: Props) {
   const dispatch = useDispatch();
 
   const userData = useSelector((state: RootState) => state.user.userData?.data);
@@ -30,15 +40,17 @@ function AddAmount({ type, productId, quantity, setAmount, amount }: Props) {
         productId: productId,
         quantity: changeType === 'minus' ? ((quantity || 1) > 1 ? -1 : 0) : 1,
         token: sessionToken,
+        size: productData?.size || '',
+        color: productData?.color || '',
       });
 
       if (response?.error) {
         return toast.error(response.error);
       }
     }
-    if (type === 'productPage' && setAmount) {
+    if (type === 'productPage' && setProductData) {
       if (changeType === 'minus') {
-        setAmount((prev) => {
+        setProductData((prev) => {
           return {
             ...prev,
             quantity: prev.quantity > 1 ? prev.quantity - 1 : prev.quantity,
@@ -46,7 +58,7 @@ function AddAmount({ type, productId, quantity, setAmount, amount }: Props) {
         });
       }
       if (changeType === 'plus') {
-        setAmount((prev) => {
+        setProductData((prev) => {
           return {
             ...prev,
             quantity: prev.quantity + 1,
@@ -62,7 +74,7 @@ function AddAmount({ type, productId, quantity, setAmount, amount }: Props) {
         onClick={() => handleAmount('minus')}
       />
       <p className='text-md font-bold border border-gray-300 rounded-full px-3 py-1 text-center shadow-md '>
-        {type === 'cartPage' ? quantity : amount}
+        {type === 'cartPage' ? quantity : productData?.quantity}
       </p>
       <IconPlus
         className='hover:bg-gray-400 rounded-full hover:text-white transition-all cursor-pointer'

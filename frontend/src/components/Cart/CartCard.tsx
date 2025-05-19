@@ -25,6 +25,8 @@ export function CartCard({ productData, type }: Props) {
       dispatch,
       token: sessionToken,
       productId: productData._id,
+      color: productData.color,
+      size: productData.size,
     });
 
     if (response?.error) {
@@ -61,6 +63,11 @@ export function CartCard({ productData, type }: Props) {
         <div className='flex justify-between w-full'>
           <div className='flex gap-4 items-center'>
             <AddAmount
+              productData={{
+                size: productData.size,
+                color: productData.color,
+                quantity: productData.quantity,
+              }}
               quantity={productData.quantity}
               productId={productData._id}
               type='cartPage'

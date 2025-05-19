@@ -246,8 +246,8 @@ function Product() {
               <div className='flex items-center gap-2'>
                 <AddAmount
                   type='productPage'
-                  setAmount={setItemFeatures}
-                  amount={itemFeatures.quantity}
+                  setProductData={setItemFeatures}
+                  productData={itemFeatures}
                 />
               </div>
               <Spacer size={6} />

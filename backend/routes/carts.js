@@ -155,7 +155,12 @@ router.put(
           // IF PRODUCT EXISTS IN CART UPDATE ONLY QUANTITY
 
           const updatedCart = await Cart.findOneAndUpdate(
-            { userId: req.user.id, 'products._id': productId },
+            {
+              userId: req.user.id,
+              'products._id': productId,
+              'products.color': req.body.color,
+              'products.size': req.body.size,
+            },
             {
               $inc: {
                 //$inc will add body value to the prev one
@@ -180,12 +185,13 @@ router.put(
 
 // UPDATE CART ELEMENT QUANTITY
 router.put(
-  '/cart/product-quantity/:productId/:quantity',
+  '/cart/product-quantity/:productId/:quantity/:size/:color',
   verifyTokenAuthorization,
   async (req, res) => {
     const paramProductId = req.params.productId;
     const paramQuantity = req.params.quantity;
-    console.log('🚀 ~ req.body.quantity:\n\n\n', paramQuantity);
+    const paramSize = req.params.size;
+    const paramColor = req.params.color;
 
     if (!paramProductId) {
       return res.status(400).json({ error: 'No cart element ID provided' });
@@ -199,7 +205,12 @@ router.put(
       if (findCart) {
         // before check if added element exists in cart/ if exists update its quantity/ alse add new
         const updatedCart = await Cart.findOneAndUpdate(
-          { userId: req.user.id },
+          {
+            userId: req.user.id,
+            'products._id': paramProductId,
+            'products.color': paramColor,
+            'products.size': paramSize,
+          },
           {
             $inc: {
               'products.$[elem].quantity': paramQuantity,
@@ -207,7 +218,13 @@ router.put(
           },
           {
             new: true,
-            arrayFilters: [{ 'elem._id': paramProductId }],
+            arrayFilters: [
+              {
+                'elem._id': paramProductId,
+                'elem.color': paramColor,
+                'elem.size': paramSize,
+              },
+            ],
           }
         );
 
@@ -221,10 +238,12 @@ router.put(
 
 // DELETE CART ELEMENT
 router.put(
-  '/cart/product-delete/:productId',
+  '/cart/product-delete/:productId/:color/:size',
   verifyTokenAuthorization,
   async (req, res) => {
     const queryProductIdToRemove = req.params.productId;
+    const paramSize = req.params.size;
+    const paramColor = req.params.color;
     try {
       if (!queryProductIdToRemove) {
         return res.status(400).json({ error: 'No product ID provided' });
@@ -232,10 +251,16 @@ router.put(
 
       if (queryProductIdToRemove) {
         const deletedCartElement = await Cart.findOneAndUpdate(
-          { userId: req.user.id },
+          {
+            userId: req.user.id,
+          },
           {
             $pull: {
-              products: { productId: queryProductIdToRemove },
+              products: {
+                _id: queryProductIdToRemove,
+                color: paramColor,
+                size: paramSize,
+              },
             },
           },
           { new: true } // return the updated document
