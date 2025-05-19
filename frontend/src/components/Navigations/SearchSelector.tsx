@@ -53,6 +53,7 @@ function SearchSelector() {
         containerRef.current &&
         !containerRef.current.contains(e.target as Node)
       ) {
+        setSearch('');
         setProductsData([]);
       }
     });

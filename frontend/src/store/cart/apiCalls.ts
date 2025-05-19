@@ -12,11 +12,16 @@ import type { ProductsInCartType } from '../../consts';
 type FetchCartDataProps = {
   dispatch: React.Dispatch<Action>;
   token: string;
+  language: string;
 };
-export async function fetchCartData({ dispatch, token }: FetchCartDataProps) {
+export async function fetchCartData({
+  dispatch,
+  token,
+  language,
+}: FetchCartDataProps) {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/cart`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/cart?language=${language}`,
       {
         headers: {
           token: `Bearer ${token}`,

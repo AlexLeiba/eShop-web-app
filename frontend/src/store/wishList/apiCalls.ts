@@ -5,12 +5,17 @@ import { addToWithList, getWishlist, removeFromWishList } from './reducer';
 type FetchWishlistProps = {
   dispatch: React.Dispatch<Action>;
   token: string;
+  language: string;
 };
 // FETCH
-export async function fetchWishlist({ dispatch, token }: FetchWishlistProps) {
+export async function fetchWishlist({
+  dispatch,
+  token,
+  language,
+}: FetchWishlistProps) {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/wishlist`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/wishlist?language=${language}`,
       {
         headers: {
           token: `Bearer ${token}`,
@@ -19,7 +24,6 @@ export async function fetchWishlist({ dispatch, token }: FetchWishlistProps) {
     );
     const wishlistData = await response.json();
     if (wishlistData.data) {
-      console.log('🚀 ~ fetchWishlist ~ wishlistData.data:', wishlistData.data);
       dispatch(getWishlist(wishlistData.data));
       return { data: wishlistData, error: null };
     }
@@ -69,6 +73,7 @@ export async function deleteFromWishlist({
 type UpdateWishlistProps = {
   product: ProductsType | null;
   token: string;
+
   dispatch: React.Dispatch<Action>;
 };
 export async function updateWishlist({

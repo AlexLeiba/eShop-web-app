@@ -18,19 +18,32 @@ const CartSchema = new mongoose.Schema(
         },
         size: {
           type: String,
+          required: true,
         },
         color: {
           type: String,
+          required: true,
         },
         title: {
           type: String,
+          required: true,
+        },
+        roTitle: {
+          type: String,
+          required: true,
+        },
+        enTitle: {
+          type: String,
+          required: true,
         },
         price: {
           type: Number,
+          required: true,
         },
 
         image: {
           type: String,
+          required: true,
         },
         language: {
           type: String,

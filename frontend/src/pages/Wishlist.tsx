@@ -46,9 +46,14 @@ function Wishlist() {
   }
 
   useEffect(() => {
+    const language = localStorage.getItem('language');
     async function fetchData() {
       setLoading(true);
-      const response = await fetchWishlist({ dispatch, token: sessionToken });
+      const response = await fetchWishlist({
+        dispatch,
+        token: sessionToken,
+        language: language?.toLowerCase() || 'en',
+      });
 
       if (response?.error) {
         toast.error(response.error);

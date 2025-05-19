@@ -10,13 +10,23 @@ const router = express.Router();
 
 // GET WISHLIST
 router.get('/wishlist', verifyTokenAuthorization, async (req, res) => {
+  const queryLanguage = req.query.language;
   try {
     const wishList = await WishList.find({ userId: req.user.id });
     if (!wishList) {
       return res.status(404).json({ error: 'No wishlist found' });
     }
 
-    res.status(200).json({ data: wishList });
+    const responseWithLocalization = wishList.map((item) => {
+      return {
+        ...item._doc,
+        title: queryLanguage === 'ro' ? item.roTitle : item.enTitle,
+        description:
+          queryLanguage === 'ro' ? item.roDescription : item.enDescription,
+      };
+    });
+
+    res.status(200).json({ data: responseWithLocalization });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

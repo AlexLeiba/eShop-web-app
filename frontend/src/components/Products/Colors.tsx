@@ -24,14 +24,14 @@ function Colors({ colors, setColor, selectedColor }: Props) {
               onClick={() => setColor((prev) => ({ ...prev, color: color }))}
               className={cn(
                 selectedColor === color
-                  ? 'border border-black '
-                  : 'border-gray-300 border',
-                'size-6 rounded-full  cursor-pointer hover:opacity-50 shadow-md  '
+                  ? 'border border-gray-600 shadow-md shadow-gray-500 scale-125'
+                  : 'border-gray-300 border scale-100',
+                'size-6 rounded-full  cursor-pointer hover:opacity-50 shadow-md transition-all '
               )}
               style={{ backgroundColor: color }}
             ></div>
 
-            {selectedColor === color && <p>{color}</p>}
+            {/* {selectedColor === color && <p>{color}</p>} */}
           </div>
         );
       })}

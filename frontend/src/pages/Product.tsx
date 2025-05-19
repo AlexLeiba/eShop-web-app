@@ -51,12 +51,15 @@ function Product() {
   const [isInCart, setIsInCart] = React.useState(false);
 
   useEffect(() => {
+    const language = localStorage.getItem('language');
     async function fetchData() {
       try {
         setLoading(true);
         // PRODUCT ELEMENT
         const response = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/products/${productId}`
+          `${
+            import.meta.env.VITE_BACKEND_URL
+          }/api/products/${productId}?language=${language?.toLowerCase()}`
         );
         const responseProduct: { data: ProductsType } = await response.json();
         if (responseProduct.data) {
@@ -171,6 +174,12 @@ function Product() {
     }
   }
 
+  function showSelectedImageColor() {
+    return product.images.filter(
+      (item) => item.colorName === itemFeatures.color
+    )[0].image;
+  }
+
   return (
     <div className='flex min-h-screen flex-col'>
       {/* Navbar */}
@@ -197,7 +206,12 @@ function Product() {
         <Container>
           <div className='grid grid-cols-2 gap-8 '>
             {/* IMG */}
-            <img src={product.image} alt={product.title} />
+            <img
+              src={
+                !itemFeatures.color ? product.image : showSelectedImageColor()
+              }
+              alt={product.title}
+            />
 
             {/* Details */}
 

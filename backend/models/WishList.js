@@ -14,6 +14,18 @@ const WishListSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    roTitle: {
+      type: String,
+    },
+    enTitle: {
+      type: String,
+    },
+    roDescription: {
+      type: String,
+    },
+    enDescription: {
+      type: String,
+    },
     description: {
       type: String,
       required: true,

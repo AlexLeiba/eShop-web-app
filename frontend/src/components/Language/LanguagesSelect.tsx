@@ -40,7 +40,7 @@ export function LanguagesSelect() {
         return console.log('something went wrong changing translation', err);
       t('key'); // -> same as i18next.t
     });
-    // window.location.reload();
+    window.location.reload();
   }
   return (
     <div className='relative' ref={containerRef}>

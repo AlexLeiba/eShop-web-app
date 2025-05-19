@@ -2,17 +2,24 @@ import mongoose from 'mongoose';
 
 const ProductSchema = new mongoose.Schema(
   {
+    moreInfo: {
+      type: String,
+    },
     roTitle: {
       type: String,
+      required: true,
     },
     enTitle: {
       type: String,
+      required: true,
     },
     roDescription: {
       type: String,
+      required: true,
     },
     enDescription: {
       type: String,
+      required: true,
     },
     title: {
       type: String,
@@ -22,9 +29,7 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    moreInfo: {
-      type: String,
-    },
+
     price: {
       type: Number,
       required: true,
@@ -42,7 +47,6 @@ const ProductSchema = new mongoose.Schema(
     size: {
       type: Array,
     },
-
     color: {
       type: Array,
     },

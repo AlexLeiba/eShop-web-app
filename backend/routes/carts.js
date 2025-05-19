@@ -12,14 +12,24 @@ const router = express.Router();
 
 // GET CART
 router.get('/cart', verifyTokenAuthorization, async (req, res) => {
+  const queryLanguage = req.query.language;
   try {
     const cart = await Cart.findOne({ userId: req.user.id });
 
     if (!cart) {
-      return res.status(404).json({ error: 'No cart was found' });
+      return res.status(404).json({ error: 'Cart not found' });
     }
 
-    res.status(200).json({ data: cart });
+    const responseWithLocalization = cart.products.map((item) => {
+      return {
+        ...item._doc,
+        title: queryLanguage === 'ro' ? item.roTitle : item.enTitle,
+      };
+    });
+
+    res
+      .status(200)
+      .json({ data: { ...cart, products: responseWithLocalization } });
   } catch (error) {
     res.status(500).json({ Error: error.message });
   }

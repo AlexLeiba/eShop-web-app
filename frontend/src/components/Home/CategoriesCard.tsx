@@ -17,7 +17,7 @@ export function CategoriesCard({
       {...props}
       onClick={() =>
         navigate(
-          `/products?category=${data.title.toLowerCase()}&sort=newest&page=1`
+          `/products?sort=newest&page=1&category=${data.category.toLowerCase()}`
         )
       }
     >

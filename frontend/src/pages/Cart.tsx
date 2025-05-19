@@ -45,12 +45,19 @@ function Cart() {
   }
 
   React.useEffect(() => {
+    const language = localStorage.getItem('language');
     async function fetchData() {
       setLoading(true);
-      const response = await fetchCartData({ dispatch, token: sessionToken });
+      const response = await fetchCartData({
+        dispatch,
+        token: sessionToken,
+        language: language?.toLowerCase() || 'en',
+      });
 
       if (response?.error) {
-        toast.error(response.error);
+        if (response.error !== 'Cart not found') {
+          toast.error(response.error);
+        }
       }
       setLoading(false);
     }

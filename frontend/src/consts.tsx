@@ -10,58 +10,63 @@ export const categoriesData = {
     {
       id: 1,
       image: jacket,
-      title: 'Jakets ENG',
+      title: 'Jakets',
       description: ' Harry up , get discount on your next purchase',
-
       buttonLink: '/products',
       buttonTitle: 'Shop Now',
+      category: 'jakets',
     },
     {
       id: 2,
       image: shirt,
-      title: 'Shirts ENG',
+      title: 'Shirts',
       description: ' Harry up , get discount on your next purchase',
 
       buttonLink: '/products',
       buttonTitle: 'Shop Now',
+      category: 'shirts',
     },
     {
       id: 3,
       image: shoes,
-      title: 'Shoes ENG',
+      title: 'Shoes',
       description: ' Harry up , get discount on your next purchase',
 
       buttonLink: '/products',
       buttonTitle: 'Shop Now',
+      category: 'shoes',
     },
   ],
   ro: [
     {
       id: 1,
       image: jacket,
-      title: 'Jakets RO',
+      title: 'Jachete, Geci',
       description: ' Harry up , get discount on your next purchase',
 
       buttonLink: '/products',
       buttonTitle: 'Cumpara acum',
+      category: 'jakets',
     },
     {
       id: 2,
       image: shirt,
-      title: 'Shirts RO',
+      title: 'Camase',
       description: ' Harry up , get discount on your next purchase',
 
       buttonLink: '/products',
       buttonTitle: 'Cumpara acum',
+      category: 'shirts',
     },
     {
       id: 3,
       image: shoes,
-      title: 'Shoes RO',
+      title: 'Pantofi eleganti, sportivi',
       description: ' Harry up , get discount on your next purchase',
 
       buttonLink: '/products',
       buttonTitle: 'Cumpara acum',
+      category: 'shoes',
     },
   ],
 };
@@ -73,6 +78,7 @@ export type CategoriesType = {
   description: string;
   buttonLink: string;
   buttonTitle: string;
+  category: string;
 };
 
 // products
@@ -112,6 +118,10 @@ export type ProductsType = {
   featured: boolean;
   featuredBackgroundColor: string;
   quantity: number;
+  images: {
+    colorName: string;
+    image: string;
+  }[];
   __v: number;
 };
 export type ProductsInCartType = {
