@@ -1,0 +1,52 @@
+$grayColor: #d7d5d5;
+$greenColor: #00ff00;
+$redColor: #ff0000;
+
+$boxShadow: 2px 2px 10px 1px $grayColor;
+
+@mixin flex($direction, $justifyContent, $alignItems) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justifyContent;
+  align-items: $alignItems;
+}
+
+.flex-center-row-8 {
+  @include flex(row, start, center);
+  gap: 8px;
+}
+.flex-center-row-4 {
+  @include flex(row, start, center);
+  gap: 4px;
+}
+
+.flex-center-between {
+  @include flex(row, space-between, center);
+}
+
+.flex-column {
+  @include flex(column, start, start);
+}
+.flex-column-gap-12 {
+  @include flex(column, start, start);
+  gap: 8px;
+}
+
+.grid-container-2 {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 20px;
+}
+
+.grid-container-3 {
+  width: 100%;
+  display: grid;
+  gap: 20px;
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, minmax(200px, 1fr));
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
