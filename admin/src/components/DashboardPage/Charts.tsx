@@ -1,3 +1,5 @@
+import { CHARTS_DATA } from '../../lib/consts';
+import Spacer from '../ui/Spacer';
 import './DashboardPage.scss';
 import {
   LineChart,
@@ -10,15 +12,19 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-export function Charts() {
+type Props = {
+  chartsData: typeof CHARTS_DATA;
+};
+export function Charts({ chartsData }: Props) {
   return (
     <div className='container-charts'>
-      <h3>Chart</h3>
+      <h4>Chart</h4>
+      <Spacer size={12} />
       <ResponsiveContainer aspect={3.5 / 1}>
         <LineChart
           width={500}
           height={300}
-          data={data}
+          data={chartsData || []}
           margin={{
             top: 5,
             right: 30,
@@ -47,47 +53,3 @@ export function Charts() {
     </div>
   );
 }
-const data = [
-  {
-    name: 'Page A',
-    lastMonth: 4000,
-    currentMonth: 2400,
-    totalIncome: 2400,
-  },
-  {
-    name: 'Page B',
-    lastMonth: 3000,
-    currentMonth: 1398,
-    totalIncome: 2210,
-  },
-  {
-    name: 'Page C',
-    lastMonth: 2000,
-    currentMonth: 9800,
-    totalIncome: 2290,
-  },
-  {
-    name: 'Page D',
-    lastMonth: 2780,
-    currentMonth: 3908,
-    totalIncome: 2000,
-  },
-  {
-    name: 'Page E',
-    lastMonth: 1890,
-    currentMonth: 4800,
-    totalIncome: 2181,
-  },
-  {
-    name: 'Page F',
-    lastMonth: 2390,
-    currentMonth: 3800,
-    totalIncome: 2500,
-  },
-  {
-    name: 'Page G',
-    lastMonth: 3490,
-    currentMonth: 4300,
-    totalIncome: 2100,
-  },
-];

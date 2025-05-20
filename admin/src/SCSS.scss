@@ -11,6 +11,11 @@ $boxShadow: 2px 2px 10px 1px $grayColor;
   align-items: $alignItems;
 }
 
+.flex-center-center-12 {
+  @include flex(row, center, center);
+  gap: 8px;
+  height: 100%;
+}
 .flex-center-row-8 {
   @include flex(row, start, center);
   gap: 8px;

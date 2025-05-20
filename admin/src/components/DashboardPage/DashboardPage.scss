@@ -37,8 +37,35 @@
 
   .new-joined-members-list {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
     gap: 12px;
     padding: 4px 4px;
     border-bottom: 1px solid #d7d5d5;
+  }
+}
+
+.table-container {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 10px;
+  overflow: hidden;
+
+  .table-head {
+    background-color: #f2f2f2;
+    th {
+      padding: 12px;
+      text-align: left;
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid #d7d5d5;
+      td {
+        padding: 12px;
+        text-align: left;
+      }
+    }
   }
 }

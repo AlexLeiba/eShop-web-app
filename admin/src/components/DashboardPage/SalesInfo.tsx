@@ -10,12 +10,12 @@ type Props = {
 function SalesInfo({ salesData }: Props) {
   return (
     <div className='container-sales-info'>
-      <p>{salesData.title}</p>
+      <h4>{salesData.title}</h4>
 
-      <div className='flex-center-row'>
+      <div className='flex-center-row-4'>
         <p>{salesData.value}</p>
-        <IconArrowUp />
-        <IconArrowDown />
+        <IconArrowUp color='#6ab96a' />
+        <IconArrowDown color='#ff0000' />
       </div>
 
       <p>Compared to last month</p>

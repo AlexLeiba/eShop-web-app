@@ -10,8 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mui/x-data-grid": "^8.3.1",
     "@reduxjs/toolkit": "^2.8.2",
     "@tabler/icons-react": "^3.33.0",
+    "install": "^0.13.0",
+    "npm": "^11.4.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hot-toast": "^2.5.2",
