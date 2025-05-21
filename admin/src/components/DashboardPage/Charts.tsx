@@ -1,5 +1,6 @@
 import { CHARTS_DATA } from '../../lib/consts';
 import Spacer from '../ui/Spacer';
+import { WidgetCard } from '../ui/WidgetCard';
 import './DashboardPage.scss';
 import {
   LineChart,
@@ -17,7 +18,7 @@ type Props = {
 };
 export function Charts({ chartsData }: Props) {
   return (
-    <div className='container-charts'>
+    <WidgetCard>
       <h4>Chart</h4>
       <Spacer size={12} />
       <ResponsiveContainer aspect={3.5 / 1}>
@@ -50,6 +51,6 @@ export function Charts({ chartsData }: Props) {
           <Line type='monotone' dataKey='totalIncome' stroke='#82ca9d' />
         </LineChart>
       </ResponsiveContainer>
-    </div>
+    </WidgetCard>
   );
 }

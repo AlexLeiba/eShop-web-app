@@ -3,6 +3,7 @@ import {
   TABLE_TRANSACTIONS_DATA,
 } from '../../lib/consts';
 import Spacer from '../ui/Spacer';
+import { WidgetCard } from '../ui/WidgetCard';
 import './DashboardPage.scss';
 
 type Props = {
@@ -10,7 +11,7 @@ type Props = {
 };
 export function LatestTransactions({ transactionData }: Props) {
   return (
-    <div className='container-widget'>
+    <WidgetCard>
       <h4>Latest Transactions</h4>
       <Spacer size={12} />
 
@@ -40,6 +41,6 @@ export function LatestTransactions({ transactionData }: Props) {
           })}
         </tbody>
       </table>
-    </div>
+    </WidgetCard>
   );
 }

@@ -1,10 +1,16 @@
 export type ProductsType = {
   id: string;
   _id: string;
+
   title: string;
+  roTitle: string;
+  enTitle: string;
+  roDescription: string;
+  enDescription: string;
   description: string;
+
   price: number;
-  image: string;
+
   categories: string[];
   size: string[];
   color: string[];
@@ -17,6 +23,8 @@ export type ProductsType = {
   quantity: number;
   moreInfo: string;
   language: string;
+
+  image: string;
   images: {
     colorName: string;
     image: string;

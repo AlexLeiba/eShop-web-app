@@ -1,0 +1,16 @@
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background-color: #000000;
+  font-weight: bold;
+  cursor: pointer;
+  color: white;
+  transition: all;
+  &:hover {
+    opacity: 0.5;
+  }
+}

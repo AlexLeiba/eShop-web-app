@@ -7,6 +7,8 @@ import type { ProductsType } from '../lib/types';
 import React from 'react';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
+import { Button } from '../components/ui/Button/Button';
+import '../components/ProductsPage/ProductsPage.scss';
 
 function ProductsPage() {
   const [selectedRows, setSelectedRows] = React.useState<GridRowId[]>([]);
@@ -21,12 +23,6 @@ function ProductsPage() {
   function handleMultipleDelete() {
     console.log('🚀 ~ handleDelete ~ selectedRows:', selectedRows);
   }
-
-  // function handleEdit(rowId: string) {
-  //   console.log('🚀 ~ handleEdit ~ selectedRows:', rowId);
-  // }
-
-  console.log('🚀 ~ UsersPage ~ selectedRows:', selectedRows);
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 70 },
@@ -118,18 +114,25 @@ function ProductsPage() {
         <h1>Products</h1>
         <Spacer size={24} />
 
-        {selectedRows.length > 0 && (
-          <div className='flex justify-between items-center gap-4'>
-            <p>Selected rows: {selectedRows.length}</p>
-            <IconTrash cursor={'pointer'} onClick={handleMultipleDelete} />
-          </div>
-        )}
-
-        <Link to={'/new-product'}>
-          <div>
-            <button>Add new product</button>
-          </div>
-        </Link>
+        <div className='add-new-product-wrapper'>
+          {selectedRows.length > 0 ? (
+            <>
+              <div className='flex-center-row-4'>
+                <p>Selected rows: {selectedRows.length}</p>
+                <IconTrash
+                  color='#ff0000'
+                  cursor={'pointer'}
+                  onClick={handleMultipleDelete}
+                />
+              </div>
+            </>
+          ) : (
+            <div></div>
+          )}
+          <Link to={'/new-product'}>
+            <Button widthSize={200}>Add new product</Button>
+          </Link>
+        </div>
         <Box sx={{ height: 650, width: '100%' }}>
           <DataGrid
             onRowSelectionModelChange={(e: { ids: Set<GridRowId> }) => {

@@ -189,3 +189,49 @@ export const TABLE_TRANSACTIONS_DATA = [
     status: 'Pending',
   },
 ];
+
+export const SIZES = [
+  { value: 'xs', title: 'XS' },
+  { value: 's', title: 'S' },
+  { value: 'm', title: 'M' },
+  { value: 'l', title: 'L' },
+  { value: 'xl', title: 'XL' },
+  { value: 'xxl', title: 'XXL' },
+];
+
+export const COLORS = [
+  {
+    value: 'white',
+    title: 'White',
+  },
+  {
+    value: 'black',
+    title: 'Black',
+  },
+  {
+    value: 'red',
+    title: 'Red',
+  },
+  {
+    value: 'blue',
+    title: 'Blue',
+  },
+  {
+    value: 'green',
+    title: 'Green',
+  },
+  {
+    value: 'purple',
+    title: 'Purple',
+  },
+  {
+    value: 'yellow',
+    title: 'Yellow',
+  },
+];
+
+export const CATEGORIES = [
+  { value: 'jakets', title: 'Jakets' },
+  { value: 'shirts', title: 'Shirts' },
+  { value: 'shoes', title: 'Shoes' },
+];

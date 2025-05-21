@@ -2,13 +2,14 @@ import { IconEye } from '@tabler/icons-react';
 import { NEW_MEMBERS_DATA } from '../../lib/consts';
 import Spacer from '../ui/Spacer';
 import './DashboardPage.scss';
+import { WidgetCard } from '../ui/WidgetCard';
 
 type Props = {
   newMembersData: typeof NEW_MEMBERS_DATA;
 };
 export function NewMembers({ newMembersData }: Props) {
   return (
-    <div className='container-widget'>
+    <WidgetCard>
       <h4>New joined members</h4>
       <Spacer size={12} />
       <ul className='new-joined-members-ul'>
@@ -36,6 +37,6 @@ export function NewMembers({ newMembersData }: Props) {
           );
         })}
       </ul>
-    </div>
+    </WidgetCard>
   );
 }
