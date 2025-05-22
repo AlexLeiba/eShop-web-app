@@ -8,6 +8,9 @@ import React from 'react';
 import { EditProductSchema, type ProductType } from '../lib/schemas';
 import { CATEGORIES, COLORS, SIZES } from '../lib/consts';
 import '../components/SingleProductPage/SingleProductPage.scss';
+import toast from 'react-hot-toast';
+import { PreviewProductDetails } from '../components/SingleProductPage/PreviewProductDetails';
+import { ProductPerformanceChart } from '../components/SingleProductPage/ProductPerformanceChart';
 
 const initialErrorsObject = {
   roTitle: '',
@@ -35,6 +38,9 @@ const initialErrorsObject = {
 };
 
 const initialFormData = {
+  //TODO WILL COME FROM BACKEND AS INITIAL STATE
+  title: 'asasas',
+  description: 'dsds',
   roTitle: 'sasaas',
   enTitle: 'asasas',
 
@@ -42,7 +48,8 @@ const initialFormData = {
   enDescription: 'dsds',
 
   price: '123',
-  image: '',
+  image:
+    'https://static.vecteezy.com/system/resources/thumbnails/024/553/534/small_2x/lion-head-logo-mascot-wildlife-animal-illustration-generative-ai-png.png',
   categories: ['shirts'],
   size: ['xs', 's', 'xl'],
   color: ['black'],
@@ -82,6 +89,7 @@ function SingleProductPage() {
     if (file) {
       const reader = new FileReader();
       reader.readAsDataURL(file);
+
       reader.onload = () => {
         setFormData((prev) => {
           return {
@@ -114,25 +122,41 @@ function SingleProductPage() {
     }
   }
 
-  function handleSubmit() {
-    console.log('🚀 ~ handleSubmit ~ formData:', formData);
+  async function handleSubmit() {
+    toast.loading('Saving...');
     const validatedFormData = EditProductSchema.safeParse(formData);
 
     if (!validatedFormData.success) {
       const errorValues: { [key: string]: string } = {};
-      console.log(
-        '🚀 ~ handleSubmit ~ validatedFormData:',
-        validatedFormData.error.issues
-      );
 
       validatedFormData.error.issues.forEach((issue) => {
         errorValues[issue.path[0]] = issue.message;
       });
 
       setFormDataErrors(errorValues);
-    }
+    } else {
+      const bodyData = {
+        ...validatedFormData.data,
+        title: validatedFormData.data.enTitle,
+        description: validatedFormData.data.enDescription,
+      };
+      setFormDataErrors(initialErrorsObject);
+      console.log(bodyData);
+      // TODO: send data to backend
 
-    console.log(validatedFormData.data);
+      try {
+        // const responseData = await response.json();
+        // const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}`);
+        // if (responseData.error) {
+        //   throw new Error(responseData.error);
+        // }
+        // toast.success('Product was edited successfully');
+      } catch (error: any) {
+        toast.error(error.message);
+      } finally {
+        toast.dismiss();
+      }
+    }
   }
   return (
     <Layout>
@@ -143,12 +167,12 @@ function SingleProductPage() {
         <div className='grid-container-2-equal'>
           {/* SALES PERFORMANCE CHART */}
           <WidgetCard>
-            <h4>Chart</h4>
+            <ProductPerformanceChart />
           </WidgetCard>
 
           {/* PREVIEW PRODUCT DETAILS */}
           <WidgetCard>
-            <h4>Product details</h4>
+            <PreviewProductDetails formData={formData} />
           </WidgetCard>
         </div>
 
@@ -311,7 +335,7 @@ function SingleProductPage() {
                   value={formData.categories[0]}
                   className='select'
                   onChange={(e) =>
-                    handleChangeFormData('categories', e.target.value)
+                    handleChangeFormData('categories', [e.target.value])
                   }
                 >
                   {CATEGORIES.map((item) => {
@@ -356,7 +380,7 @@ function SingleProductPage() {
                 <p>Colors</p>
                 <Spacer size={8} />
                 <select
-                  value={formData.color.map((item) => item)}
+                  value={formData?.color?.map((item) => item)}
                   multiple
                   className='select'
                   onChange={(e) => {
@@ -429,7 +453,10 @@ function SingleProductPage() {
                   type='color'
                   id='featuredBackgroundColor'
                   onChange={(e) =>
-                    handleChangeFormData('color', e.target.value)
+                    handleChangeFormData(
+                      'featuredBackgroundColor',
+                      e.target.value
+                    )
                   }
                 />
                 <p className='text-error'>

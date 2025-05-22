@@ -5,9 +5,10 @@ import { WidgetCard } from '../components/ui/WidgetCard';
 import { Input } from '../components/ui/Input/Input';
 import { Button } from '../components/ui/Button/Button';
 import React from 'react';
-import { EditProductSchema, type ProductType } from '../lib/schemas';
+import { CreateProductSchema, type ProductType } from '../lib/schemas';
 import { CATEGORIES, COLORS, SIZES } from '../lib/consts';
 import '../components/SingleProductPage/SingleProductPage.scss';
+import toast from 'react-hot-toast';
 
 const initialErrorsObject = {
   roTitle: '',
@@ -43,12 +44,12 @@ const initialFormData = {
 
   price: '0',
   image: '',
-  categories: ['jackets'],
+  categories: [CATEGORIES[0].value],
   size: [''],
-  color: ['white'],
+  color: [COLORS[0].value],
 
   images: [],
-  imageColor: 'white',
+  imageColor: COLORS[0].value,
 
   isPublished: false,
   inStock: true,
@@ -114,35 +115,51 @@ function NewProductPage() {
     }
   }
 
-  function handleSubmit() {
-    console.log('🚀 ~ handleSubmit ~ formData:', formData);
-    const validatedFormData = EditProductSchema.safeParse(formData);
+  async function handleSubmit() {
+    const validatedFormData = CreateProductSchema.safeParse(formData);
 
     if (!validatedFormData.success) {
       const errorValues: { [key: string]: string } = {};
-      console.log(
-        '🚀 ~ handleSubmit ~ validatedFormData:',
-        validatedFormData.error.issues
-      );
 
       validatedFormData.error.issues.forEach((issue) => {
         errorValues[issue.path[0]] = issue.message;
       });
 
       setFormDataErrors(errorValues);
-    }
+    } else {
+      const bodyData = {
+        ...validatedFormData.data,
+        title: validatedFormData.data.enTitle,
+        description: validatedFormData.data.enDescription,
+      };
+      setFormDataErrors(initialErrorsObject);
+      console.log(bodyData);
+      // TODO: send data to backend
 
-    console.log(validatedFormData.data);
+      try {
+        toast.loading('Saving...');
+        // const responseData = await response.json();
+        // const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}`);
+        // if (responseData.error) {
+        //   throw new Error(responseData.error);
+        // }
+        // toast.success('Product was edited successfully');
+      } catch (error: any) {
+        toast.error(error.message);
+      } finally {
+        toast.dismiss();
+      }
+    }
   }
   return (
     <Layout>
       <GridContainer fluid>
         <h1>New Product</h1>
-        <Spacer size={24} />
 
+        <Spacer size={24} />
         {/* EDIT PRODUCT */}
         <WidgetCard>
-          <h3>Edit product</h3>
+          <h3>Product details</h3>
           <Spacer size={24} />
 
           <div className='grid-container-2-equal'>
@@ -298,7 +315,7 @@ function NewProductPage() {
                   value={formData.categories[0]}
                   className='select'
                   onChange={(e) =>
-                    handleChangeFormData('categories', e.target.value)
+                    handleChangeFormData('categories', [e.target.value])
                   }
                 >
                   {CATEGORIES.map((item) => {
@@ -343,7 +360,7 @@ function NewProductPage() {
                 <p>Colors</p>
                 <Spacer size={8} />
                 <select
-                  value={formData.color.map((item) => item)}
+                  value={formData?.color?.map((item) => item)}
                   multiple
                   className='select'
                   onChange={(e) => {
@@ -416,7 +433,10 @@ function NewProductPage() {
                   type='color'
                   id='featuredBackgroundColor'
                   onChange={(e) =>
-                    handleChangeFormData('color', e.target.value)
+                    handleChangeFormData(
+                      'featuredBackgroundColor',
+                      e.target.value
+                    )
                   }
                 />
                 <p className='text-error'>

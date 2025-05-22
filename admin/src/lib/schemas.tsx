@@ -42,6 +42,9 @@ export const EditProductSchema = z.object({
   language: z.string().optional(),
   quantity: z.string().optional(),
   moreInfo: z.string().optional(),
+
+  title: z.string().optional(),
+  description: z.string().optional(),
 });
 
 export const CreateProductSchema = z.object({
@@ -81,6 +84,9 @@ export const CreateProductSchema = z.object({
   language: z.string().optional(),
   quantity: z.string().optional().default('1'),
   moreInfo: z.string().optional(),
+
+  title: z.string().optional(),
+  description: z.string().optional(),
 });
 
 export type ProductType = z.infer<typeof EditProductSchema>;

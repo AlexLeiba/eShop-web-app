@@ -74,6 +74,10 @@ const ProductSchema = new mongoose.Schema(
       type: Number,
       default: 1,
     },
+    imageColor: {
+      type: String,
+      default: 'white',
+    },
   },
   {
     timestamps: true,

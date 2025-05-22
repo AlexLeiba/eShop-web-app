@@ -17,3 +17,38 @@
   border-radius: 10px;
   padding: 10px;
 }
+
+.product-details-wrapper {
+  display: flex;
+  justify-content: space-between;
+
+  img {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+  }
+
+  .details {
+    padding: 20px;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .colors-wrapper {
+    display: flex;
+    gap: 4px;
+
+    div {
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+    }
+  }
+  .sizes-wrapper {
+    display: flex;
+    gap: 4px;
+  }
+}
