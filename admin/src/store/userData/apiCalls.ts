@@ -1,6 +1,7 @@
 import type { Action } from '@reduxjs/toolkit';
 import { loginError, loginSuccess } from './reducers';
 import type { LoginType } from '../../lib/schemas';
+import { apiFactory } from '../../lib/apiFactory';
 
 type Props = {
   dispatch: React.Dispatch<Action>;
@@ -8,25 +9,15 @@ type Props = {
 };
 export async function login({ dispatch, userData }: Props) {
   try {
-    const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/admin/api/login`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      }
-    );
-    const responseData = await response.json();
+    const response = await apiFactory().login({ userData });
 
-    if (responseData.error) {
-      dispatch(loginError(responseData.error));
-      return { data: null, error: responseData.error };
+    if (response.error) {
+      dispatch(loginError(response.error));
+      return { data: null, error: response.error };
     }
-    if (responseData.data) {
-      dispatch(loginSuccess(responseData.data));
-      return { data: responseData.data, error: null };
+    if (response.data) {
+      dispatch(loginSuccess(response.data));
+      return { data: response.data, error: null };
     }
   } catch (error: any) {
     dispatch(loginError(error.message));

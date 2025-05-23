@@ -7,23 +7,60 @@ import type { UserType } from '../lib/types';
 import React from 'react';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
+import { apiFactory } from '../lib/apiFactory';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../store/config';
+import toast from 'react-hot-toast';
 
 function UsersPage() {
+  const userData = useSelector((state: RootState) => state.user.userData);
+
+  const sessionToken = userData?.token || '';
+
   const [selectedRows, setSelectedRows] = React.useState<GridRowId[]>([]);
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const paginationModel = { page: 0, pageSize: 10 };
+  const [usersData, setUsersData] = React.useState<UserType[]>([]);
 
-  function handleDelete(rowId: string) {
-    console.log('🚀 ~ handleDelete ~ selectedRows:', rowId);
+  async function fetchData() {
+    const response = await apiFactory().getUsers(sessionToken);
+    if (response.error) {
+      toast.error(response.error);
+      return;
+    }
+    setUsersData(response.data);
+  }
+  React.useEffect(() => {
+    fetchData();
+  }, []);
+
+  async function handleDelete(rowId: string) {
+    try {
+      toast.loading('Deleting...', {
+        id: 'deletingToastId',
+      });
+      const response = await apiFactory().deleteUser({
+        userId: rowId,
+        token: sessionToken,
+      });
+      if (response.error) {
+        toast.error(response.error);
+        return;
+      }
+      toast.success('User was deleted successfully');
+      fetchData();
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      toast.dismiss('deletingToastId');
+    }
   }
 
-  // function handleEdit(rowId: string) {
-  //   console.log('🚀 ~ handleEdit ~ selectedRows:', rowId);
-  // }
-
-  console.log('🚀 ~ UsersPage ~ selectedRows:', selectedRows);
+  function handleMultipleDelete() {
+    console.log('🚀 ~ handleDelete ~ selectedRows:', selectedRows);
+  }
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 70 },
@@ -70,7 +107,7 @@ function UsersPage() {
         return (
           <div className='flex-center-center-12'>
             <div>
-              <Link to={'/user/' + params.row.id}>
+              <Link to={'/user/' + params.row._id}>
                 <IconEdit size={20} cursor={'pointer'} />
               </Link>
             </div>
@@ -79,7 +116,7 @@ function UsersPage() {
                 size={20}
                 color='#ff0000'
                 cursor={'pointer'}
-                onClick={() => handleDelete(params.row.id)}
+                onClick={() => handleDelete(params.row._id)}
               />
             </div>
           </div>
@@ -93,6 +130,22 @@ function UsersPage() {
       <GridContainer fluid>
         <h1>Users</h1>
         <Spacer size={24} />
+        <div className='add-new-product-wrapper'>
+          {selectedRows.length > 0 ? (
+            <>
+              <div className='flex-center-row-4'>
+                <p>Delete all Selected rows: {selectedRows.length}</p>
+                <IconTrash
+                  color='#ff0000'
+                  cursor={'pointer'}
+                  onClick={handleMultipleDelete}
+                />
+              </div>
+            </>
+          ) : (
+            <div></div>
+          )}
+        </div>
 
         <Box sx={{ height: 650, width: '100%' }}>
           <DataGrid
@@ -100,7 +153,7 @@ function UsersPage() {
               const selectedRowIds = Array.from(e.ids).map((id) => id);
               setSelectedRows(selectedRowIds);
             }}
-            rows={rowsData.slice(
+            rows={usersData?.slice(
               page * rowsPerPage,
               page * rowsPerPage + rowsPerPage
             )}
@@ -112,7 +165,7 @@ function UsersPage() {
               setRowsPerPage(e.pageSize);
             }}
             // @ts-ignore
-            rows={rowsData}
+            rows={usersData}
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[10, 20]}
@@ -126,105 +179,3 @@ function UsersPage() {
 }
 
 export default UsersPage;
-
-const rowsData: UserType[] = [
-  {
-    id: '1',
-    _id: '1',
-    lastName: 'Snow',
-    name: 'Jon',
-    email: 'email@sa',
-    isAdmin: false,
-    userName: 'username here',
-    createdAt: '11-02-25',
-    updatedAt: '11-02-25',
-  },
-  {
-    id: '2',
-    _id: '2',
-    lastName: 'Lannister',
-    name: 'Cersei',
-    email: 'email@sa',
-    isAdmin: false,
-    userName: 'username here',
-    createdAt: '11-02-25',
-    updatedAt: '11-02-25',
-  },
-  {
-    id: '3',
-    _id: '3',
-    lastName: 'Lannister',
-    name: 'Jaime',
-    email: 'email@sa',
-    isAdmin: false,
-    userName: 'username here',
-    createdAt: '11-02-25',
-    updatedAt: '11-02-25',
-  },
-  {
-    id: '4',
-    _id: '4',
-    lastName: 'Stark',
-    name: 'Arya',
-    email: 'email@sa',
-    isAdmin: false,
-    userName: 'username here',
-    createdAt: '11-02-25',
-    updatedAt: '11-02-25',
-  },
-  {
-    id: '5',
-    _id: '5',
-    lastName: 'Targaryen',
-    name: 'Daenerys',
-    email: 'email@sa',
-    isAdmin: false,
-    userName: 'username here',
-    createdAt: '11-02-25',
-    updatedAt: '11-02-25',
-  },
-  {
-    id: '6',
-    _id: '6',
-    lastName: 'Melisandre',
-    name: 'name',
-    email: 'email@sa',
-    isAdmin: false,
-    userName: 'username here',
-    createdAt: '11-02-25',
-    updatedAt: '11-02-25',
-  },
-  {
-    id: '7',
-    _id: '7',
-    lastName: 'Clifford',
-    name: 'Ferrara',
-    email: 'email@sa',
-    isAdmin: false,
-    userName: 'username here',
-    createdAt: '11-02-25',
-    updatedAt: '11-02-25',
-  },
-  {
-    id: '8',
-    _id: '8',
-    lastName: 'Frances',
-    name: 'Rossini',
-    email: 'email@sa',
-    isAdmin: false,
-    userName: 'username here',
-    createdAt: '11-02-25',
-    updatedAt: '11-02-25',
-  },
-  {
-    id: '9',
-    _id: '9',
-    lastName: 'Roxie',
-    name: 'Harvey',
-    email: 'email@sa',
-    isAdmin: false,
-    userName: 'username here',
-    createdAt: '11-02-25',
-    updatedAt: '11-02-25',
-  },
-];

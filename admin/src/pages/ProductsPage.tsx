@@ -4,21 +4,59 @@ import { GridContainer } from '../components/Grid/GridContainer';
 import Spacer from '../components/ui/Spacer';
 import { Box } from '@mui/material';
 import type { ProductsType } from '../lib/types';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/Button/Button';
 import '../components/ProductsPage/ProductsPage.scss';
+import toast from 'react-hot-toast';
+import { apiFactory } from '../lib/apiFactory';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../store/config';
 
 function ProductsPage() {
+  const userData = useSelector((state: RootState) => state.user.userData);
+
+  const sessionToken = userData?.token || '';
   const [selectedRows, setSelectedRows] = React.useState<GridRowId[]>([]);
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const paginationModel = { page: 0, pageSize: 10 };
+  const [productsData, setProductsData] = React.useState<ProductsType[]>([]);
 
-  function handleDelete(rowId: string) {
-    console.log('🚀 ~ handleDelete ~ selectedRows:', rowId);
+  async function fetchData() {
+    const response = await apiFactory().getProducts(sessionToken);
+    if (response.error) {
+      toast.error(response.error);
+      return;
+    }
+    setProductsData(response.data);
+  }
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  async function handleDelete(rowId: string) {
+    try {
+      toast.loading('Deleting...', {
+        id: 'deletingToastId',
+      });
+      const response = await apiFactory().deleteProduct({
+        productId: rowId,
+        token: sessionToken,
+      });
+      if (response.error) {
+        toast.error(response.error);
+        return;
+      }
+      toast.success('Product was deleted successfully');
+      fetchData();
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      toast.dismiss('deletingToastId');
+    }
   }
   function handleMultipleDelete() {
     console.log('🚀 ~ handleDelete ~ selectedRows:', selectedRows);
@@ -33,7 +71,11 @@ function ProductsPage() {
       renderCell: (params) => {
         return (
           <div className='flex-center-center-12'>
-            <img style={{ width: 60 }} src={params.row.image} alt='' />
+            <img
+              style={{ width: 60, height: 40, objectFit: 'contain' }}
+              src={params.row.image}
+              alt=''
+            />
           </div>
         );
       },
@@ -90,7 +132,7 @@ function ProductsPage() {
         return (
           <div className='flex-center-center-12'>
             <div>
-              <Link to={'/product/' + params.row.id}>
+              <Link to={'/product/' + params.row._id}>
                 <IconEdit size={20} cursor={'pointer'} />
               </Link>
             </div>
@@ -99,7 +141,7 @@ function ProductsPage() {
                 size={20}
                 color='#ff0000'
                 cursor={'pointer'}
-                onClick={() => handleDelete(params.row.id)}
+                onClick={() => handleDelete(params.row._id)}
               />
             </div>
           </div>
@@ -118,7 +160,7 @@ function ProductsPage() {
           {selectedRows.length > 0 ? (
             <>
               <div className='flex-center-row-4'>
-                <p>Selected rows: {selectedRows.length}</p>
+                <p>Delete all selected rows: {selectedRows.length}</p>
                 <IconTrash
                   color='#ff0000'
                   cursor={'pointer'}
@@ -139,7 +181,7 @@ function ProductsPage() {
               const selectedRowIds = Array.from(e.ids).map((id) => id);
               setSelectedRows(selectedRowIds);
             }}
-            rows={rowsData.slice(
+            rows={productsData?.slice(
               page * rowsPerPage,
               page * rowsPerPage + rowsPerPage
             )}
@@ -151,7 +193,7 @@ function ProductsPage() {
               setRowsPerPage(e.pageSize);
             }}
             // @ts-ignore
-            rows={rowsData}
+            rows={productsData}
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[10, 20]}
@@ -165,330 +207,3 @@ function ProductsPage() {
 }
 
 export default ProductsPage;
-
-const rowsData: ProductsType[] = [
-  {
-    id: '1',
-    moreInfo:
-      "Oldest Shirt: The oldest known shirt was found in Egypt and dates back to around 3000 BC. It was made from linen and had a tailored shape! T-Shirt Origin: The modern T-shirt evolved from undergarments used in the 19th century. The U.S. Navy started issuing them as standard undershirts in 1913.`T-Shirt` Name: It's called a `T-shirt` because of the shape it makes when laid flat—a T.",
-    title: 'Shirt Jersey 3',
-    description:
-      'From Air Jordans that reshaped basketball culture to Flyknits spun like high-tech thread magic.',
-    price: 90,
-    image:
-      'https://t3.ftcdn.net/jpg/07/15/01/58/240_F_715015801_j07s8OnaV9znfTan5uDVpmOL8OF793YH.png',
-    images: [
-      {
-        colorName: 'red',
-        image:
-          'https://t3.ftcdn.net/jpg/07/15/01/58/240_F_715015801_j07s8OnaV9znfTan5uDVpmOL8OF793YH.png',
-      },
-      {
-        colorName: 'blue',
-        image:
-          'https://static.vecteezy.com/system/resources/thumbnails/035/931/340/small_2x/ai-generated-realistic-set-of-male-blue-t-shirts-mockup-front-and-back-view-isolated-on-a-transparent-background-cut-out-png.png',
-      },
-    ],
-    categories: ['shirts'],
-    size: ['xs', 's', 'xl', 'xxl'],
-    color: ['blue', 'red'],
-    isPublished: true,
-    inStock: true,
-    featured: false,
-    featuredBackgroundColor: '#d4b044',
-    language: 'en',
-    quantity: 1,
-    _id: '682ae28d4bfe0c4d10679fce',
-    createdAt: '2023-01-01T00:00:00.000Z',
-    updatedAt: '2023-01-02T00:00:00.000Z',
-    __v: 0,
-  },
-  {
-    id: '2',
-    moreInfo:
-      "Oldest Shirt: The oldest known shirt was found in Egypt and dates back to around 3000 BC. It was made from linen and had a tailored shape! T-Shirt Origin: The modern T-shirt evolved from undergarments used in the 19th century. The U.S. Navy started issuing them as standard undershirts in 1913.`T-Shirt` Name: It's called a `T-shirt` because of the shape it makes when laid flat—a T.",
-    title: 'Shirt Jersey 3',
-    description:
-      'From Air Jordans that reshaped basketball culture to Flyknits spun like high-tech thread magic.',
-    price: 90,
-    image:
-      'https://t3.ftcdn.net/jpg/07/15/01/58/240_F_715015801_j07s8OnaV9znfTan5uDVpmOL8OF793YH.png',
-    images: [
-      {
-        colorName: 'red',
-        image:
-          'https://t3.ftcdn.net/jpg/07/15/01/58/240_F_715015801_j07s8OnaV9znfTan5uDVpmOL8OF793YH.png',
-      },
-      {
-        colorName: 'blue',
-        image:
-          'https://static.vecteezy.com/system/resources/thumbnails/035/931/340/small_2x/ai-generated-realistic-set-of-male-blue-t-shirts-mockup-front-and-back-view-isolated-on-a-transparent-background-cut-out-png.png',
-      },
-    ],
-    categories: ['shirts'],
-    size: ['xs', 's', 'xl', 'xxl'],
-    color: ['blue', 'red'],
-    isPublished: true,
-    inStock: true,
-    featured: false,
-    featuredBackgroundColor: '#d4b044',
-    language: 'en',
-    quantity: 1,
-    _id: '682ae28d4bfe0c4d10679fce',
-    createdAt: '2023-01-01T00:00:00.000Z',
-    updatedAt: '2023-01-02T00:00:00.000Z',
-    __v: 0,
-  },
-  {
-    id: '3',
-    moreInfo:
-      "Oldest Shirt: The oldest known shirt was found in Egypt and dates back to around 3000 BC. It was made from linen and had a tailored shape! T-Shirt Origin: The modern T-shirt evolved from undergarments used in the 19th century. The U.S. Navy started issuing them as standard undershirts in 1913.`T-Shirt` Name: It's called a `T-shirt` because of the shape it makes when laid flat—a T.",
-    title: 'Shirt Jersey 3',
-    description:
-      'From Air Jordans that reshaped basketball culture to Flyknits spun like high-tech thread magic.',
-    price: 90,
-    image:
-      'https://t3.ftcdn.net/jpg/07/15/01/58/240_F_715015801_j07s8OnaV9znfTan5uDVpmOL8OF793YH.png',
-    images: [
-      {
-        colorName: 'red',
-        image:
-          'https://t3.ftcdn.net/jpg/07/15/01/58/240_F_715015801_j07s8OnaV9znfTan5uDVpmOL8OF793YH.png',
-      },
-      {
-        colorName: 'blue',
-        image:
-          'https://static.vecteezy.com/system/resources/thumbnails/035/931/340/small_2x/ai-generated-realistic-set-of-male-blue-t-shirts-mockup-front-and-back-view-isolated-on-a-transparent-background-cut-out-png.png',
-      },
-    ],
-    categories: ['shirts'],
-    size: ['xs', 's', 'xl', 'xxl'],
-    color: ['blue', 'red'],
-    isPublished: true,
-    inStock: true,
-    featured: false,
-    featuredBackgroundColor: '#d4b044',
-    language: 'en',
-    quantity: 1,
-    _id: '682ae28d4bfe0c4d10679fce',
-    createdAt: '2023-01-01T00:00:00.000Z',
-    updatedAt: '2023-01-02T00:00:00.000Z',
-    __v: 0,
-  },
-  {
-    id: '4',
-    moreInfo:
-      "Oldest Shirt: The oldest known shirt was found in Egypt and dates back to around 3000 BC. It was made from linen and had a tailored shape! T-Shirt Origin: The modern T-shirt evolved from undergarments used in the 19th century. The U.S. Navy started issuing them as standard undershirts in 1913.`T-Shirt` Name: It's called a `T-shirt` because of the shape it makes when laid flat—a T.",
-    title: 'Shirt Jersey 3',
-    description:
-      'From Air Jordans that reshaped basketball culture to Flyknits spun like high-tech thread magic.',
-    price: 90,
-    image:
-      'https://t3.ftcdn.net/jpg/07/15/01/58/240_F_715015801_j07s8OnaV9znfTan5uDVpmOL8OF793YH.png',
-    images: [
-      {
-        colorName: 'red',
-        image:
-          'https://t3.ftcdn.net/jpg/07/15/01/58/240_F_715015801_j07s8OnaV9znfTan5uDVpmOL8OF793YH.png',
-      },
-      {
-        colorName: 'blue',
-        image:
-          'https://static.vecteezy.com/system/resources/thumbnails/035/931/340/small_2x/ai-generated-realistic-set-of-male-blue-t-shirts-mockup-front-and-back-view-isolated-on-a-transparent-background-cut-out-png.png',
-      },
-    ],
-    categories: ['shirts'],
-    size: ['xs', 's', 'xl', 'xxl'],
-    color: ['blue', 'red'],
-    isPublished: true,
-    inStock: true,
-    featured: false,
-    featuredBackgroundColor: '#d4b044',
-    language: 'en',
-    quantity: 1,
-    _id: '682ae28d4bfe0c4d10679fce',
-    createdAt: '2023-01-01T00:00:00.000Z',
-    updatedAt: '2023-01-02T00:00:00.000Z',
-    __v: 0,
-  },
-  {
-    id: '5',
-    moreInfo:
-      "Oldest Shirt: The oldest known shirt was found in Egypt and dates back to around 3000 BC. It was made from linen and had a tailored shape! T-Shirt Origin: The modern T-shirt evolved from undergarments used in the 19th century. The U.S. Navy started issuing them as standard undershirts in 1913.`T-Shirt` Name: It's called a `T-shirt` because of the shape it makes when laid flat—a T.",
-    title: 'Shirt Jersey 3',
-    description:
-      'From Air Jordans that reshaped basketball culture to Flyknits spun like high-tech thread magic.',
-    price: 90,
-    image:
-      'https://t3.ftcdn.net/jpg/07/15/01/58/240_F_715015801_j07s8OnaV9znfTan5uDVpmOL8OF793YH.png',
-    images: [
-      {
-        colorName: 'red',
-        image:
-          'https://t3.ftcdn.net/jpg/07/15/01/58/240_F_715015801_j07s8OnaV9znfTan5uDVpmOL8OF793YH.png',
-      },
-      {
-        colorName: 'blue',
-        image:
-          'https://static.vecteezy.com/system/resources/thumbnails/035/931/340/small_2x/ai-generated-realistic-set-of-male-blue-t-shirts-mockup-front-and-back-view-isolated-on-a-transparent-background-cut-out-png.png',
-      },
-    ],
-    categories: ['shirts'],
-    size: ['xs', 's', 'xl', 'xxl'],
-    color: ['blue', 'red'],
-    isPublished: true,
-    inStock: true,
-    featured: false,
-    featuredBackgroundColor: '#d4b044',
-    language: 'en',
-    quantity: 1,
-    _id: '682ae28d4bfe0c4d10679fce',
-    createdAt: '2023-01-01T00:00:00.000Z',
-    updatedAt: '2023-01-02T00:00:00.000Z',
-    __v: 0,
-  },
-  {
-    id: '6',
-    moreInfo:
-      "Oldest Shirt: The oldest known shirt was found in Egypt and dates back to around 3000 BC. It was made from linen and had a tailored shape! T-Shirt Origin: The modern T-shirt evolved from undergarments used in the 19th century. The U.S. Navy started issuing them as standard undershirts in 1913.`T-Shirt` Name: It's called a `T-shirt` because of the shape it makes when laid flat—a T.",
-    title: 'Shirt Jersey 3',
-    description:
-      'From Air Jordans that reshaped basketball culture to Flyknits spun like high-tech thread magic.',
-    price: 90,
-    image:
-      'https://t3.ftcdn.net/jpg/07/15/01/58/240_F_715015801_j07s8OnaV9znfTan5uDVpmOL8OF793YH.png',
-    images: [
-      {
-        colorName: 'red',
-        image:
-          'https://t3.ftcdn.net/jpg/07/15/01/58/240_F_715015801_j07s8OnaV9znfTan5uDVpmOL8OF793YH.png',
-      },
-      {
-        colorName: 'blue',
-        image:
-          'https://static.vecteezy.com/system/resources/thumbnails/035/931/340/small_2x/ai-generated-realistic-set-of-male-blue-t-shirts-mockup-front-and-back-view-isolated-on-a-transparent-background-cut-out-png.png',
-      },
-    ],
-    categories: ['shirts'],
-    size: ['xs', 's', 'xl', 'xxl'],
-    color: ['blue', 'red'],
-    isPublished: true,
-    inStock: true,
-    featured: false,
-    featuredBackgroundColor: '#d4b044',
-    language: 'en',
-    quantity: 1,
-    _id: '682ae28d4bfe0c4d10679fce',
-    createdAt: '2023-01-01T00:00:00.000Z',
-    updatedAt: '2023-01-02T00:00:00.000Z',
-    __v: 0,
-  },
-  {
-    id: '7',
-    moreInfo:
-      "Oldest Shirt: The oldest known shirt was found in Egypt and dates back to around 3000 BC. It was made from linen and had a tailored shape! T-Shirt Origin: The modern T-shirt evolved from undergarments used in the 19th century. The U.S. Navy started issuing them as standard undershirts in 1913.`T-Shirt` Name: It's called a `T-shirt` because of the shape it makes when laid flat—a T.",
-    title: 'Shirt Jersey 3',
-    description:
-      'From Air Jordans that reshaped basketball culture to Flyknits spun like high-tech thread magic.',
-    price: 90,
-    image:
-      'https://t3.ftcdn.net/jpg/07/15/01/58/240_F_715015801_j07s8OnaV9znfTan5uDVpmOL8OF793YH.png',
-    images: [
-      {
-        colorName: 'red',
-        image:
-          'https://t3.ftcdn.net/jpg/07/15/01/58/240_F_715015801_j07s8OnaV9znfTan5uDVpmOL8OF793YH.png',
-      },
-      {
-        colorName: 'blue',
-        image:
-          'https://static.vecteezy.com/system/resources/thumbnails/035/931/340/small_2x/ai-generated-realistic-set-of-male-blue-t-shirts-mockup-front-and-back-view-isolated-on-a-transparent-background-cut-out-png.png',
-      },
-    ],
-    categories: ['shirts'],
-    size: ['xs', 's', 'xl', 'xxl'],
-    color: ['blue', 'red'],
-    isPublished: true,
-    inStock: true,
-    featured: false,
-    featuredBackgroundColor: '#d4b044',
-    language: 'en',
-    quantity: 1,
-    _id: '682ae28d4bfe0c4d10679fce',
-    createdAt: '2023-01-01T00:00:00.000Z',
-    updatedAt: '2023-01-02T00:00:00.000Z',
-    __v: 0,
-  },
-  {
-    id: '8',
-    moreInfo:
-      "Oldest Shirt: The oldest known shirt was found in Egypt and dates back to around 3000 BC. It was made from linen and had a tailored shape! T-Shirt Origin: The modern T-shirt evolved from undergarments used in the 19th century. The U.S. Navy started issuing them as standard undershirts in 1913.`T-Shirt` Name: It's called a `T-shirt` because of the shape it makes when laid flat—a T.",
-    title: 'Shirt Jersey 3',
-    description:
-      'From Air Jordans that reshaped basketball culture to Flyknits spun like high-tech thread magic.',
-    price: 90,
-    image:
-      'https://t3.ftcdn.net/jpg/07/15/01/58/240_F_715015801_j07s8OnaV9znfTan5uDVpmOL8OF793YH.png',
-    images: [
-      {
-        colorName: 'red',
-        image:
-          'https://t3.ftcdn.net/jpg/07/15/01/58/240_F_715015801_j07s8OnaV9znfTan5uDVpmOL8OF793YH.png',
-      },
-      {
-        colorName: 'blue',
-        image:
-          'https://static.vecteezy.com/system/resources/thumbnails/035/931/340/small_2x/ai-generated-realistic-set-of-male-blue-t-shirts-mockup-front-and-back-view-isolated-on-a-transparent-background-cut-out-png.png',
-      },
-    ],
-    categories: ['shirts'],
-    size: ['xs', 's', 'xl', 'xxl'],
-    color: ['blue', 'red'],
-    isPublished: true,
-    inStock: true,
-    featured: false,
-    featuredBackgroundColor: '#d4b044',
-    language: 'en',
-    quantity: 1,
-    _id: '682ae28d4bfe0c4d10679fce',
-    createdAt: '2023-01-01T00:00:00.000Z',
-    updatedAt: '2023-01-02T00:00:00.000Z',
-    __v: 0,
-  },
-  {
-    id: '9',
-    moreInfo:
-      "Oldest Shirt: The oldest known shirt was found in Egypt and dates back to around 3000 BC. It was made from linen and had a tailored shape! T-Shirt Origin: The modern T-shirt evolved from undergarments used in the 19th century. The U.S. Navy started issuing them as standard undershirts in 1913.`T-Shirt` Name: It's called a `T-shirt` because of the shape it makes when laid flat—a T.",
-    title: 'Shirt Jersey 3',
-    description:
-      'From Air Jordans that reshaped basketball culture to Flyknits spun like high-tech thread magic.',
-    price: 90,
-    image:
-      'https://t3.ftcdn.net/jpg/07/15/01/58/240_F_715015801_j07s8OnaV9znfTan5uDVpmOL8OF793YH.png',
-    images: [
-      {
-        colorName: 'red',
-        image:
-          'https://t3.ftcdn.net/jpg/07/15/01/58/240_F_715015801_j07s8OnaV9znfTan5uDVpmOL8OF793YH.png',
-      },
-      {
-        colorName: 'blue',
-        image:
-          'https://static.vecteezy.com/system/resources/thumbnails/035/931/340/small_2x/ai-generated-realistic-set-of-male-blue-t-shirts-mockup-front-and-back-view-isolated-on-a-transparent-background-cut-out-png.png',
-      },
-    ],
-    categories: ['shirts'],
-    size: ['xs', 's', 'xl', 'xxl'],
-    color: ['blue', 'red'],
-    isPublished: true,
-    inStock: true,
-    featured: false,
-    featuredBackgroundColor: '#d4b044',
-    language: 'en',
-    quantity: 1,
-    _id: '682ae28d4bfe0c4d10679fce',
-    createdAt: '2023-01-01T00:00:00.000Z',
-    updatedAt: '2023-01-02T00:00:00.000Z',
-    __v: 0,
-  },
-];

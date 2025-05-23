@@ -2,6 +2,9 @@ import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema(
   {
+    id: {
+      type: String,
+    },
     name: {
       type: String,
       required: false,

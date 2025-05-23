@@ -40,7 +40,7 @@ export const EditProductSchema = z.object({
   featured: z.boolean().optional(),
   featuredBackgroundColor: z.string().optional(),
   language: z.string().optional(),
-  quantity: z.string().optional(),
+  quantity: z.coerce.string().optional(),
   moreInfo: z.string().optional(),
 
   title: z.string().optional(),
@@ -93,4 +93,9 @@ export type ProductType = z.infer<typeof EditProductSchema>;
 
 export const EditUserSchema = z.object({
   isAdmin: z.boolean(),
+  userName: z.string().min(2, 'User name must be at least 2 characters long'),
+  name: z.string().min(2, 'Name must be at least 2 characters long'),
+  lastName: z.string().min(2, 'Last name must be at least 2 characters long'),
 });
+
+export type EditUserType = z.infer<typeof EditUserSchema>;

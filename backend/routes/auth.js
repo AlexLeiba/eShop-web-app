@@ -3,6 +3,7 @@ import User from '../models/User.js';
 import dotenv from 'dotenv';
 import CryptoJS from 'crypto-js';
 import jwt from 'jsonwebtoken';
+import { v4 as uuidv4 } from 'uuid';
 dotenv.config();
 
 const router = express.Router();
@@ -26,13 +27,14 @@ router.post('/register', async (req, res) => {
   const newUser = new User({
     ...req.body,
     password: encryptedPassword.toString(),
+    id: uuidv4(),
   });
 
   const { password, ...others } = newUser._doc;
 
   try {
     newUser.save();
-    res.status(201).json({ error: null, data: others });
+    res.status(201).json({ error: null, data: { ...others } });
   } catch (error) {
     res.status(500).json({ error: error, data: null });
   }

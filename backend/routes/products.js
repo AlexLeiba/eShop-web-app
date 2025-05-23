@@ -1,9 +1,7 @@
 import express from 'express';
-import {
-  verifyTokenAuthorization,
-  verifyTokenAuthorizationAndAdmin,
-} from '../config/verifyToken.js';
+import { verifyTokenAuthorizationAndAdmin } from '../config/verifyToken.js';
 import Product from '../models/Product.js';
+import { v4 as uuidv4 } from 'uuid';
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -133,22 +131,6 @@ router.get('/products/:productId', async (req, res) => {
     res.status(500).json({ Error: error.message });
   }
 });
-//GET ALL PRODUCTS (ONLY ADMIN)
-router.get(
-  '/all-products',
-  verifyTokenAuthorizationAndAdmin,
-  async (req, res) => {
-    try {
-      const products = await Product.find();
-      if (!products) {
-        return res.status(404).json({ error: 'No products found' });
-      }
-      res.status(200).json({ data: products });
-    } catch (error) {
-      res.status(500).json({ Error: error.message });
-    }
-  }
-);
 
 // GET FEATURED PRODUCTS
 
@@ -183,22 +165,80 @@ router.get('/featured-products', async (req, res) => {
   }
 });
 
-// ADD PRODUCT (ONLY ADMIN)
-router.post('/product', verifyTokenAuthorizationAndAdmin, async (req, res) => {
-  try {
-    const newProduct = new Product(req.body);
+// ADMIN///////////////////////////////////////////////
 
-    newProduct.save();
+//GET SINGLE PRODUCT (ONLY ADMIN)
+router.get(
+  '/admin/product/:productId',
+  verifyTokenAuthorizationAndAdmin,
+  async (req, res) => {
+    const productId = req.params.productId;
+    const queryLanguage = req.query.language;
 
-    res.status(201).json({ data: newProduct });
-  } catch (error) {
-    res.status(500).json(error);
+    try {
+      const product = await Product.findOne({
+        _id: productId,
+      });
+      if (!product) {
+        return res.status(404).json({ error: 'No product was found' });
+      }
+      res.status(200).json({
+        data: {
+          ...product._doc,
+          title:
+            queryLanguage === 'ro'
+              ? product._doc.roTitle
+              : product._doc.enTitle,
+          description:
+            queryLanguage === 'ro'
+              ? product._doc.roDescription
+              : product._doc.enDescription,
+        },
+      });
+    } catch (error) {
+      res.status(500).json({ Error: error.message });
+    }
   }
-});
+);
+
+//GET ALL PRODUCTS (ONLY ADMIN)
+router.get(
+  '/admin/products',
+  verifyTokenAuthorizationAndAdmin,
+  async (req, res) => {
+    try {
+      const products = await Product.find();
+      if (!products) {
+        return res.status(404).json({ error: 'No products found' });
+      }
+      res.status(200).json({ data: products });
+    } catch (error) {
+      res.status(500).json({ Error: error.message });
+    }
+  }
+);
+
+// ADD PRODUCT (ONLY ADMIN)
+router.post(
+  '/admin/product',
+  verifyTokenAuthorizationAndAdmin,
+  async (req, res) => {
+    try {
+      const uniqueId = uuidv4();
+      const newProduct = new Product({ ...req.body, id: uniqueId });
+
+      newProduct.save();
+
+      res.status(201).json({ data: { ...newProduct } });
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
+);
 
 // UPDATE PRODUCT (ONLY ADMIN)
 router.put(
-  '/product/:id',
+  '/admin/product/:id',
   verifyTokenAuthorizationAndAdmin,
   async (req, res) => {
     try {
@@ -231,7 +271,7 @@ router.put(
 
 // DELETE PRODUCT (ONLY ADMIN)
 router.delete(
-  '/product/:id',
+  '/admin/product/:id',
   verifyTokenAuthorizationAndAdmin,
   async (req, res) => {
     try {

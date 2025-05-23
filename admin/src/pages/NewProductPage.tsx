@@ -9,6 +9,10 @@ import { CreateProductSchema, type ProductType } from '../lib/schemas';
 import { CATEGORIES, COLORS, SIZES } from '../lib/consts';
 import '../components/SingleProductPage/SingleProductPage.scss';
 import toast from 'react-hot-toast';
+import { apiFactory } from '../lib/apiFactory';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../store/config';
 
 const initialErrorsObject = {
   roTitle: '',
@@ -60,6 +64,10 @@ const initialFormData = {
   moreInfo: '',
 };
 function NewProductPage() {
+  const navigate = useNavigate();
+  const userData = useSelector((state: RootState) => state.user.userData);
+
+  const sessionToken = userData?.token || '';
   const [formData, setFormData] = React.useState<ProductType>(initialFormData);
 
   const [formDataErrors, setFormDataErrors] = React.useState<{
@@ -127,27 +135,33 @@ function NewProductPage() {
 
       setFormDataErrors(errorValues);
     } else {
-      const bodyData = {
+      const bodyData: ProductType = {
         ...validatedFormData.data,
         title: validatedFormData.data.enTitle,
         description: validatedFormData.data.enDescription,
       };
       setFormDataErrors(initialErrorsObject);
-      console.log(bodyData);
+
       // TODO: send data to backend
 
       try {
-        toast.loading('Saving...');
-        // const responseData = await response.json();
-        // const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}`);
-        // if (responseData.error) {
-        //   throw new Error(responseData.error);
-        // }
-        // toast.success('Product was edited successfully');
+        toast.loading('Saving...', {
+          id: 'savingToastId',
+        });
+
+        const response = await apiFactory().newProduct(bodyData, sessionToken);
+        if (response.error) {
+          toast.error(response.error);
+          return;
+        }
+        if (response.data) {
+          toast.success('Product was created successfully');
+          navigate('/products');
+        }
       } catch (error: any) {
         toast.error(error.message);
       } finally {
-        toast.dismiss();
+        toast.dismiss('savingToastId');
       }
     }
   }

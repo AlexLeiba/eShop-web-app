@@ -11,6 +11,10 @@ import '../components/SingleProductPage/SingleProductPage.scss';
 import toast from 'react-hot-toast';
 import { PreviewProductDetails } from '../components/SingleProductPage/PreviewProductDetails';
 import { ProductPerformanceChart } from '../components/SingleProductPage/ProductPerformanceChart';
+import { apiFactory } from '../lib/apiFactory';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../store/config';
+import { useLocation } from 'react-router-dom';
 
 const initialErrorsObject = {
   roTitle: '',
@@ -39,38 +43,62 @@ const initialErrorsObject = {
 
 const initialFormData = {
   //TODO WILL COME FROM BACKEND AS INITIAL STATE
-  title: 'asasas',
-  description: 'dsds',
-  roTitle: 'sasaas',
-  enTitle: 'asasas',
+  title: '',
+  description: '',
+  roTitle: '',
+  enTitle: '',
 
-  roDescription: 'dsds',
-  enDescription: 'dsds',
+  roDescription: '',
+  enDescription: '',
 
-  price: '123',
-  image:
-    'https://static.vecteezy.com/system/resources/thumbnails/024/553/534/small_2x/lion-head-logo-mascot-wildlife-animal-illustration-generative-ai-png.png',
-  categories: ['shirts'],
-  size: ['xs', 's', 'xl'],
-  color: ['black'],
+  price: '',
+  image: '',
+  categories: [''],
+  size: [''],
+  color: [''],
 
   images: [],
-  imageColor: 'white',
+  imageColor: '',
 
   isPublished: true,
   inStock: true,
   featured: true,
-  featuredBackgroundColor: '#ffffff',
-  language: 'en',
-  quantity: '1',
+  featuredBackgroundColor: '',
+  language: '',
+  quantity: '`',
   moreInfo: '',
 };
 function SingleProductPage() {
+  const { pathname } = useLocation();
+  const userData = useSelector((state: RootState) => state.user.userData);
+
+  const sessionToken = userData?.token || '';
+
   const [formData, setFormData] = React.useState<ProductType>(initialFormData);
 
   const [formDataErrors, setFormDataErrors] = React.useState<{
     [key: string]: string;
   }>(initialErrorsObject);
+
+  React.useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await apiFactory().getProduct({
+          productId: pathname.split('/')[2],
+          token: sessionToken,
+        });
+        if (response.error) {
+          toast.error(response.error);
+          return;
+        }
+        setFormData(response.data);
+      } catch (error: any) {
+        toast.error(error.message);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   function handleChangeFormData(
     key: string,
@@ -123,7 +151,6 @@ function SingleProductPage() {
   }
 
   async function handleSubmit() {
-    toast.loading('Saving...');
     const validatedFormData = EditProductSchema.safeParse(formData);
 
     if (!validatedFormData.success) {
@@ -141,20 +168,27 @@ function SingleProductPage() {
         description: validatedFormData.data.enDescription,
       };
       setFormDataErrors(initialErrorsObject);
-      console.log(bodyData);
+
       // TODO: send data to backend
 
       try {
-        // const responseData = await response.json();
-        // const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}`);
-        // if (responseData.error) {
-        //   throw new Error(responseData.error);
-        // }
-        // toast.success('Product was edited successfully');
+        toast.loading('Saving...', {
+          id: 'savingToastId',
+        });
+        const response = await apiFactory().editProduct({
+          productData: bodyData,
+          productId: pathname.split('/')[2],
+          token: sessionToken,
+        });
+        if (response.error) {
+          toast.error(response.error);
+          return;
+        }
+        toast.success('Product was edited successfully');
       } catch (error: any) {
         toast.error(error.message);
       } finally {
-        toast.dismiss();
+        toast.dismiss('savingToastId');
       }
     }
   }

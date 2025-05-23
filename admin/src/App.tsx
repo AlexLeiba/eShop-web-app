@@ -23,7 +23,7 @@ function App() {
   const userData = useSelector((state: RootState) => state.user.userData);
 
   const sessionToken = userData?.token || '';
-  console.log('🚀 ~ App ~ sessionToken:', sessionToken);
+
   return (
     <>
       <Toaster />
