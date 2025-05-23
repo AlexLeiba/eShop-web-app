@@ -1,7 +1,6 @@
 import { GridContainer } from '../../components/Grid/GridContainer';
 import { Input } from '../../components/ui/Input/Input';
 import { Button } from '../../components/ui/Button/Button';
-import '../../components/LoginPage/LoginPage.scss';
 import { Logo } from '../../components/Logo/Logo';
 import React from 'react';
 import { LoginSchema } from '../../lib/schemas';
@@ -9,6 +8,7 @@ import { login } from '../../store/userData/apiCalls';
 import { useDispatch } from 'react-redux';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import '../../components/LoginPage/LoginPage.scss';
 
 function LoginPage() {
   const dispatch = useDispatch();

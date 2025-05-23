@@ -9,7 +9,7 @@ type Props = {
 export async function login({ dispatch, userData }: Props) {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/login`,
+      `${import.meta.env.VITE_BACKEND_URL}/admin/api/login`,
       {
         method: 'POST',
         headers: {
