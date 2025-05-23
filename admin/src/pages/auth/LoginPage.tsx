@@ -35,8 +35,6 @@ function LoginPage() {
 
       setFormDataError(errorValues);
     } else {
-      // check if is Admin
-
       setFormDataError({
         email: '',
         password: '',
@@ -51,7 +49,7 @@ function LoginPage() {
         toast.error(responseLogin.error);
       }
       if (responseLogin?.data) {
-        toast.success('Welcome back');
+        toast.success(`Welcome back ${responseLogin.data.data.userName}`);
         navigate('/');
       }
     }
