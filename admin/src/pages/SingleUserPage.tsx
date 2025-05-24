@@ -13,26 +13,15 @@ import { useSelector } from 'react-redux';
 import type { RootState } from '../store/config';
 import { useLocation } from 'react-router-dom';
 import type { UserType } from '../lib/types';
+import {
+  initialErrorsObject,
+  initialFormData,
+} from '../components/SingleUserPage/initialData';
 
-const initialErrorsObject = {
-  name: '',
-  lastName: '',
-  userName: '',
-  isAdmin: '',
-};
-
-const initialFormData = {
-  //TODO WILL COME FROM BACKEND AS INITIAL STATE
-  name: '',
-  lastName: '',
-  userName: '',
-  email: '',
-  isAdmin: false,
-  createdAt: Date.now().toString(),
-  updatedAt: Date.now().toString(),
-};
 function SingleUserPage() {
   const { pathname } = useLocation();
+  const selectedUserId = pathname.split('/')[2];
+
   const userData = useSelector((state: RootState) => state.user.userData);
 
   const sessionToken = userData?.token || '';
@@ -48,7 +37,7 @@ function SingleUserPage() {
     async function fetchData() {
       try {
         const response = await apiFactory().getUser({
-          userId: pathname.split('/')[2],
+          userId: selectedUserId,
           token: sessionToken,
         });
         if (response.error) {
@@ -96,6 +85,9 @@ function SingleUserPage() {
       // TODO: send data to backend
 
       try {
+        if (formData.isUberAdmin) {
+          throw new Error('Not authorized to edit uber admin');
+        }
         toast.loading('Saving...', {
           id: 'savingToastId',
         });
@@ -158,18 +150,20 @@ function SingleUserPage() {
           </div>
           <Spacer />
 
-          <div className='flex-center-row-8'>
-            <label htmlFor='isAdmin'>is Admin</label>
-            <input
-              checked={formData.isAdmin}
-              type='checkbox'
-              id='isAdmin'
-              onChange={(e) =>
-                handleChangeFormData('isAdmin', e.target.checked)
-              }
-            />
-            <p className='text-error'>{formDataErrors.isPublished}</p>
-          </div>
+          {userData?.data._id !== selectedUserId && !formData.isUberAdmin && (
+            <div className='flex-center-row-8'>
+              <label htmlFor='isAdmin'>is Admin</label>
+              <input
+                checked={formData.isAdmin}
+                type='checkbox'
+                id='isAdmin'
+                onChange={(e) =>
+                  handleChangeFormData('isAdmin', e.target.checked)
+                }
+              />
+              <p className='text-error'>{formDataErrors.isPublished}</p>
+            </div>
+          )}
 
           <Spacer />
           <Button onClick={handleSubmit}>Save</Button>

@@ -6,7 +6,6 @@ type Props = {
   token?: string;
 };
 export function ProtectedRoute({ children, token }: Props) {
-  console.log('🚀 ~ ProtectedRoute ~ token:', token);
   if (!token) {
     return <Navigate to='/login' replace />;
   }

@@ -31,6 +31,10 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isUberAdmin: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true, //will create createdAt and updatedAt fields

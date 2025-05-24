@@ -53,15 +53,17 @@ router.put(
         );
         req.body.password = encryptedPassword.toString();
       }
-      const updatedUser = await User.findByIdAndUpdate(
+
+      const updatedUserData = await User.findByIdAndUpdate(
         userId,
         {
           $set: req.body,
         },
         { new: true, runValidators: true }
       );
-      const { password, ...others } = updatedUser._doc;
-      res.status(200).json({ data: others });
+
+      const { password, ...others } = updatedUserData._doc;
+      res.status(200).json({ data: { ...others } });
     } catch (error) {
       res.status(500).json({ Error: error.message });
     }
@@ -75,6 +77,17 @@ router.delete(
   async (req, res) => {
     try {
       const userID = req.params.userId;
+
+      const user = await User.findById(userID);
+
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      if (user.isUberAdmin) {
+        return res
+          .status(400)
+          .json({ error: 'You can not delete an UberAdmin' });
+      }
 
       if (!userID) {
         return res.status(400).json({ error: 'No user ID provided' });
@@ -90,6 +103,34 @@ router.delete(
         res
           .status(200)
           .json({ data: { message: 'User deleted successfully' } });
+      }
+    } catch (error) {
+      res.status(500).json({ Error: error.message });
+    }
+  }
+);
+// DELETE MULTIPLE USER
+router.delete(
+  '/admin/users',
+  verifyTokenAuthorizationAndAdmin,
+  async (req, res) => {
+    try {
+      const usersIds = req.body.userIds;
+
+      if (!usersIds) {
+        return res.status(400).json({ error: 'No user ID provided' });
+      }
+
+      if (usersIds) {
+        const deletedUsers = await User.deleteMany({ id: { $in: usersIds } });
+
+        if (!deletedUsers) {
+          return res.status(404).json({ error: 'User not found' });
+        }
+
+        res
+          .status(200)
+          .json({ data: { message: 'The users were deleted successfully' } });
       }
     } catch (error) {
       res.status(500).json({ Error: error.message });

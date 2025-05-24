@@ -5,7 +5,12 @@ import Spacer from '../components/ui/Spacer';
 import { Box } from '@mui/material';
 import type { ProductsType } from '../lib/types';
 import React, { useEffect } from 'react';
-import { IconEdit, IconTrash } from '@tabler/icons-react';
+import {
+  IconCircleCheck,
+  IconCircleX,
+  IconEdit,
+  IconTrash,
+} from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/Button/Button';
 import '../components/ProductsPage/ProductsPage.scss';
@@ -16,14 +21,15 @@ import type { RootState } from '../store/config';
 
 function ProductsPage() {
   const userData = useSelector((state: RootState) => state.user.userData);
-
   const sessionToken = userData?.token || '';
+
+  const [productsData, setProductsData] = React.useState<ProductsType[]>([]);
+
   const [selectedRows, setSelectedRows] = React.useState<GridRowId[]>([]);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const paginationModel = { page: 0, pageSize: 10 };
-  const [productsData, setProductsData] = React.useState<ProductsType[]>([]);
 
   async function fetchData() {
     const response = await apiFactory().getProducts(sessionToken);
@@ -58,8 +64,26 @@ function ProductsPage() {
       toast.dismiss('deletingToastId');
     }
   }
-  function handleMultipleDelete() {
-    console.log('🚀 ~ handleDelete ~ selectedRows:', selectedRows);
+  async function handleMultipleDelete() {
+    try {
+      toast.loading('Deleting...', {
+        id: 'deletingToastId',
+      });
+      const response = await apiFactory().deleteMultipleProducts({
+        productIds: selectedRows as string[],
+        token: sessionToken,
+      });
+      if (response?.error) {
+        toast.error(response.error);
+        return;
+      }
+      toast.success('Products were deleted successfully');
+      fetchData();
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      toast.dismiss('deletingToastId');
+    }
   }
 
   const columns: GridColDef[] = [
@@ -98,13 +122,32 @@ function ProductsPage() {
       valueGetter: (value, row) => {
         return row.isPublished ? 'Yes' : 'No';
       },
+      renderCell: (params) => {
+        return (
+          <div className='flex-center-center-12'>
+            {params.row.isPublished ? (
+              <IconCircleCheck color='green' />
+            ) : (
+              <IconCircleX color='red' />
+            )}
+          </div>
+        );
+      },
     },
     {
       field: 'featured',
       headerName: 'Featured',
       width: 80,
-      valueGetter: (value, row) => {
-        return row.featured ? 'Yes' : 'No';
+      renderCell: (params) => {
+        return (
+          <div className='flex-center-center-12'>
+            {params.row.featured ? (
+              <IconCircleCheck color='green' />
+            ) : (
+              <IconCircleX color='red' />
+            )}
+          </div>
+        );
       },
     },
     {
@@ -131,19 +174,22 @@ function ProductsPage() {
       renderCell: (params) => {
         return (
           <div className='flex-center-center-12'>
-            <div>
-              <Link to={'/product/' + params.row._id}>
+            <>
+              <Link
+                to={'/product/' + params.row._id}
+                className='flex-center-center-12'
+              >
                 <IconEdit size={20} cursor={'pointer'} />
               </Link>
-            </div>
-            <div>
+            </>
+            <>
               <IconTrash
                 size={20}
                 color='#ff0000'
                 cursor={'pointer'}
                 onClick={() => handleDelete(params.row._id)}
               />
-            </div>
+            </>
           </div>
         );
       },

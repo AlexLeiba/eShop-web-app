@@ -14,6 +14,7 @@ export function apiFactory() {
     newProduct,
     editProduct,
     deleteProduct,
+    deleteMultipleProducts,
 
     // Users
     getUsers,
@@ -21,6 +22,7 @@ export function apiFactory() {
     editUser,
     getUsersStats,
     deleteUser,
+    deleteMultipleUsers,
   };
 }
 
@@ -123,6 +125,26 @@ async function deleteProduct({ productId, token }: DeleteProductType) {
   return response.json();
 }
 
+type DeleteMultipleProductType = {
+  productIds: string[];
+  token: string;
+};
+export async function deleteMultipleProducts({
+  productIds,
+  token,
+}: DeleteMultipleProductType) {
+  const response = await fetch(`${BACKEND_BASE_URL}/api/admin/products`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      token: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ productIds }),
+  });
+
+  return response.json();
+}
+
 //////////////////////////// USERS
 async function getUsers(token: string) {
   const response = await fetch(`${BACKEND_BASE_URL}/api/admin/users`, {
@@ -187,6 +209,23 @@ async function deleteUser({
       'Content-Type': 'application/json',
       token: `Bearer ${token}`,
     },
+  });
+  return response.json();
+}
+export async function deleteMultipleUsers({
+  userIds,
+  token,
+}: {
+  userIds: string[];
+  token: string;
+}) {
+  const response = await fetch(`${BACKEND_BASE_URL}/api/admin/users`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      token: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ userIds }),
   });
   return response.json();
 }

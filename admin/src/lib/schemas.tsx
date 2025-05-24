@@ -27,12 +27,14 @@ export const EditProductSchema = z.object({
   size: z.array(z.string()).min(1, 'Required at least 1 size'),
   color: z.array(z.string()).min(1, 'Required at least 1 color'),
 
-  images: z.array(
-    z.object({
-      colorName: z.string().min(2, 'Color required'),
-      image: z.string().min(2, 'Required at least 1 image'),
-    })
-  ),
+  images: z
+    .array(
+      z.object({
+        colorName: z.string().min(2, 'Color required'),
+        image: z.string().min(2, 'Required at least 1 image'),
+      })
+    )
+    .min(1, 'Required at least 1 image'),
   imageColor: z.string().min(2, 'Image color required'),
   isPublished: z.boolean(),
 
@@ -66,14 +68,16 @@ export const CreateProductSchema = z.object({
     .default(['jakets']),
 
   size: z.array(z.string()).min(1, 'Size is required'),
-  color: z.array(z.string()).min(1, 'Color is required').default(['white']),
+  color: z.array(z.string()).optional(),
 
-  images: z.array(
-    z.object({
-      colorName: z.string().min(2, 'Color is required'),
-      image: z.string().min(2, 'Image is required'),
-    })
-  ),
+  images: z
+    .array(
+      z.object({
+        colorName: z.string().min(2, 'Color is required'),
+        image: z.string().min(2, 'Image is required'),
+      })
+    )
+    .min(1, 'Image is required'),
   imageColor: z.string().min(2, 'Image color required').default('white'),
 
   isPublished: z.boolean().default(false),

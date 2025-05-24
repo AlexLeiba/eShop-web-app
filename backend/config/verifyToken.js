@@ -25,7 +25,11 @@ function verifyToken(req, res) {
 
 export function verifyTokenAuthorization(req, res, next) {
   verifyToken(req, res, next); //will verify TOKEN and add USER data to REQUEST.USER
-  if (req.user.id === req.params.id || req.user.isAdmin) {
+  if (
+    req.user.id === req.params.id ||
+    req.user.isAdmin ||
+    req.user.isUberAdmin
+  ) {
     //if the user is 'ADMIN' or the user is the one that is trying to update 'USER DATA'
     next(); //pass to the next middleware
   } else {
@@ -35,7 +39,7 @@ export function verifyTokenAuthorization(req, res, next) {
 export function verifyTokenAuthorizationAndAdmin(req, res, next) {
   verifyToken(req, res, next); //will verify TOKEN and add USER data to REQUEST.USER
 
-  if (req.user.isAdmin) {
+  if (req.user.isAdmin || req.user.isUberAdmin) {
     //if the user is 'ADMIN' or the user is the one that is trying to update 'USER DATA'
     next(); //pass to the next middleware
   } else {

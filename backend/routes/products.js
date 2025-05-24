@@ -297,5 +297,35 @@ router.delete(
     }
   }
 );
+// DELETE MULTIPLE PRODUCTS (ONLY ADMIN)
+router.delete(
+  '/admin/products',
+  verifyTokenAuthorizationAndAdmin,
+  async (req, res) => {
+    try {
+      const productsIds = req.body.productIds;
+
+      if (!productsIds) {
+        return res.status(400).json({ error: 'No product Ids provided' });
+      }
+
+      if (productsIds) {
+        const deletedProduct = await Product.deleteMany({
+          id: { $in: productsIds },
+        });
+
+        if (!deletedProduct) {
+          return res.status(404).json({ error: 'Product not found' });
+        }
+
+        res.status(200).json({
+          data: { message: 'The products were deleted successfully' },
+        });
+      }
+    } catch (error) {
+      res.status(500).json({ Error: error.message });
+    }
+  }
+);
 
 export default router;

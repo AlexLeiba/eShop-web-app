@@ -40,6 +40,7 @@ export type UserType = {
   name?: string | undefined;
   lastName?: string | undefined;
   isAdmin?: boolean | undefined;
+  isUberAdmin?: boolean | undefined;
   createdAt: string;
   updatedAt: string;
 };

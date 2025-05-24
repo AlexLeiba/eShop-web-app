@@ -38,9 +38,6 @@ function UsersPage() {
 
   async function handleDelete(rowId: string) {
     try {
-      toast.loading('Deleting...', {
-        id: 'deletingToastId',
-      });
       const response = await apiFactory().deleteUser({
         userId: rowId,
         token: sessionToken,
@@ -58,8 +55,38 @@ function UsersPage() {
     }
   }
 
-  function handleMultipleDelete() {
-    console.log('🚀 ~ handleDelete ~ selectedRows:', selectedRows);
+  async function handleMultipleDelete() {
+    const rowsToDelete: string[] = [];
+    usersData?.forEach((item) => {
+      if (
+        selectedRows.includes(item.id) &&
+        !item.isAdmin &&
+        selectedRows.includes(item.id) &&
+        !item.isUberAdmin
+      ) {
+        rowsToDelete.push(item.id);
+      }
+    });
+
+    try {
+      toast.loading('Deleting...', {
+        id: 'deletingToastId',
+      });
+      const response = await apiFactory().deleteMultipleUsers({
+        userIds: rowsToDelete as string[],
+        token: sessionToken,
+      });
+      if (response?.error) {
+        toast.error(response.error);
+        return;
+      }
+      toast.success('Users were deleted successfully');
+      fetchData();
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      toast.dismiss('deletingToastId');
+    }
   }
 
   const columns: GridColDef[] = [
@@ -82,9 +109,20 @@ function UsersPage() {
       headerName: 'Role',
       // description: 'This column has a value getter and is not sortable.',
       sortable: false,
-      width: 60,
-      valueGetter: (value, row) => {
-        return row.isAdmin ? 'Admin' : 'User';
+      width: 90,
+      // valueGetter: (value, row) => {
+      //   return row.isAdmin ? 'Admin' : 'User';
+      // },
+      renderCell: (params) => {
+        if (params.row.isUberAdmin) {
+          return (
+            <p style={{ color: '#1376e1', fontWeight: 'bold' }}>UberAdmin</p>
+          );
+        }
+        if (params.row.isAdmin) {
+          return <p style={{ color: '#74cd48' }}>Admin</p>;
+        }
+        return <p style={{ color: '#d2ae1a' }}>User</p>;
       },
     },
     {
@@ -106,19 +144,21 @@ function UsersPage() {
       renderCell: (params) => {
         return (
           <div className='flex-center-center-12'>
-            <div>
-              <Link to={'/user/' + params.row._id}>
-                <IconEdit size={20} cursor={'pointer'} />
-              </Link>
-            </div>
-            <div>
-              <IconTrash
-                size={20}
-                color='#ff0000'
-                cursor={'pointer'}
-                onClick={() => handleDelete(params.row._id)}
-              />
-            </div>
+            <Link
+              to={'/user/' + params.row._id}
+              className='flex-center-center-12'
+            >
+              <IconEdit size={20} cursor={'pointer'} />
+            </Link>
+
+            <IconTrash
+              size={20}
+              color={params.row.isAdmin ? '#000000' : '#ff0000'}
+              cursor={params.row.isAdmin ? 'not-allowed' : 'pointer'}
+              onClick={() => {
+                params.row.isAdmin ? () => {} : handleDelete(params.row._id);
+              }}
+            />
           </div>
         );
       },
@@ -150,6 +190,7 @@ function UsersPage() {
         <Box sx={{ height: 650, width: '100%' }}>
           <DataGrid
             onRowSelectionModelChange={(e: { ids: Set<GridRowId> }) => {
+              console.log('first', e);
               const selectedRowIds = Array.from(e.ids).map((id) => id);
               setSelectedRows(selectedRowIds);
             }}
@@ -171,6 +212,7 @@ function UsersPage() {
             pageSizeOptions={[10, 20]}
             checkboxSelection
             sx={{ border: 0 }}
+            disableRowSelectionOnClick={true}
           />
         </Box>
       </GridContainer>

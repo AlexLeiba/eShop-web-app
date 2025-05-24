@@ -10,7 +10,7 @@ type Props = {
 export function Layout({ children }: Props) {
   return (
     <>
-      <Header username='Alex Leiba' />
+      <Header />
       <Sidebar />
       <div className='children-pages-container'>{children}</div>
     </>

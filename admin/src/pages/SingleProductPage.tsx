@@ -15,59 +15,12 @@ import { apiFactory } from '../lib/apiFactory';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store/config';
 import { useLocation } from 'react-router-dom';
+import {
+  initialErrorsObject,
+  initialFormData,
+} from '../components/SingleProductPage/initialData';
+import { IconX } from '@tabler/icons-react';
 
-const initialErrorsObject = {
-  roTitle: '',
-  enTitle: '',
-
-  roDescription: '',
-  enDescription: '',
-
-  price: '',
-  image: '',
-  categories: '',
-  size: '',
-  color: '',
-
-  images: '',
-  imageColor: '',
-
-  isPublished: '',
-  inStock: '',
-  featured: '',
-  featuredBackgroundColor: '',
-  language: '',
-  quantity: '',
-  moreInfo: '',
-};
-
-const initialFormData = {
-  //TODO WILL COME FROM BACKEND AS INITIAL STATE
-  title: '',
-  description: '',
-  roTitle: '',
-  enTitle: '',
-
-  roDescription: '',
-  enDescription: '',
-
-  price: '',
-  image: '',
-  categories: [''],
-  size: [''],
-  color: [''],
-
-  images: [],
-  imageColor: '',
-
-  isPublished: true,
-  inStock: true,
-  featured: true,
-  featuredBackgroundColor: '',
-  language: '',
-  quantity: '`',
-  moreInfo: '',
-};
 function SingleProductPage() {
   const { pathname } = useLocation();
   const userData = useSelector((state: RootState) => state.user.userData);
@@ -148,6 +101,24 @@ function SingleProductPage() {
         });
       };
     }
+  }
+
+  function handleDeleteCoverImage() {
+    setFormData((prev) => {
+      return {
+        ...prev,
+        image: '',
+      };
+    });
+  }
+
+  function handleDeleteProductImage(image: string) {
+    setFormData((prev) => {
+      return {
+        ...prev,
+        images: prev.images.filter((item) => item.image !== image),
+      };
+    });
   }
 
   async function handleSubmit() {
@@ -273,31 +244,50 @@ function SingleProductPage() {
             {/* SINGLE IMAGE COVER */}
             <div className='select-single-image-container'>
               <div className='flex-column-gap-12'>
-                <label htmlFor='image'>Cover Image</label>
+                <label htmlFor='image'>
+                  <b>Cover Image</b>
+                </label>
                 <input type='file' id='image' onChange={handleImageChange} />
                 <p className='text-error'>{formDataErrors.image}</p>
               </div>
 
               {formData.image && (
                 <div className='flex-column-gap-12'>
-                  <p>Preview image</p>
-                  <img
-                    src={formData.image}
-                    alt={'cover-image'}
-                    style={{ width: 200, height: 100, objectFit: 'contain' }}
-                  />
+                  <p>
+                    <b>Preview image</b>
+                  </p>
+                  <Spacer size={8} />
+                  {formData.image && (
+                    <>
+                      <IconX
+                        cursor={'pointer'}
+                        onClick={handleDeleteCoverImage}
+                      />
+                      <img
+                        src={formData.image}
+                        alt={'cover-image'}
+                        style={{
+                          width: 200,
+                          height: 150,
+                          objectFit: 'contain',
+                        }}
+                      />
+                    </>
+                  )}
                   <Spacer />
                 </div>
               )}
             </div>
             {/* <Spacer /> */}
 
-            {/* IMAGES */}
+            {/*MULTIPLE IMAGES WITH COLORS */}
             <div className='select-mltiple-images-container'>
               <div>
                 <div>
                   <div>
-                    <label htmlFor='image'>Product Images</label>
+                    <label htmlFor='image'>
+                      <b>Product Images</b>
+                    </label>
                     <Spacer size={8} />
                     <input
                       type='file'
@@ -310,7 +300,9 @@ function SingleProductPage() {
 
                 <div>
                   <Spacer size={8} />
-                  <p>Image color</p>
+                  <p>
+                    <b>Image color</b>
+                  </p>
                   <Spacer size={8} />
                   <select
                     className='select'
@@ -338,19 +330,31 @@ function SingleProductPage() {
               </div>
               {formData.images && (
                 <div className='flex-column-gap-12'>
-                  <p>Preview images</p>
+                  <p>
+                    <b>Preview images</b>
+                  </p>
                   {formData.images.map((item) => {
                     return (
-                      <div key={item.colorName + item.image}>
-                        <img
-                          src={item.image}
-                          alt={'cover-image'}
-                          style={{
-                            width: 200,
-                            height: 100,
-                            objectFit: 'contain',
-                          }}
+                      <div
+                        key={item.colorName + item.image}
+                        className='flex-center-row-4'
+                      >
+                        <IconX
+                          cursor={'pointer'}
+                          onClick={() => handleDeleteProductImage(item.image)}
                         />
+                        {item.image && (
+                          <img
+                            src={item.image}
+                            alt={'cover-image'}
+                            style={{
+                              width: 100,
+                              height: 100,
+                              objectFit: 'contain',
+                            }}
+                          />
+                        )}
+                        <p>{item.colorName}</p>
                       </div>
                     );
                   })}
@@ -407,33 +411,6 @@ function SingleProductPage() {
                   })}
                 </select>
                 <p className='text-error'> {formDataErrors.size}</p>
-              </div>
-
-              <div className='flex-column'>
-                <Spacer size={8} />
-                <p>Colors</p>
-                <Spacer size={8} />
-                <select
-                  value={formData?.color?.map((item) => item)}
-                  multiple
-                  className='select'
-                  onChange={(e) => {
-                    const selecteOptionsArray = Array.from(
-                      e.target.selectedOptions
-                    ).map((option) => option.value);
-
-                    handleChangeFormData('color', selecteOptionsArray);
-                  }}
-                >
-                  {COLORS.map((item) => {
-                    return (
-                      <option key={item.value} value={item.value}>
-                        {item.title}
-                      </option>
-                    );
-                  })}
-                </select>
-                <p className='text-error'> {formDataErrors.color}</p>
               </div>
             </div>
 

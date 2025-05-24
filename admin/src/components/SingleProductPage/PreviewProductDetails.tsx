@@ -1,3 +1,4 @@
+import { IconCircleCheck, IconCircleX } from '@tabler/icons-react';
 import type { ProductType } from '../../lib/schemas';
 import Spacer from '../ui/Spacer';
 
@@ -35,7 +36,12 @@ export function PreviewProductDetails({ formData }: Props) {
               <b>Colors:</b>
             </p>
             {formData.color.map((item) => {
-              return <div key={item} style={{ backgroundColor: item }}></div>;
+              return (
+                <div
+                  key={item}
+                  style={{ backgroundColor: item, border: '1px solid black' }}
+                ></div>
+              );
             })}
           </div>
 
@@ -43,17 +49,32 @@ export function PreviewProductDetails({ formData }: Props) {
             <b>Quantity:</b>
             {formData.quantity}
           </p>
-          <p>
-            <b>Published:</b>
-            {formData.isPublished ? 'Yes' : 'No'}
-          </p>
+          <div>
+            <p className='flex-center-row-4'>
+              <b>Published:</b>
+              {formData.isPublished ? (
+                <IconCircleCheck color='green' />
+              ) : (
+                <IconCircleX color='red' />
+              )}
+            </p>
+          </div>
+
           <p>
             <b>In Stock:</b>
-            {formData.inStock ? 'Yes' : 'No'}
+            {formData.inStock ? (
+              <span style={{ color: 'green' }}>Yes</span>
+            ) : (
+              <span style={{ color: 'red' }}>No</span>
+            )}
           </p>
           <p>
             <b>Featured:</b>
-            {formData.featured ? 'Yes' : 'No'}
+            {formData.featured ? (
+              <span style={{ color: 'green' }}>Yes</span>
+            ) : (
+              <span style={{ color: 'red' }}>No</span>
+            )}
           </p>
           {formData.featured && (
             <div>
