@@ -1,8 +1,8 @@
+import React from 'react';
 import { GridContainer } from '../../components/Grid/GridContainer';
 import { Input } from '../../components/ui/Input/Input';
 import { Button } from '../../components/ui/Button/Button';
 import { Logo } from '../../components/Logo/Logo';
-import React from 'react';
 import { LoginSchema } from '../../lib/schemas';
 import { login } from '../../store/userData/apiCalls';
 import { useDispatch } from 'react-redux';

@@ -1,13 +1,10 @@
-import {
-  TABLE_TRANSACTIONS_COLUMNS,
-  TABLE_TRANSACTIONS_DATA,
-} from '../../lib/consts';
+import { TABLE_TRANSACTIONS_COLUMNS } from '../../lib/consts';
 import Spacer from '../ui/Spacer';
 import { WidgetCard } from '../ui/WidgetCard';
 import './DashboardPage.scss';
 
 type Props = {
-  transactionData: typeof TABLE_TRANSACTIONS_DATA;
+  transactionData: any[];
 };
 export function LatestTransactions({ transactionData }: Props) {
   return (
@@ -20,7 +17,7 @@ export function LatestTransactions({ transactionData }: Props) {
           <tr>
             {TABLE_TRANSACTIONS_COLUMNS.map((column) => {
               return (
-                <th>
+                <th key={column.key}>
                   <p>{column.title}</p>
                 </th>
               );
@@ -31,7 +28,7 @@ export function LatestTransactions({ transactionData }: Props) {
         <tbody className='table-body'>
           {transactionData?.map((item) => {
             return (
-              <tr>
+              <tr key={item._id}>
                 <td>{item.name}</td>
                 <td>{item.date}</td>
                 <td>{item.amount}</td>

@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Logo } from '../Logo/Logo';
-import './Header.scss';
 import type { RootState } from '../../store/config';
 import { Button } from '../ui/Button/Button';
 import { logout } from '../../store/userData/reducers';
+import './Header.scss';
 
 function Header() {
   const userData = useSelector((state: RootState) => state.user.userData);

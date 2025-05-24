@@ -80,6 +80,21 @@ export const SALES_INFO_DATA = [
   },
 ];
 
+export const MONTHS = [
+  'Dec',
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+];
+
 export const NEW_MEMBERS_DATA = [
   {
     name: 'Alex',
@@ -94,51 +109,6 @@ export const NEW_MEMBERS_DATA = [
     email: 'alex@gmail.com',
     role: 'Admin',
     joinedAt: '2023-01-01',
-  },
-];
-
-export const CHARTS_DATA = [
-  {
-    name: 'Page A',
-    lastMonth: 4000,
-    currentMonth: 2400,
-    totalIncome: 2400,
-  },
-  {
-    name: 'Page B',
-    lastMonth: 3000,
-    currentMonth: 1398,
-    totalIncome: 2210,
-  },
-  {
-    name: 'Page C',
-    lastMonth: 2000,
-    currentMonth: 9800,
-    totalIncome: 2290,
-  },
-  {
-    name: 'Page D',
-    lastMonth: 2780,
-    currentMonth: 3908,
-    totalIncome: 2000,
-  },
-  {
-    name: 'Page E',
-    lastMonth: 1890,
-    currentMonth: 4800,
-    totalIncome: 2181,
-  },
-  {
-    name: 'Page F',
-    lastMonth: 2390,
-    currentMonth: 3800,
-    totalIncome: 2500,
-  },
-  {
-    name: 'Page G',
-    lastMonth: 3490,
-    currentMonth: 4300,
-    totalIncome: 2100,
   },
 ];
 

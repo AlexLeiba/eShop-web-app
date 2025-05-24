@@ -1,34 +1,35 @@
+import React from 'react';
 import { Layout } from '../components/Layout/Layout';
 import { GridContainer } from '../components/Grid/GridContainer';
 import Spacer from '../components/ui/Spacer';
 import { WidgetCard } from '../components/ui/WidgetCard';
 import { Input } from '../components/ui/Input/Input';
 import { Button } from '../components/ui/Button/Button';
-import React from 'react';
 import { EditProductSchema, type ProductType } from '../lib/schemas';
 import { CATEGORIES, COLORS, SIZES } from '../lib/consts';
-import '../components/SingleProductPage/SingleProductPage.scss';
 import toast from 'react-hot-toast';
 import { PreviewProductDetails } from '../components/SingleProductPage/PreviewProductDetails';
 import { ProductPerformanceChart } from '../components/SingleProductPage/ProductPerformanceChart';
 import { apiFactory } from '../lib/apiFactory';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store/config';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   initialErrorsObject,
   initialFormData,
 } from '../components/SingleProductPage/initialData';
 import { IconX } from '@tabler/icons-react';
+import '../components/SingleProductPage/SingleProductPage.scss';
 
 function SingleProductPage() {
+  const navigate = useNavigate();
   const { pathname } = useLocation();
-  const userData = useSelector((state: RootState) => state.user.userData);
+  const selectedProductId = pathname.split('/')[2];
 
+  const userData = useSelector((state: RootState) => state.user.userData);
   const sessionToken = userData?.token || '';
 
   const [formData, setFormData] = React.useState<ProductType>(initialFormData);
-
   const [formDataErrors, setFormDataErrors] = React.useState<{
     [key: string]: string;
   }>(initialErrorsObject);
@@ -37,7 +38,7 @@ function SingleProductPage() {
     async function fetchData() {
       try {
         const response = await apiFactory().getProduct({
-          productId: pathname.split('/')[2],
+          productId: selectedProductId,
           token: sessionToken,
         });
         if (response.error) {
@@ -140,22 +141,24 @@ function SingleProductPage() {
       };
       setFormDataErrors(initialErrorsObject);
 
-      // TODO: send data to backend
-
       try {
         toast.loading('Saving...', {
           id: 'savingToastId',
         });
+
         const response = await apiFactory().editProduct({
           productData: bodyData,
           productId: pathname.split('/')[2],
           token: sessionToken,
         });
+
         if (response.error) {
           toast.error(response.error);
           return;
         }
+
         toast.success('Product was edited successfully');
+        navigate('/products');
       } catch (error: any) {
         toast.error(error.message);
       } finally {

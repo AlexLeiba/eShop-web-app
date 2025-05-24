@@ -8,6 +8,7 @@ export type UserType = {
     isAdmin: string;
     userName: string;
     lastName: string;
+    isUberAdmin: boolean;
   };
   token: string;
 };

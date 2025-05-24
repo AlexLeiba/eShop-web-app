@@ -1,34 +1,33 @@
+import React from 'react';
 import { Layout } from '../components/Layout/Layout';
 import { GridContainer } from '../components/Grid/GridContainer';
 import Spacer from '../components/ui/Spacer';
 import { WidgetCard } from '../components/ui/WidgetCard';
 import { Input } from '../components/ui/Input/Input';
 import { Button } from '../components/ui/Button/Button';
-import React from 'react';
 import { EditUserSchema } from '../lib/schemas';
-import '../components/SingleProductPage/SingleProductPage.scss';
 import toast from 'react-hot-toast';
 import { apiFactory } from '../lib/apiFactory';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store/config';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import type { UserType } from '../lib/types';
 import {
   initialErrorsObject,
   initialFormData,
 } from '../components/SingleUserPage/initialData';
+import '../components/SingleProductPage/SingleProductPage.scss';
 
 function SingleUserPage() {
+  const navigate = useNavigate();
   const { pathname } = useLocation();
   const selectedUserId = pathname.split('/')[2];
 
   const userData = useSelector((state: RootState) => state.user.userData);
-
   const sessionToken = userData?.token || '';
 
   const [formData, setFormData] =
     React.useState<Omit<UserType, '_id' | 'id'>>(initialFormData);
-
   const [formDataErrors, setFormDataErrors] = React.useState<{
     [key: string]: string;
   }>(initialErrorsObject);
@@ -40,6 +39,7 @@ function SingleUserPage() {
           userId: selectedUserId,
           token: sessionToken,
         });
+
         if (response.error) {
           toast.error(response.error);
           return;
@@ -77,30 +77,29 @@ function SingleUserPage() {
 
       setFormDataErrors(errorValues);
     } else {
-      const bodyData = {
-        ...validatedFormData.data,
-      };
       setFormDataErrors(initialErrorsObject);
 
-      // TODO: send data to backend
-
       try {
-        if (formData.isUberAdmin) {
+        if (!userData?.data.isUberAdmin && formData.isUberAdmin) {
           throw new Error('Not authorized to edit uber admin');
         }
         toast.loading('Saving...', {
           id: 'savingToastId',
         });
+
         const response = await apiFactory().editUser({
-          userData: bodyData,
+          userData: validatedFormData.data,
           userId: pathname.split('/')[2],
           token: sessionToken,
         });
+
         if (response.error) {
           toast.error(response.error);
           return;
         }
+
         toast.success('User was edited successfully');
+        navigate('/users');
       } catch (error: any) {
         toast.error(error.message);
       } finally {

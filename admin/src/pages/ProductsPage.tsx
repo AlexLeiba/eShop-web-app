@@ -1,23 +1,25 @@
+import React from 'react';
 import { DataGrid, type GridColDef, type GridRowId } from '@mui/x-data-grid';
 import { Layout } from '../components/Layout/Layout';
 import { GridContainer } from '../components/Grid/GridContainer';
 import Spacer from '../components/ui/Spacer';
 import { Box } from '@mui/material';
 import type { ProductsType } from '../lib/types';
-import React, { useEffect } from 'react';
 import {
+  IconCheck,
   IconCircleCheck,
   IconCircleX,
   IconEdit,
   IconTrash,
+  IconX,
 } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/Button/Button';
-import '../components/ProductsPage/ProductsPage.scss';
 import toast from 'react-hot-toast';
 import { apiFactory } from '../lib/apiFactory';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store/config';
+import '../components/ProductsPage/ProductsPage.scss';
 
 function ProductsPage() {
   const userData = useSelector((state: RootState) => state.user.userData);
@@ -39,7 +41,7 @@ function ProductsPage() {
     }
     setProductsData(response.data);
   }
-  useEffect(() => {
+  React.useEffect(() => {
     fetchData();
   }, []);
 
@@ -48,14 +50,17 @@ function ProductsPage() {
       toast.loading('Deleting...', {
         id: 'deletingToastId',
       });
+
       const response = await apiFactory().deleteProduct({
         productId: rowId,
         token: sessionToken,
       });
+
       if (response.error) {
         toast.error(response.error);
         return;
       }
+
       toast.success('Product was deleted successfully');
       fetchData();
     } catch (error: any) {
@@ -69,15 +74,19 @@ function ProductsPage() {
       toast.loading('Deleting...', {
         id: 'deletingToastId',
       });
+
       const response = await apiFactory().deleteMultipleProducts({
         productIds: selectedRows as string[],
         token: sessionToken,
       });
+
       if (response?.error) {
         toast.error(response.error);
         return;
       }
+
       toast.success('Products were deleted successfully');
+
       fetchData();
     } catch (error: any) {
       toast.error(error.message);
@@ -142,9 +151,9 @@ function ProductsPage() {
         return (
           <div className='flex-center-center-12'>
             {params.row.featured ? (
-              <IconCircleCheck color='green' />
+              <IconCheck color='green' />
             ) : (
-              <IconCircleX color='red' />
+              <IconX color='red' />
             )}
           </div>
         );

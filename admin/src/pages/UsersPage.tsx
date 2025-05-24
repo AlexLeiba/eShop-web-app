@@ -1,10 +1,10 @@
+import React from 'react';
 import { DataGrid, type GridColDef, type GridRowId } from '@mui/x-data-grid';
 import { Layout } from '../components/Layout/Layout';
 import { GridContainer } from '../components/Grid/GridContainer';
 import Spacer from '../components/ui/Spacer';
 import { Box } from '@mui/material';
 import type { UserType } from '../lib/types';
-import React from 'react';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 import { apiFactory } from '../lib/apiFactory';
@@ -14,14 +14,14 @@ import toast from 'react-hot-toast';
 
 function UsersPage() {
   const userData = useSelector((state: RootState) => state.user.userData);
-
   const sessionToken = userData?.token || '';
 
   const [selectedRows, setSelectedRows] = React.useState<GridRowId[]>([]);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const paginationModel = { page: 0, pageSize: 10 };
+
   const [usersData, setUsersData] = React.useState<UserType[]>([]);
 
   async function fetchData() {
@@ -32,6 +32,7 @@ function UsersPage() {
     }
     setUsersData(response.data);
   }
+
   React.useEffect(() => {
     fetchData();
   }, []);
@@ -91,7 +92,27 @@ function UsersPage() {
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'userName', headerName: 'Username', width: 130 },
+    {
+      field: 'userName',
+      headerName: 'Username',
+      width: 130,
+      renderCell: (params) => {
+        return (
+          <p
+            style={
+              userData?.data._id === params.row._id
+                ? {
+                    fontWeight: 'bold',
+                    color: 'green',
+                  }
+                : {}
+            }
+          >
+            {params.row.userName}
+          </p>
+        );
+      },
+    },
     {
       field: 'name',
       headerName: 'Full name',
@@ -174,7 +195,9 @@ function UsersPage() {
           {selectedRows.length > 0 ? (
             <>
               <div className='flex-center-row-4'>
-                <p>Delete all Selected rows: {selectedRows.length}</p>
+                <p>
+                  Delete all selected rows except Admin: {selectedRows.length}
+                </p>
                 <IconTrash
                   color='#ff0000'
                   cursor={'pointer'}

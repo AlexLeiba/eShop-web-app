@@ -1,6 +1,6 @@
 import { IconShieldCog } from '@tabler/icons-react';
-import './Logo.scss';
 import { Link } from 'react-router-dom';
+import './Logo.scss';
 
 export function Logo() {
   return (

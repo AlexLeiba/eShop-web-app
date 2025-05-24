@@ -20,9 +20,11 @@ export function apiFactory() {
     getUsers,
     getUser,
     editUser,
-    getUsersStats,
     deleteUser,
     deleteMultipleUsers,
+
+    // Dashboard
+    getDashboardData,
   };
 }
 
@@ -157,17 +159,6 @@ async function getUsers(token: string) {
   return response.json();
 }
 
-async function getUsersStats(token: string) {
-  const response = await fetch(`${BACKEND_BASE_URL}/api/admin/users/stats`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      token: `Bearer ${token}`,
-    },
-  });
-  return response.json();
-}
-
 async function getUser({ userId, token }: { userId: string; token: string }) {
   const response = await fetch(`${BACKEND_BASE_URL}/api/admin/user/${userId}`, {
     method: 'GET',
@@ -227,5 +218,30 @@ export async function deleteMultipleUsers({
     },
     body: JSON.stringify({ userIds }),
   });
+  return response.json();
+}
+
+////////STATS
+async function getDashboardData(token: string) {
+  const response = await fetch(`${BACKEND_BASE_URL}/api/admin/dashboard`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      token: `Bearer ${token}`,
+    },
+  });
+  return response.json();
+}
+export async function getMonthlyIncomeStats(token: string) {
+  const response = await fetch(
+    `${BACKEND_BASE_URL}/api/admin/users/monthly-income-stats`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        token: `Bearer ${token}`,
+      },
+    }
+  );
   return response.json();
 }

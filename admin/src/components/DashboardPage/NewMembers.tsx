@@ -1,11 +1,12 @@
 import { IconEye } from '@tabler/icons-react';
-import { NEW_MEMBERS_DATA } from '../../lib/consts';
 import Spacer from '../ui/Spacer';
 import './DashboardPage.scss';
 import { WidgetCard } from '../ui/WidgetCard';
+import type { UserType } from '../../lib/types';
+import { Link } from 'react-router-dom';
 
 type Props = {
-  newMembersData: typeof NEW_MEMBERS_DATA;
+  newMembersData: UserType[];
 };
 export function NewMembers({ newMembersData }: Props) {
   return (
@@ -15,7 +16,7 @@ export function NewMembers({ newMembersData }: Props) {
       <ul className='new-joined-members-ul'>
         {newMembersData?.map((item) => {
           return (
-            <li className='new-joined-members-list'>
+            <li key={item._id} className='new-joined-members-list'>
               <div className='flex-center-row-4'>
                 <div className='flex-column'>
                   <div className='flex-center-row-4'>
@@ -26,13 +27,15 @@ export function NewMembers({ newMembersData }: Props) {
                 </div>
               </div>
               <p>
-                {new Date(item.joinedAt).toLocaleDateString('en-US', {
+                {new Date(item.createdAt).toLocaleDateString('en-US', {
                   year: '2-digit',
                   month: 'short',
                   day: 'numeric',
                 })}
               </p>
-              <IconEye cursor={'pointer'} />
+              <Link to={`/user/${item._id}`}>
+                <IconEye cursor={'pointer'} />
+              </Link>
             </li>
           );
         })}

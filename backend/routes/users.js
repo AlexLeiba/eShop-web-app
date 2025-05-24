@@ -8,7 +8,7 @@ dotenv.config();
 
 const router = express.Router();
 
-// FOR ADMIN ONLY
+// FOR ADMIN ONLY //
 
 // GET INDIVIDUAL USER
 router.get(
@@ -176,7 +176,8 @@ router.get(
         {
           $match: {
             createdAt: {
-              $gte: lastYear, // ($gte greater than) from last year to current year
+              // check if user has data greater than last year
+              $gte: lastYear, // ($gte greater than) from Last year to Current year
             },
           },
         },
@@ -192,7 +193,7 @@ router.get(
           $group: {
             _id: '$month', //group by month
             total: {
-              $sum: 1, //count total
+              $sum: 1, //count total users in that month which have joined the platform
             },
           },
         },

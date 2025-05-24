@@ -50,6 +50,11 @@ $boxShadow: 2px 2px 10px 1px $grayColor;
   grid-template-columns: 1fr 2fr;
   gap: 20px;
 }
+.grid-container-dashboard-2 {
+  display: grid;
+  grid-template-columns: 1.5fr 2fr;
+  gap: 20px;
+}
 .grid-container-2-equal {
   display: grid;
   grid-template-columns: 1fr 1fr;

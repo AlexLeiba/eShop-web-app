@@ -1,6 +1,6 @@
 import { SIDEBAR_LINKS } from '../../lib/consts';
-import './Sidebar.scss';
 import SidebarMenu from './SidebarMenu';
+import './Sidebar.scss';
 
 export function Sidebar() {
   return (
