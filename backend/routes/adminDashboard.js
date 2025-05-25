@@ -51,6 +51,11 @@ router.get(
             },
           },
         },
+        {
+          $sort: {
+            _id: 1,
+          },
+        },
       ]);
 
       // TRANSACTIONS

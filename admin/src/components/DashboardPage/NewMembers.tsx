@@ -19,7 +19,7 @@ export function NewMembers({ newMembersData }: Props) {
             <li key={item._id} className='new-joined-members-list'>
               <div className='flex-center-row-4'>
                 <div className='flex-column'>
-                  <div className='flex-center-row-4'>
+                  <div style={{ width: '200px' }} className='flex-center-row-4'>
                     <p>{item.name}</p>
                     <p>{item.lastName}</p>
                   </div>
