@@ -30,6 +30,24 @@ export function apiFactory() {
 
 //////////////////////////// PRODUCTS
 
+function checkApiResponse(response: Response) {
+  if (
+    response.status === 400 ||
+    response.status === 401 ||
+    response.status === 402 ||
+    response.status === 403 ||
+    response.status === 404 ||
+    response.status === 500
+  ) {
+    return {
+      error:
+        response.statusText ||
+        'Something went wrong, reload the page and try again',
+    };
+  }
+  return response.json();
+}
+
 async function login({ userData }: { userData: LoginType }) {
   const response = await fetch(`${BACKEND_BASE_URL}/api/admin/login`, {
     method: 'POST',
@@ -39,7 +57,7 @@ async function login({ userData }: { userData: LoginType }) {
     body: JSON.stringify(userData),
   });
 
-  return response.json();
+  return checkApiResponse(response);
 }
 
 async function getProducts(token: string) {
@@ -50,7 +68,7 @@ async function getProducts(token: string) {
       token: `Bearer ${token}`,
     },
   });
-  return response.json();
+  return checkApiResponse(response);
 }
 
 async function getProduct({
@@ -70,7 +88,7 @@ async function getProduct({
       },
     }
   );
-  return response.json();
+  return checkApiResponse(response);
 }
 
 async function newProduct(productData: ProductType, token: string) {
@@ -82,7 +100,8 @@ async function newProduct(productData: ProductType, token: string) {
     },
     body: JSON.stringify(productData),
   });
-  return response.json();
+
+  return checkApiResponse(response);
 }
 
 async function editProduct({
@@ -105,7 +124,7 @@ async function editProduct({
       body: JSON.stringify(productData),
     }
   );
-  return response.json();
+  return checkApiResponse(response);
 }
 
 type DeleteProductType = {
@@ -124,7 +143,7 @@ async function deleteProduct({ productId, token }: DeleteProductType) {
     }
   );
 
-  return response.json();
+  return checkApiResponse(response);
 }
 
 type DeleteMultipleProductType = {
@@ -144,7 +163,7 @@ export async function deleteMultipleProducts({
     body: JSON.stringify({ productIds }),
   });
 
-  return response.json();
+  return checkApiResponse(response);
 }
 
 //////////////////////////// USERS
@@ -156,7 +175,7 @@ async function getUsers(token: string) {
       token: `Bearer ${token}`,
     },
   });
-  return response.json();
+  return checkApiResponse(response);
 }
 
 async function getUser({ userId, token }: { userId: string; token: string }) {
@@ -168,7 +187,7 @@ async function getUser({ userId, token }: { userId: string; token: string }) {
     },
   });
 
-  return response.json();
+  return checkApiResponse(response);
 }
 type EditUserType = {
   userData: Omit<UserType, '_id' | 'id' | 'createdAt' | 'updatedAt' | 'email'>;
@@ -184,7 +203,7 @@ async function editUser({ userData, userId, token }: EditUserType) {
     },
     body: JSON.stringify(userData),
   });
-  return response.json();
+  return checkApiResponse(response);
 }
 
 async function deleteUser({
@@ -201,7 +220,7 @@ async function deleteUser({
       token: `Bearer ${token}`,
     },
   });
-  return response.json();
+  return checkApiResponse(response);
 }
 export async function deleteMultipleUsers({
   userIds,
@@ -218,7 +237,7 @@ export async function deleteMultipleUsers({
     },
     body: JSON.stringify({ userIds }),
   });
-  return response.json();
+  return checkApiResponse(response);
 }
 
 ////////STATS
@@ -230,7 +249,7 @@ async function getDashboardData(token: string) {
       token: `Bearer ${token}`,
     },
   });
-  return response.json();
+  return checkApiResponse(response);
 }
 export async function getMonthlyIncomeStats(token: string) {
   const response = await fetch(
@@ -243,5 +262,5 @@ export async function getMonthlyIncomeStats(token: string) {
       },
     }
   );
-  return response.json();
+  return checkApiResponse(response);
 }

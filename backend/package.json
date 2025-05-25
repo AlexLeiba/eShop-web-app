@@ -12,6 +12,7 @@
   "type": "module",
   "description": "",
   "dependencies": {
+    "cloudinary": "^2.6.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "crypto-js": "^4.2.0",

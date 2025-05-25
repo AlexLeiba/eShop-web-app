@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { mongodbConnect } from './config/mongodb.js';
+import { cloudinaryConnect } from './config/cloudinary.js';
 
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
@@ -22,8 +23,12 @@ const app = express(); //initialize express app
 // MONGODB CONNECTION
 mongodbConnect();
 
+// CLOUDINARY CONNECTION
+cloudinaryConnect();
+
 // MIDDLEWARES CONFIGURATION
-app.use(express.json()); // parse application/json - all the req passed will be json format (with that config we will pass any json file to the server)
+app.use(express.json({ limit: '50mb' })); // parse application/json - all the req passed will be json format (with that config we will pass any json file to the server)
+app.use(express.urlencoded({ limit: '50mb', extended: true })); //default is 100b for JSON payloads
 app.use(cookieParser()); // Parses cookies attached to the client request./ Extracts cookies from incoming HTTP requests and makes them available in req.cookies.
 app.use(cors()); // enable cors
 

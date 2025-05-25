@@ -75,6 +75,7 @@ export const CreateProductSchema = z.object({
       z.object({
         colorName: z.string().min(2, 'Color is required'),
         image: z.string().min(2, 'Image is required'),
+        imageId: z.string().optional(),
       })
     )
     .min(1, 'Image is required'),

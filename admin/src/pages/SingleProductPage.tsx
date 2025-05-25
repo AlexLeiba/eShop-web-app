@@ -96,6 +96,7 @@ function SingleProductPage() {
               {
                 colorName: formData.imageColor,
                 image: reader.result as string,
+                imageId: '',
               },
             ],
           };
@@ -138,6 +139,7 @@ function SingleProductPage() {
         ...validatedFormData.data,
         title: validatedFormData.data.enTitle,
         description: validatedFormData.data.enDescription,
+        color: validatedFormData.data.images.map((item) => item.colorName),
       };
       setFormDataErrors(initialErrorsObject);
 

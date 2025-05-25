@@ -2,6 +2,7 @@ import express from 'express';
 import { verifyTokenAuthorizationAndAdmin } from '../config/verifyToken.js';
 import Product from '../models/Product.js';
 import { v4 as uuidv4 } from 'uuid';
+import { v2 as cloudinary } from 'cloudinary';
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -223,9 +224,65 @@ router.post(
   '/admin/product',
   verifyTokenAuthorizationAndAdmin,
   async (req, res) => {
+    const bodyImages = req.body.images;
+    const bodyCoverImage = req.body.image;
+
+    let uploadedCoverImage = { image: '', imageId: '' };
+    let uploadedImages = [];
+
     try {
+      if (bodyCoverImage) {
+        const storedImage = await cloudinary.uploader.upload(bodyCoverImage, {
+          folder: 'eshop',
+          allowed_formats: ['jpg', 'png', 'gif', 'webp', 'svg', 'jpeg'],
+          transformation: [
+            {
+              crop: 'limit',
+            },
+          ],
+        });
+        if (storedImage.error) {
+          return res.status(400).json({ error: storedImage.error.message });
+        }
+        uploadedCoverImage = {
+          image: storedImage.secure_url,
+          imageId: storedImage.public_id,
+        };
+      }
+
+      if (bodyImages) {
+        // for (let i = 0; i < bodyImages.length; i++) {
+        const uploaded = bodyImages.map(async (item, index) => {
+          const storedImage = await cloudinary.uploader.upload(item.image, {
+            folder: 'eshop',
+            allowed_formats: ['jpg', 'png', 'gif', 'webp', 'svg', 'jpeg'],
+            transformation: [
+              {
+                crop: 'limit',
+              },
+            ],
+          });
+          if (storedImage.error) {
+            return res.status(400).json({ error: storedImage.error.message });
+          }
+          return {
+            colorName: item.colorName,
+            image: storedImage.secure_url,
+            imageId: storedImage.public_id,
+          };
+        });
+
+        uploadedImages = await Promise.all(uploaded);
+      }
+
       const uniqueId = uuidv4();
-      const newProduct = new Product({ ...req.body, id: uniqueId });
+      const newProduct = new Product({
+        ...req.body,
+        image: uploadedCoverImage.image,
+        imageId: uploadedCoverImage.imageId,
+        images: uploadedImages,
+        id: uniqueId,
+      });
 
       newProduct.save();
 
@@ -241,11 +298,58 @@ router.put(
   '/admin/product/:id',
   verifyTokenAuthorizationAndAdmin,
   async (req, res) => {
+    const bodyImages = req.body.images;
+    const bodyCoverImage = req.body.image;
+
     try {
       const productID = req.params.id;
 
       if (!productID) {
         return res.status(400).json({ error: 'No product ID provided' });
+      }
+
+      if (bodyCoverImage) {
+        // IF IMAGE IS PROVIDED IN BODY ( add it to body obj before saving it in DB)
+        const storedImage = await cloudinary.uploader.upload(bodyCoverImage, {
+          folder: 'eshop',
+          allowed_formats: ['jpg', 'png', 'gif', 'webp', 'svg', 'jpeg'],
+          transformation: [
+            {
+              crop: 'limit',
+              width: 1000,
+              height: 800,
+            },
+          ],
+        });
+        if (storedImage.error) {
+          return res.status(400).json({ error: storedImage.error.message });
+        }
+        req.body.image = storedImage.secure_url;
+        req.body.imageId = storedImage.public_id;
+      }
+
+      if (bodyImages) {
+        const uploaded = bodyImages.map(async (item, index) => {
+          const storedImage = await cloudinary.uploader.upload(item.image, {
+            folder: 'eshop',
+            allowed_formats: ['jpg', 'png', 'gif', 'webp', 'svg', 'jpeg'],
+            transformation: [
+              {
+                crop: 'limit',
+              },
+            ],
+          });
+          if (storedImage.error) {
+            return res.status(400).json({ error: storedImage.error.message });
+          }
+          return {
+            colorName: item.colorName,
+            image: storedImage.secure_url,
+            imageId: storedImage.public_id,
+          };
+        });
+
+        req.body.images = await Promise.all(uploaded);
       }
 
       if (productID) {
@@ -288,6 +392,18 @@ router.delete(
           return res.status(404).json({ error: 'Product not found' });
         }
 
+        // DELETE IMAGES
+        if (deletedProduct.imageId) {
+          await cloudinary.uploader.destroy(deletedProduct.imageId);
+        }
+        if (deletedProduct.images) {
+          deletedProduct.images.forEach(async (item) => {
+            if (item.imageId) {
+              await cloudinary.uploader.destroy(item.imageId);
+            }
+          });
+        }
+
         res
           .status(200)
           .json({ data: { message: 'Product deleted successfully' } });
@@ -310,6 +426,25 @@ router.delete(
       }
 
       if (productsIds) {
+        const allProducts = await Product.find({ id: { $in: productsIds } });
+
+        if (!allProducts) {
+          return res.status(404).json({ error: 'Product not found' });
+        }
+        // DELETE IMAGES OF EACH PRODUCT
+        allProducts.forEach(async (item) => {
+          if (item.imageId) {
+            await cloudinary.uploader.destroy(item.imageId);
+          }
+          if (item.images) {
+            item.images.forEach(async (item) => {
+              if (item.imageId) {
+                await cloudinary.uploader.destroy(item.imageId);
+              }
+            });
+          }
+        });
+
         const deletedProduct = await Product.deleteMany({
           id: { $in: productsIds },
         });

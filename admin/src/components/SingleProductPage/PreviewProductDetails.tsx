@@ -35,10 +35,10 @@ export function PreviewProductDetails({ formData }: Props) {
             <p>
               <b>Colors:</b>
             </p>
-            {formData.color.map((item) => {
+            {formData.color.map((item, index) => {
               return (
                 <div
-                  key={item}
+                  key={item + index}
                   style={{ backgroundColor: item, border: '1px solid black' }}
                 ></div>
               );
@@ -98,7 +98,7 @@ export function PreviewProductDetails({ formData }: Props) {
             </p>
           )}
         </div>
-        <img src={formData.image} alt={formData.title} />
+        {formData.image && <img src={formData.image} alt={formData.title} />}
       </div>
       <Spacer size={24} />
     </div>

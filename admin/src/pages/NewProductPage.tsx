@@ -88,6 +88,7 @@ function NewProductPage() {
               {
                 colorName: formData.imageColor,
                 image: reader.result as string,
+                imageId: '',
               },
             ],
           };
