@@ -74,7 +74,7 @@ function Wishlist() {
 
       <Spacer sm={16} md={24} lg={24} />
 
-      <div className=''>
+      <div className='flex flex-grow-1 flex-col'>
         <Container>
           <div className='flex gap-2 justify-center items-center'>
             <h1 className='text-4xl font-medium text-center'> {t('title')} </h1>

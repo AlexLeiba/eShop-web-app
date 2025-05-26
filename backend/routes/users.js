@@ -146,7 +146,8 @@ router.get(
   verifyTokenAuthorizationAndAdmin,
   async (req, res) => {
     try {
-      const allUsers = await User.find();
+      const allUsers = await User.find().sort({ createdAt: -1 });
+      // sort by createdAt in descending order
 
       if (!allUsers) {
         return res.status(404).json({ error: 'No users found' });

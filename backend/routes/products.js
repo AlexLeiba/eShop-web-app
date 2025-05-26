@@ -209,7 +209,7 @@ router.get(
   verifyTokenAuthorizationAndAdmin,
   async (req, res) => {
     try {
-      const products = await Product.find();
+      const products = await Product.find().sort({ createdAt: -1 }); // sort by createdAt in descending order
       if (!products) {
         return res.status(404).json({ error: 'No products found' });
       }

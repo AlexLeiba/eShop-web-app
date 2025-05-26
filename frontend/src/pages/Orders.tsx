@@ -11,12 +11,10 @@ import { Newsletter } from '../components/Home/Newsletter';
 import { Footer } from '../components/Navigations/Footer';
 import { Navbar } from '../components/Navigations/Navbar';
 import { Announcement } from '../components/ui/Announcement';
-
 import { Spacer } from '../components/ui/spacer';
 import { useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import toast from 'react-hot-toast';
-
 import { useTranslation } from 'react-i18next';
 import type { OrderType } from '../consts';
 import { useSelector } from 'react-redux';
@@ -72,14 +70,10 @@ function Orders() {
   }, [searchParams]);
 
   const columns: { id: keyof OrderType; label: string }[] = [
-    // {
-    //   id: 'userId',
-    //   label: 'User ID',
-    // },
-    // {
-    //   id: 'stripeId',
-    //   label: 'Stripe ID',
-    // },
+    {
+      id: 'status',
+      label: 'Status',
+    },
     {
       id: 'userEmail',
       label: 'User Email',
@@ -100,12 +94,65 @@ function Orders() {
       id: 'createdAt',
       label: 'Created At',
     },
+
     {
-      id: 'status',
-      label: 'Status',
+      id: 'stripeId',
+      label: 'Payment ID',
     },
   ];
 
+  function rowsData() {
+    return ordersData.map((row) => {
+      return (
+        <TableRow
+          key={row._id}
+          sx={{
+            '&:last-child td, &:last-child th': { border: 0 },
+          }}
+        >
+          {columns.map((column) => {
+            if (column.id === 'createdAt') {
+              const date = new Date(row[column.id]);
+              const formattedDate = date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+              });
+
+              return (
+                <TableCell
+                  key={column.id}
+                  style={{ minWidth: 200 }}
+                  component='th'
+                >
+                  <p> {formattedDate}</p>
+                </TableCell>
+              );
+            } else if (column.id === 'totalPrice') {
+              return (
+                <TableCell key={column.id} style={{ minWidth: 200 }}>
+                  <p>
+                    {new Intl.NumberFormat('en-US', {
+                      style: 'currency',
+                      currency: 'USD',
+                    }).format(row[column.id] as number)}
+                  </p>
+                </TableCell>
+              );
+            } else {
+              return (
+                <TableCell key={column.id} style={{ minWidth: 200 }}>
+                  <p>{row[column.id] as string}</p>
+                </TableCell>
+              );
+            }
+          })}
+        </TableRow>
+      );
+    });
+  }
   return (
     <div className='flex min-h-screen flex-col'>
       {/* Navbar */}
@@ -118,7 +165,7 @@ function Orders() {
 
       <Spacer sm={16} md={24} lg={24} />
 
-      <div className=''>
+      <div className='flex flex-grow-1 flex-col'>
         <Container>
           <div className='flex justify-between items-center'>
             <h2 className='text-4xl font-bold'>
@@ -147,72 +194,16 @@ function Orders() {
                       <TableRow>
                         {columns.map((data) => {
                           return (
-                            <TableCell key={data.id}>{data.label}</TableCell>
+                            <TableCell sx={{ width: 800 }} key={data.id}>
+                              <p>
+                                <b> {data.label}</b>
+                              </p>
+                            </TableCell>
                           );
                         })}
                       </TableRow>
                     </TableHead>
-                    <TableBody>
-                      {ordersData.map((row) => (
-                        <TableRow
-                          key={row._id}
-                          sx={{
-                            '&:last-child td, &:last-child th': { border: 0 },
-                          }}
-                        >
-                          {columns.map((column) => {
-                            if (column.id === 'createdAt') {
-                              const date = new Date(row[column.id]);
-                              const formattedDate = date.toLocaleDateString(
-                                'en-US',
-                                {
-                                  year: 'numeric',
-                                  month: '2-digit',
-                                  day: '2-digit',
-                                  hour: '2-digit',
-                                  minute: '2-digit',
-                                }
-                              );
-
-                              return (
-                                <TableCell
-                                  key={column.id}
-                                  component='th'
-                                  scope='row'
-                                >
-                                  <p>{formattedDate}</p>
-                                </TableCell>
-                              );
-                            } else if (column.id === 'totalPrice') {
-                              return (
-                                <TableCell
-                                  key={column.id}
-                                  component='th'
-                                  scope='row'
-                                >
-                                  <p>
-                                    {new Intl.NumberFormat('en-US', {
-                                      style: 'currency',
-                                      currency: 'USD',
-                                    }).format(row[column.id] as number)}
-                                  </p>
-                                </TableCell>
-                              );
-                            } else {
-                              return (
-                                <TableCell
-                                  key={column.id}
-                                  component='th'
-                                  scope='row'
-                                >
-                                  <p>{row[column.id] as string}</p>
-                                </TableCell>
-                              );
-                            }
-                          })}
-                        </TableRow>
-                      ))}
-                    </TableBody>
+                    <TableBody>{rowsData()}</TableBody>
                   </Table>
                 </TableContainer>
               </>

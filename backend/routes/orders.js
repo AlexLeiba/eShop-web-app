@@ -35,7 +35,9 @@ router.get('/order/:id', verifyTokenAuthorization, async (req, res) => {
 // GET ALL USER ORDERS
 router.get('/orders', verifyTokenAuthorization, async (req, res) => {
   try {
-    const orders = await Order.find({ userId: req.user.id });
+    const orders = await Order.find({ userId: req.user.id }).sort({
+      createdAt: -1,
+    });
     if (!orders) {
       return res.status(404).json({ error: 'No orders found' });
     }
@@ -56,7 +58,7 @@ router.get(
   verifyTokenAuthorizationAndAdmin,
   async (req, res) => {
     try {
-      const orders = await Order.find();
+      const orders = await Order.find().sort({ createdAt: -1 }); // sort by createdAt in descending order
       if (!orders) {
         return res.status(404).json({ error: 'No orders found' });
       }
