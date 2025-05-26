@@ -8,3 +8,13 @@ export function cloudinaryConnect() {
     secure: process.env.ENV === 'production',
   });
 }
+
+export const ALLOWED_FORMATS = [
+  'jpg',
+  'png',
+  'gif',
+  'webp',
+  'svg',
+  'jpeg',
+  'avif',
+];

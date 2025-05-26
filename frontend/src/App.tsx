@@ -13,6 +13,7 @@ import { Toaster } from 'react-hot-toast';
 import { SetDefaultLanguage } from './components/Language/SetDefaultLanguage';
 import { useSelector } from 'react-redux';
 import type { RootState } from './store/store';
+import Orders from './pages/Orders';
 
 function App() {
   const userData = useSelector((state: RootState) => state.user.userData?.data);
@@ -41,6 +42,10 @@ function App() {
               path='/cart'
               element={sessionToken ? <Cart /> : <Navigate to='/login' />}
             />
+            <Route
+              path='/orders'
+              element={sessionToken ? <Orders /> : <Navigate to='/login' />}
+            />
 
             {/* Auth routes */}
             <Route
@@ -54,7 +59,7 @@ function App() {
 
             {/* Payment Stripe */}
             <Route path='/success' element={<SuccessPaymentPage />} />
-            <Route path='/error' element={<ErrorPaymentPage />} />
+            <Route path='/cancel' element={<ErrorPaymentPage />} />
           </Routes>
         </BrowserRouter>
       </div>

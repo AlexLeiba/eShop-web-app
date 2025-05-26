@@ -3,6 +3,7 @@ import { verifyTokenAuthorizationAndAdmin } from '../config/verifyToken.js';
 import Product from '../models/Product.js';
 import { v4 as uuidv4 } from 'uuid';
 import { v2 as cloudinary } from 'cloudinary';
+import { ALLOWED_FORMATS } from '../config/cloudinary.js';
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -234,7 +235,7 @@ router.post(
       if (bodyCoverImage) {
         const storedImage = await cloudinary.uploader.upload(bodyCoverImage, {
           folder: 'eshop',
-          allowed_formats: ['jpg', 'png', 'gif', 'webp', 'svg', 'jpeg'],
+          allowed_formats: ALLOWED_FORMATS,
           transformation: [
             {
               crop: 'limit',
@@ -255,7 +256,7 @@ router.post(
         const uploaded = bodyImages.map(async (item, index) => {
           const storedImage = await cloudinary.uploader.upload(item.image, {
             folder: 'eshop',
-            allowed_formats: ['jpg', 'png', 'gif', 'webp', 'svg', 'jpeg'],
+            allowed_formats: ALLOWED_FORMATS,
             transformation: [
               {
                 crop: 'limit',
@@ -312,7 +313,7 @@ router.put(
         // IF IMAGE IS PROVIDED IN BODY ( add it to body obj before saving it in DB)
         const storedImage = await cloudinary.uploader.upload(bodyCoverImage, {
           folder: 'eshop',
-          allowed_formats: ['jpg', 'png', 'gif', 'webp', 'svg', 'jpeg'],
+          allowed_formats: ALLOWED_FORMATS,
           transformation: [
             {
               crop: 'limit',
@@ -332,7 +333,7 @@ router.put(
         const uploaded = bodyImages.map(async (item, index) => {
           const storedImage = await cloudinary.uploader.upload(item.image, {
             folder: 'eshop',
-            allowed_formats: ['jpg', 'png', 'gif', 'webp', 'svg', 'jpeg'],
+            allowed_formats: ALLOWED_FORMATS,
             transformation: [
               {
                 crop: 'limit',

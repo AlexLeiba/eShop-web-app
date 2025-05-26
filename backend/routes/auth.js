@@ -71,6 +71,7 @@ router.post('/login', async (req, res) => {
         email: loggedUser.email,
         isAdmin: loggedUser.isAdmin,
         isUberAdmin: loggedUser.isUberAdmin,
+        userName: loggedUser.userName,
       },
       process.env.JWT_SECRET_KEY,
       { expiresIn: '7d' }
@@ -120,6 +121,8 @@ router.post('/admin/login', async (req, res) => {
         id: loggedUser._id,
         email: loggedUser.email,
         isAdmin: loggedUser.isAdmin,
+        userName: loggedUser.userName,
+        isUberAdmin: loggedUser.isUberAdmin,
       },
       process.env.JWT_SECRET_KEY,
       { expiresIn: '7d' }

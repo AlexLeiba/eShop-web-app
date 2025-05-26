@@ -51,18 +51,22 @@ router.get('/orders', verifyTokenAuthorization, async (req, res) => {
 });
 
 // GET ALL ORDERS (ONLY ADMIN)
-router.get('/orders', verifyTokenAuthorizationAndAdmin, async (req, res) => {
-  try {
-    const orders = await Order.find();
-    if (!orders) {
-      return res.status(404).json({ error: 'No orders found' });
-    }
+router.get(
+  '/admin/orders',
+  verifyTokenAuthorizationAndAdmin,
+  async (req, res) => {
+    try {
+      const orders = await Order.find();
+      if (!orders) {
+        return res.status(404).json({ error: 'No orders found' });
+      }
 
-    res.status(200).json({ data: orders });
-  } catch (error) {
-    res.status(500).json({ Error: error.message });
+      res.status(200).json({ data: orders });
+    } catch (error) {
+      res.status(500).json({ Error: error.message });
+    }
   }
-});
+);
 
 // POST ORDER
 router.post('/order', verifyTokenAuthorization, async (req, res) => {
@@ -102,7 +106,7 @@ router.put(
 
 //DELETE ORDER (ONLY ADMIN)
 router.delete(
-  '/order/:orderId',
+  'admin/order/:orderId',
   verifyTokenAuthorizationAndAdmin,
   async (req, res) => {
     const queryOrderId = req.params.orderId;
@@ -110,7 +114,9 @@ router.delete(
       return res.status(400).json({ error: 'No order ID provided' });
     }
     try {
-      const deletedOrder = await Order.findByIdAndDelete(queryOrderId);
+      const deletedOrder = await Order.findByIdAndDelete({
+        id: queryOrderId,
+      });
 
       if (!deletedOrder) {
         return res.status(404).json({ error: 'Order not found' });
@@ -123,9 +129,46 @@ router.delete(
   }
 );
 
+// DELETE MULTIPLE PRODUCTS (ONLY ADMIN)
+router.delete(
+  '/admin/orders',
+  verifyTokenAuthorizationAndAdmin,
+  async (req, res) => {
+    try {
+      const orderIds = req.body.orderIds;
+
+      if (!orderIds) {
+        return res.status(400).json({ error: 'No product Ids provided' });
+      }
+
+      if (orderIds) {
+        const allOrders = await Order.find({ id: { $in: orderIds } });
+
+        if (allOrders.length === 0) {
+          return res.status(404).json({ error: 'No orders found' });
+        }
+
+        const deletedOrder = await Order.deleteMany({
+          id: { $in: orderIds },
+        });
+
+        if (!deletedOrder) {
+          return res.status(404).json({ error: 'Order not found' });
+        }
+
+        res.status(200).json({
+          data: { message: 'The orders were deleted successfully' },
+        });
+      }
+    } catch (error) {
+      res.status(500).json({ Error: error.message });
+    }
+  }
+);
+
 // GET MONTHLY INCOME STATS (ONLY ADMIN)
 router.get(
-  '/orders/stats',
+  'admin/orders/stats',
   verifyTokenAuthorizationAndAdmin,
   async (req, res) => {
     const currentDate = new Date();

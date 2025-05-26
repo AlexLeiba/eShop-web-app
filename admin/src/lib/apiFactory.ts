@@ -25,6 +25,11 @@ export function apiFactory() {
 
     // Dashboard
     getDashboardData,
+
+    // Orders
+    getOrders,
+    deleteMultipleOrders,
+    deleteOrder,
   };
 }
 
@@ -262,5 +267,57 @@ export async function getMonthlyIncomeStats(token: string) {
       },
     }
   );
+  return checkApiResponse(response);
+}
+
+// ORDERS
+async function getOrders(token: string) {
+  const response = await fetch(`${BACKEND_BASE_URL}/api/admin/orders`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      token: `Bearer ${token}`,
+    },
+  });
+  return checkApiResponse(response);
+}
+
+type DeteleOrderType = {
+  orderId: string;
+  token: string;
+};
+
+async function deleteOrder({ orderId, token }: DeteleOrderType) {
+  const response = await fetch(
+    `${BACKEND_BASE_URL}/api/admin/order/${orderId}`,
+    {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        token: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return checkApiResponse(response);
+}
+
+type DeleteMultipleOrdersType = {
+  orderIds: string[];
+  token: string;
+};
+export async function deleteMultipleOrders({
+  orderIds,
+  token,
+}: DeleteMultipleOrdersType) {
+  const response = await fetch(`${BACKEND_BASE_URL}/api/admin/orders`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      token: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ orderIds }),
+  });
+
   return checkApiResponse(response);
 }

@@ -28,6 +28,7 @@ export function OrderSummary({
   const sessionToken = userData?.token || '';
 
   async function handleMakePayment() {
+    const language = localStorage.getItem('language');
     const headers = {
       'Content-Type': 'application/json',
       token: `Bearer ${sessionToken}`,
@@ -39,7 +40,9 @@ export function OrderSummary({
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/create-checkout-session`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/create-checkout-session/${
+          language?.toLowerCase() || 'en'
+        }`,
         {
           method: 'POST',
           headers,

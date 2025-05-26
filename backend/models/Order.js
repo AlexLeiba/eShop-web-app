@@ -2,7 +2,23 @@ import mongoose from 'mongoose';
 
 const OrderSchema = new mongoose.Schema(
   {
+    id: {
+      type: String,
+      required: true,
+    },
     userId: {
+      type: String,
+      required: true,
+    },
+    userName: {
+      type: String,
+      required: true,
+    },
+    userEmail: {
+      type: String,
+      required: true,
+    },
+    stripeId: {
       type: String,
       required: true,
     },
@@ -16,14 +32,38 @@ const OrderSchema = new mongoose.Schema(
           type: Number,
           default: 1,
         },
+        size: {
+          type: String,
+          required: true,
+        },
+        color: {
+          type: String,
+          required: true,
+        },
+        title: {
+          type: String,
+          required: true,
+        },
+        price: {
+          type: Number,
+          required: true,
+        },
+        image: {
+          type: String,
+          required: true,
+        },
+        totalPrice: {
+          type: Number,
+          required: true,
+        },
       },
     ],
-    amount: {
+    quantity: {
       type: Number,
       required: true,
     },
-    address: {
-      type: Object,
+    totalPrice: {
+      type: Number,
       required: true,
     },
     status: {

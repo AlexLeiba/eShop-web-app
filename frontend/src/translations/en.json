@@ -142,6 +142,10 @@
       "productAddedToWishlist": "Product was added to wishlist"
     }
   },
+  "OrdersPage": {
+    "title": "My Orders",
+    "noOrders": "You have no orders"
+  },
   "FooterSection": {
     "links": {
       "title": "Links",
@@ -168,6 +172,7 @@
       "fullName": "Full Name",
       "email": "Email",
       "role": "Role",
+      "myOrders": "My Orders",
       "logout": "Logout"
     }
   }

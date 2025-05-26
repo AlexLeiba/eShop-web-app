@@ -4,6 +4,7 @@ import type { UserType } from '../../store/userData/reducer';
 import { cn } from '../../lib/utils';
 import { IconLogout } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 type Props = {
   userData: UserType['data']['data'];
@@ -50,19 +51,19 @@ export function MyAccountDropdown({ userData }: Props) {
       {open && (
         <div className='absolute top-10 right-0 w-[260px] bg-white/90 shadow-lg  rounded-md z-50 p-3 gap-2 flex flex-col'>
           <div className='  px-2 relative rounded-sm w-full flex-col flex   transition-all '>
-            <p>
+            <p className='line-clamp-1'>
               <b>{t('username')}: </b>
               {userData?.userName}
             </p>
           </div>
           <div className='  px-2 relative rounded-sm w-full flex-col flex   transition-all '>
-            <p>
+            <p className='line-clamp-1'>
               <b>{t('fullName')}: </b>
               {userData?.name + ' ' + userData?.lastName || ''}
             </p>
           </div>
           <div className='  px-2 relative rounded-sm w-full flex-col flex   transition-all '>
-            <p>
+            <p className='line-clamp-1'>
               <b>{t('role')}: </b>
               {userData?.isAdmin ? 'Admin' : 'User'}
             </p>
@@ -73,6 +74,14 @@ export function MyAccountDropdown({ userData }: Props) {
               {userData?.email}
             </p>
           </div>
+          <Spacer size={2} />
+          <Link to={`/orders`}>
+            <div className='  px-2 relative rounded-sm w-full flex-col flex   transition-all '>
+              <p className=' wrap-break-word '>
+                <b>{t('myOrders')} </b>
+              </p>
+            </div>
+          </Link>
           <Spacer size={4} />
           <div
             onClick={handleLogout}

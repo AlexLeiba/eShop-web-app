@@ -144,6 +144,32 @@ export type ProductsInCartType = {
   __v: number;
 };
 
+type ProductsInOrderType = {
+  productId: string;
+  title: string;
+  price: number;
+  image: string;
+  color: string;
+  size: string;
+  quantity: number;
+  totalPrice: number;
+};
+
+export type OrderType = {
+  _id: string;
+  userId: string;
+  userName: string;
+  userEmail: string;
+  stripeId: string;
+  products: ProductsInOrderType[];
+  totalPrice: number;
+  quantity: number;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+};
+
 // FILTERS AND SORTS DATA
 
 export const filterColors = {

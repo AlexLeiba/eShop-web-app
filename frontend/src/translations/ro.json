@@ -142,7 +142,10 @@
       "productAddedToWishlist": "Produsul a fost adaugat in cosul de cumparaturi"
     }
   },
-
+  "OrdersPage": {
+    "title": "Comenzile mele",
+    "noOrders": "Nu ai nicio comanda"
+  },
   "FooterSection": {
     "links": {
       "title": "Lincurile",
@@ -169,6 +172,7 @@
       "fullName": "Numele complet",
       "email": "Email",
       "role": "Rolul",
+      "myOrders": "Comenzile mele",
       "logout": "Logout"
     }
   }

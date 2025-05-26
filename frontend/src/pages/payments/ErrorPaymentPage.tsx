@@ -1,6 +1,43 @@
-import React from 'react';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../store/store';
+import { useLocation, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 function ErrorPaymentPage() {
+  const { search } = useLocation();
+  const navigate = useNavigate();
+
+  const userData = useSelector(
+    (state: RootState) => state.user?.userData?.data
+  );
+  const sessionToken = userData?.token || '';
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/cancel${search}`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              token: `Bearer ${sessionToken}`,
+            },
+          }
+        );
+        if (response.status === 200) {
+          toast.success('Order was canceled');
+          navigate('/cart');
+        }
+      } catch (error: any) {
+        toast.error(error.message);
+      }
+    }
+    // This effect runs when the component mounts
+
+    fetchData();
+  }, []);
   return <div>ErrorPaymentPage</div>;
 }
 
