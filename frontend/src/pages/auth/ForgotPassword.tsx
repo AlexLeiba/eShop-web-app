@@ -212,16 +212,18 @@ function ForgotPasswordPage() {
             </>
           )}
 
-          <p className='text-sm text-gray-500'>
-            <a href='/register' className='cursor-pointer underline'>
-              {t('register')}
-            </a>
-          </p>
-          <p className='text-sm text-gray-500'>
-            <a href='/login' className='cursor-pointer underline'>
-              {t('login')}
-            </a>
-          </p>
+          <div className='flex gap-4'>
+            <p className='text-sm text-gray-500'>
+              <a href='/register' className='cursor-pointer underline'>
+                {t('register')}
+              </a>
+            </p>
+            <p className='text-sm text-gray-500'>
+              <a href='/login' className='cursor-pointer underline'>
+                {t('login')}
+              </a>
+            </p>
+          </div>
         </div>
         <Button
           onClick={handleSubmitSendEmailCode}
