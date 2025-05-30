@@ -20,6 +20,7 @@ import {
 import type { RootState } from '../../store/store';
 import { IconLoader } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 const initialState = {
   email: '',
@@ -28,6 +29,7 @@ const initialState = {
   otp: '',
 };
 function ForgotPasswordPage() {
+  const navigate = useNavigate();
   const [resetPasswordStep, setResetPasswordStep] = React.useState(1);
   const { t } = useTranslation('translation', {
     keyPrefix: 'ForgotPasswordPage',
@@ -125,8 +127,9 @@ function ForgotPasswordPage() {
         });
 
         if (responseLogin?.data) {
-          toast.success(t('toast.emailSentMessage'));
-          setResetPasswordStep(2);
+          toast.success(t('toast.resetPasswordMessage'));
+          setResetPasswordStep(1);
+          navigate('/login');
         }
         if (responseLogin?.error) {
           toast.error(responseLogin.error);
