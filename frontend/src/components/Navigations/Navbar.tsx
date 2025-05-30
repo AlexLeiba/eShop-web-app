@@ -68,7 +68,7 @@ export function Navbar() {
         }
       }
     }
-    fetchData();
+    sessionToken && fetchData();
   }, []);
   return (
     <div className='w-full h-14 bg-gray-300 flex items-center fixed top-0 z-50'>

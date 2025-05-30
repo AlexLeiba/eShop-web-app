@@ -25,6 +25,7 @@ export default tseslint.config(
       ],
       '@typescript-eslint/no-explicit-any': 'off',
       'no-case-declarations': 'off',
+      '@typescript-eslint/no-unused-expressions': 'off',
     },
   }
 );
