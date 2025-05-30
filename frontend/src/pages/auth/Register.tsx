@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import bgImage from '../../assets/bg-image.webp';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
@@ -10,29 +10,23 @@ import { RegisterSchema } from '../../lib/schemas';
 import { IconLoader } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 
+const initialState = {
+  name: '',
+  lastName: '',
+  userName: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+};
 function Register() {
   const { t } = useTranslation('translation', { keyPrefix: 'RegisterPage' });
   const navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
 
-  const [formData, setFormData] = React.useState({
-    name: '',
-    lastName: '',
-    userName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
+  const [formData, setFormData] = React.useState(initialState);
   const [formDataErrors, setFormDataErrors] = React.useState<{
     [key: string]: string;
-  }>({
-    name: '',
-    lastName: '',
-    userName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
+  }>(initialState);
 
   const handleChange = (e: string, field: string) => {
     setFormData((prev) => ({
@@ -87,6 +81,17 @@ function Register() {
       }
     }
   }
+
+  useEffect(() => {
+    setFormData({
+      name: '',
+      lastName: '',
+      userName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    });
+  }, []);
 
   return (
     <div
@@ -187,6 +192,11 @@ function Register() {
                 {' '}
                 {t('termsAndConditions')}
               </a>
+            </p>
+            <p className='text-sm text-gray-500'>
+              <a className='cursor-pointer underline' href='/forgot-password'>
+                {t('forgotPassword')}
+              </a>{' '}
             </p>
           </div>
           <Button disabled={loading} type='submit'>

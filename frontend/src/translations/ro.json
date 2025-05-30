@@ -19,6 +19,36 @@
       "loginSuccessful": "Bine ai revenit"
     }
   },
+  "ForgotPasswordPage": {
+    "title": "Forgot Password",
+    "email": {
+      "label": "Email",
+      "placeholder": "Enter your email"
+    },
+    "passCode": {
+      "label": "The code we sent you",
+      "placeholder": "Enter the code we sent you through email"
+    },
+    "newPassword": {
+      "label": "New Password",
+      "placeholder": "Enter your new password"
+    },
+    "confirmPassword": {
+      "label": "Confirm Password",
+      "placeholder": "Enter your password"
+    },
+    "toast": {
+      "emailSentMessage": "Email was sent with the code successfully!",
+      "otpCheckMessage": "The code was checked successfully!",
+
+      "resetPasswordMessage": "You have resetted your password successfully"
+    },
+    "buttonSendCode": "Send Code",
+    "buttonResetPassword": "Reset Password",
+    "saveNewPassword": "Save new password",
+    "register": "Register",
+    "login": "Login"
+  },
   "RegisterPage": {
     "title": "Inregistrare",
     "firstName": {

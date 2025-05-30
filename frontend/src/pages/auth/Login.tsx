@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import bgImage from '../../assets/bg-image.webp';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
@@ -13,6 +13,10 @@ import type { RootState } from '../../store/store';
 import { IconLoader } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 
+const initialState = {
+  email: '',
+  password: '',
+};
 function Login() {
   const { t } = useTranslation('translation', { keyPrefix: 'LoginPage' });
 
@@ -21,16 +25,10 @@ function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [formData, setFormData] = React.useState({
-    email: '',
-    password: '',
-  });
+  const [formData, setFormData] = React.useState(initialState);
   const [formDataErrors, setFormDataErrors] = React.useState<{
     [key: string]: string;
-  }>({
-    email: '',
-    password: '',
-  });
+  }>(initialState);
 
   const handleChange = (e: string, field: string) => {
     setFormData((prev) => ({
@@ -72,6 +70,13 @@ function Login() {
       }
     }
   }
+
+  useEffect(() => {
+    setFormData({
+      email: '',
+      password: '',
+    });
+  }, []);
 
   return (
     <div
@@ -126,6 +131,12 @@ function Login() {
               {t('byCreatingAccount')}{' '}
               <a className='cursor-pointer underline'>
                 {t('termsAndConditions')}
+              </a>{' '}
+            </p>
+
+            <p className='text-sm text-gray-500'>
+              <a className='cursor-pointer underline' href='/forgot-password'>
+                {t('forgotPassword')}
               </a>{' '}
             </p>
           </div>

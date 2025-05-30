@@ -167,21 +167,21 @@ function Orders() {
 
       <div className='flex flex-grow-1 flex-col'>
         <Container>
-          <div className='flex justify-between items-center'>
-            <h2 className='text-4xl font-bold'>
-              {t('title')}
-              {selectedCategory && selectedCategory !== 'all' && (
-                <span className='text-2xl text-gray-500'>
-                  {'/' + selectedCategory || ''}
-                </span>
-              )}
-            </h2>
-            <Spacer sm={8} md={8} lg={8} />
-          </div>
-
-          <Spacer size={8} />
-
           <Loader loading={loading} className='h-[152px]'>
+            <div className='flex justify-between items-center'>
+              <h2 className='text-4xl font-bold'>
+                {t('title')}
+                {selectedCategory && selectedCategory !== 'all' && (
+                  <span className='text-2xl text-gray-500'>
+                    {'/' + selectedCategory || ''}
+                  </span>
+                )}
+              </h2>
+              <Spacer sm={8} md={8} lg={8} />
+            </div>
+
+            <Spacer size={8} />
+
             {!loading && ordersData.length === 0 ? (
               <div className='text-center text-gray-500 mt-8'>
                 {t('noOrders')}

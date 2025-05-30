@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../store/store';
 import { WishListCard } from '../components/WishList/WishListCard';
 import { IconChevronLeft, IconHeart, IconTrash } from '@tabler/icons-react';
-import { useEffect } from 'react';
 import {
   deleteAllElemensFromWishlist,
   fetchWishlist,
@@ -45,7 +44,7 @@ function Wishlist() {
     }
   }
 
-  useEffect(() => {
+  React.useEffect(() => {
     const language = localStorage.getItem('language');
     async function fetchData() {
       setLoading(true);

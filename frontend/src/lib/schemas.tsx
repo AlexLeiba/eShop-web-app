@@ -24,3 +24,27 @@ export const RegisterSchema = z
   });
 
 export type RegisterType = z.infer<typeof RegisterSchema>;
+
+export const ForgotPasswordSchema = z.object({
+  email: z.string().email(),
+});
+
+export const CheckOtpSchema = z.object({
+  email: z.string().email(),
+  otp: z.string().min(6, 'Otp must be at least 6 characters long'),
+});
+
+export const ResetPasswordSchema = z
+  .object({
+    email: z.string().email(),
+    newPassword: z
+      .string()
+      .min(8, 'Password must be at least 8 characters long'),
+    confirmPassword: z
+      .string()
+      .min(8, 'Password must be at least 8 characters long'),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  });

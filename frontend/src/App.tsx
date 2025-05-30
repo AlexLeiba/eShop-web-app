@@ -14,6 +14,7 @@ import { SetDefaultLanguage } from './components/Language/SetDefaultLanguage';
 import { useSelector } from 'react-redux';
 import type { RootState } from './store/store';
 import Orders from './pages/Orders';
+import ForgotPasswordPage from './pages/auth/ForgotPassword';
 
 function App() {
   const userData = useSelector((state: RootState) => state.user.userData?.data);
@@ -55,6 +56,12 @@ function App() {
             <Route
               path='/register'
               element={sessionToken ? <Navigate to='/' /> : <Register />}
+            />
+            <Route
+              path='/forgot-password'
+              element={
+                sessionToken ? <Navigate to='/' /> : <ForgotPasswordPage />
+              }
             />
 
             {/* Payment Stripe */}

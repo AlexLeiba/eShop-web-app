@@ -35,6 +35,14 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    forgotPasswordCode: {
+      type: Number,
+      required: false,
+    },
+    otpVerified: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true, //will create createdAt and updatedAt fields

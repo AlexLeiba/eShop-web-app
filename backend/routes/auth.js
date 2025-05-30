@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import CryptoJS from 'crypto-js';
 import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
+import nodemailer from 'nodemailer';
 dotenv.config();
 
 const router = express.Router();
@@ -138,6 +139,135 @@ router.post('/admin/login', async (req, res) => {
     });
   } catch (error) {
     res.status(500).json(error);
+  }
+});
+
+// SEND OTP CODE TO USER EMAIL
+const otpCode = Math.floor(100000 + Math.random() * 900000);
+router.post('/forgot-password', async (req, res) => {
+  const userEmail = req.body.email;
+
+  try {
+    const userExists = await User.findOne({ email: userEmail });
+
+    if (!userExists) {
+      return res.status(400).json({ error: 'User not found' });
+    }
+
+    const userUpdated = await User.findOneAndUpdate(
+      { email: userEmail },
+      {
+        $set: { forgotPasswordCode: otpCode, otpVerified: false },
+      },
+      {
+        new: true,
+      }
+    );
+
+    userUpdated.save();
+
+    // SAVE THE CODE WHICH I SENT TO EMAIL , save to Users databse
+    // After user is typing the code in the input field, we check if the code matches with DB.
+    // If code matches we delete it. If code is deleted from DB ( not exist),we let user to reset password
+
+    const emailBody = `
+    <h2>Reset your password</h2>
+    <p>Hello <b>${userUpdated.userName}</b>,</p>
+    <p>You recently requested to reset your password. To reset your password, introduce the following code in your app </p>
+    <p><b>Code: ${userUpdated.forgotPasswordCode}</b></p>
+    <p>If you did not request a password reset, please ignore this email.</p>
+    <p>Thank you for using our service.</p>
+    <p><b>The eShop Team </b> </p>
+    `;
+
+    const textBody = `Hello ${userUpdated.userName}, <br> You recently requested to reset your password. To reset your password, introduce the following code in your app <br> <b>Code: ${userUpdated.forgotPasswordCode}</b> <br> If you did not request a password reset, please ignore this email. <br> Thank you for using our service. <br> <b>The eShop Team </b>`;
+
+    const transporter = nodemailer.createTransport({
+      host: 'smtp-relay.brevo.com',
+      port: 587,
+      auth: {
+        user: process.env.SMTP_USER, //admin gmail
+        pass: process.env.SMTP_PASSWORD, // admin password
+      },
+    });
+
+    await transporter.sendMail({
+      from: process.env.SENDER_EMAIL, //admin gmail
+      to: userEmail, //
+      subject: 'eShop - Reset password code',
+      html: emailBody,
+      text: textBody,
+    });
+
+    res
+      .status(200)
+      .json({ error: null, data: { message: 'Email sent successfully' } });
+  } catch (error) {
+    res.status(500).json({ error: error.message, data: null });
+  }
+});
+
+// CHECK OTP AFTER USER ENTERED THE CODE
+router.post('/check-otp', async (req, res) => {
+  const userEmail = req.body.email;
+  const otp = req.body.otp;
+
+  try {
+    const userExists = await User.findOne({ email: userEmail });
+    if (!userExists) {
+      return res.status(400).json({ error: 'User not found' });
+    }
+    if (userExists.forgotPasswordCode !== otp) {
+      return res.status(400).json({ error: 'Invalid code' });
+    }
+    const userData = await User.findOneAndUpdate(
+      { email: userEmail },
+      {
+        $set: { forgotPasswordCode: null, otpVerified: true },
+      }
+    );
+    userData.save();
+    res
+      .status(200)
+      .json({ error: null, data: 'The code was introduced correctly' });
+  } catch (error) {
+    res.status(500).json({ error: error.message, data: null });
+  }
+});
+
+// RESET PASSWORD AFTER THE OTP WAS INTRODUCED CORRECTLY
+router.post('/reset-password', async (req, res) => {
+  const userEmail = req.body.email;
+  const password = req.body.password;
+
+  try {
+    const userExists = await User.findOne({ email: userEmail });
+    if (!userExists) {
+      return res.status(400).json({ error: 'User not found' });
+    }
+
+    if (!userExists.otpVerified) {
+      return res.status(400).json({ error: 'Otp not verified' });
+    }
+
+    const encryptedPassword = CryptoJS.AES.encrypt(
+      password,
+      process.env.SECRET_PASSPHRASE
+    );
+
+    const updatedUserData = await User.findOneAndUpdate(
+      { email: userEmail },
+      {
+        $set: { password: encryptedPassword.toString(), otpVerified: false },
+      }
+    );
+    updatedUserData.save();
+
+    res
+      .status(200)
+      .json({ error: null, data: 'Password was resetted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message, data: null });
   }
 });
 
