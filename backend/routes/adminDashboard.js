@@ -17,6 +17,7 @@ router.get(
     const lastYear = new Date(
       currentDate.setFullYear(currentDate.getFullYear() - 1)
     );
+
     try {
       ///////////////// USERS
       const users = await User.find().sort({ createdAt: -1 }).limit(5);
@@ -58,6 +59,43 @@ router.get(
         },
       ]);
 
+      // AGGREGATE SOLD PRODUCTS PER MONTH
+      const groupedDataSoldProducts = await Orders.aggregate([
+        {
+          $match: {
+            createdAt: {
+              $gte: lastYear, //This is the filter condition
+            },
+            status: 'PAID',
+          },
+        },
+        {
+          $project: {
+            month: { $month: '$createdAt' }, //takes month from createdAt field
+            totalPrice: {
+              $sum: '$totalPrice',
+            },
+          },
+        },
+        {
+          //group and count
+          $group: {
+            _id: '$month', //group by month
+            total: {
+              $sum: 1, //count total
+            },
+            totalPrice: {
+              $sum: '$totalPrice',
+            },
+          },
+        },
+        {
+          $sort: {
+            _id: 1,
+          },
+        },
+      ]);
+
       // TRANSACTIONS
       const transactions = await Orders.find().sort({ createdAt: -1 }).limit(5);
 
@@ -66,6 +104,7 @@ router.get(
           users: users,
           transactions: transactions || [],
           usersStats: groupedData || [],
+          productsStats: groupedDataSoldProducts || [],
         },
       });
     } catch (error) {

@@ -2,11 +2,10 @@ import React from 'react';
 import { Charts } from '../components/DashboardPage/Charts';
 import { LatestTransactions } from '../components/DashboardPage/LatestTransactions';
 import { NewMembers } from '../components/DashboardPage/NewMembers';
-import SalesInfo from '../components/DashboardPage/SalesInfo';
 import { GridContainer } from '../components/Grid/GridContainer';
 import { Layout } from '../components/Layout/Layout';
 import Spacer from '../components/ui/Spacer';
-import { MONTHS, SALES_INFO_DATA } from '../lib/consts';
+import { MONTHS } from '../lib/consts';
 import toast from 'react-hot-toast';
 import { apiFactory } from '../lib/apiFactory';
 import type { RootState } from '../store/config';
@@ -19,11 +18,13 @@ function Dashboard() {
 
   const [dashboardData, setDashboardData] = React.useState<{
     users: UserType[];
-    stats: { _id: number; total: number }[];
+    usersStats: { _id: number; total: number }[];
+    productsStats: { _id: number; total: number }[];
     transactions: any[];
   }>({
     users: [],
-    stats: [],
+    usersStats: [],
+    productsStats: [],
     transactions: [],
   });
 
@@ -35,8 +36,15 @@ function Dashboard() {
         });
 
         const responseData = await apiFactory().getDashboardData(sessionToken);
-        let responseStats = [];
+        let responseStats: { _id: number; total: number }[] = [];
+
+        let responseStatsSoldProducts: {
+          _id: number;
+          total: number;
+          totalPrice: number;
+        }[] = [];
         if (responseData.data) {
+          // REGISTERED USERS
           if (responseData.data.usersStats) {
             responseStats = responseData.data.usersStats.map(
               (statData: { _id: number; total: number }) => {
@@ -47,11 +55,28 @@ function Dashboard() {
               }
             );
           }
-          console.log('🚀 ~ fetchData ~ responseStats:', responseStats);
-          console.log('🚀 ~ fetchData ~ responseData.data:', responseData.data);
+
+          // SOLD PRODUCTS
+          if (responseData.data.productsStats) {
+            responseStatsSoldProducts = responseData.data.productsStats.map(
+              (statData: {
+                _id: number;
+                total: number;
+                totalPrice: number;
+              }) => {
+                return {
+                  month: MONTHS[statData._id],
+                  'Sold products': statData.total,
+                  'Total income': statData.totalPrice,
+                };
+              }
+            );
+          }
+
           setDashboardData({
             users: responseData.data.users,
-            stats: responseStats,
+            usersStats: responseStats,
+            productsStats: responseStatsSoldProducts,
             transactions: responseData.data.transactions,
           });
         }
@@ -68,17 +93,18 @@ function Dashboard() {
       <GridContainer fluid>
         <h1>Dashboard</h1>
         <Spacer size={24} />
-
-        {/* SALES INFO */}
+        {/* SALES INFO
         <div className='grid-container-3'>
           {SALES_INFO_DATA?.map((item) => {
             return <SalesInfo key={item.title} salesData={item} />;
           })}
-        </div>
-
+        </div> */}
+        {/* CHARTS SOLD PRODUCTS */}
         <Spacer size={24} />
-        {/* CHARTS */}
-        <Charts chartsData={dashboardData.stats} />
+        <Charts type='soldProducts' chartsData={dashboardData.productsStats} />
+        <Spacer size={24} />
+        {/* CHARTS REGISTRED USERS */}
+        <Charts type='registeredUsers' chartsData={dashboardData.usersStats} />
         <Spacer size={24} />
         <div className='grid-container-dashboard-2'>
           {/* NEW MEMBERS */}

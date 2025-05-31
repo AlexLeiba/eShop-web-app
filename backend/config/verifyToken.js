@@ -25,12 +25,8 @@ function verifyToken(req, res) {
 
 export function verifyTokenAuthorization(req, res, next) {
   verifyToken(req, res, next); //will verify TOKEN and add USER data to REQUEST.USER
-  if (
-    req.user.id === req.params.id ||
-    req.user.isAdmin ||
-    req.user.isUberAdmin
-  ) {
-    //if the user is 'ADMIN' or the user is the one that is trying to update 'USER DATA'
+  if (req.user.id) {
+    //if  the user is the one that is trying to update 'USER DATA'
     next(); //pass to the next middleware
   } else {
     res.status(403).json({ error: 'Not authorized' });

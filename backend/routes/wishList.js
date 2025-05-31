@@ -1,8 +1,5 @@
 import express from 'express';
-import {
-  verifyTokenAuthorization,
-  verifyTokenAuthorizationAndAdmin,
-} from '../config/verifyToken.js';
+import { verifyTokenAuthorization } from '../config/verifyToken.js';
 import WishList from '../models/WishList.js';
 import dotenv from 'dotenv';
 dotenv.config();

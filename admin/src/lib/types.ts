@@ -55,7 +55,9 @@ export type TransactionsType = {
   products: {
     productId: string;
     quantity: number;
+    title: string;
   }[];
+  quantity: number;
   createdAt: string;
   updatedAt: string;
 };

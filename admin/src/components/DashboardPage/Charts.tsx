@@ -14,12 +14,15 @@ import {
 
 type Props = {
   chartsData: { [value: string]: number }[];
+  type: 'registeredUsers' | 'soldProducts';
 };
 
-export function Charts({ chartsData }: Props) {
+export function Charts({ chartsData, type }: Props) {
   return (
     <WidgetCard>
-      <h4>User Analytics</h4>
+      <h4>
+        {type === 'registeredUsers' ? 'Registered Users' : 'Sold Products'}
+      </h4>
       <Spacer size={12} />
       <ResponsiveContainer aspect={3.5 / 1}>
         <LineChart
@@ -36,19 +39,22 @@ export function Charts({ chartsData }: Props) {
           <CartesianGrid strokeDasharray='4 4' />
           {/* AXES */}
           <XAxis dataKey='month' padding={{ left: 20, right: 20 }} />
-          {/* dataKey is the value from dataArray from which it will compare value */}
+          {/* dataKey is the value from DataArray from which it will take value and compare it */}
           <YAxis />
           <Tooltip />
           <Legend />
           {/* LINES */}
-          {/* <Line
+
+          <Line
             type='monotone'
-            dataKey='lastMonth'
-            stroke='#8884d8'
-            activeDot={{ r: 8 }}
-          /> */}
-          <Line type='monotone' dataKey='Active Users' stroke='#82ca9d' />
-          {/* <Line type='monotone' dataKey='totalIncome' stroke='#82ca9d' /> */}
+            dataKey={
+              type === 'registeredUsers' ? 'Active Users' : 'Sold products'
+            }
+            stroke='#c38d22'
+          />
+          {type === 'soldProducts' && (
+            <Line type='monotone' dataKey={'Total income'} stroke='#5ad168' />
+          )}
         </LineChart>
       </ResponsiveContainer>
     </WidgetCard>

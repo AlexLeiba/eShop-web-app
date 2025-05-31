@@ -58,9 +58,9 @@ export function Slider({ data }: SliderProps) {
                 'pt-[152px] overflow-hidden h-[700px] text-black bg-white flex items-center'
               )}
             >
-              <div className='grid grid-cols-2 items-center'>
+              <div className='grid lg:grid-cols-2  md:grid-cols-1 items-center'>
                 <img
-                  className='w-[700px] h-[500px] object-contain'
+                  className='w-[700px] lg:h-[500px] h-[300px] object-contain'
                   src={item.image}
                   alt={item.title}
                 />

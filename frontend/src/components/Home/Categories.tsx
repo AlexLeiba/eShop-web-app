@@ -17,7 +17,7 @@ export function Categories() {
     <div className='w-full'>
       <h2 className='text-4xl font-bold'>{t('CategoriesSection.title')}</h2>
       <Spacer sm={8} md={8} lg={8} />
-      <div className='grid grid-cols-3 gap-4 '>
+      <div className='grid lg:grid-cols-3 md:grid-cols-2 gap-4 '>
         {categoriesData[lang]?.map((data) => {
           return <CategoriesCard data={data} key={data.id} />;
         })}

@@ -1,10 +1,11 @@
 import { TABLE_TRANSACTIONS_COLUMNS } from '../../lib/consts';
+import type { TransactionsType } from '../../lib/types';
 import Spacer from '../ui/Spacer';
 import { WidgetCard } from '../ui/WidgetCard';
 import './DashboardPage.scss';
 
 type Props = {
-  transactionData: any[];
+  transactionData: TransactionsType[];
 };
 export function LatestTransactions({ transactionData }: Props) {
   return (
@@ -29,10 +30,14 @@ export function LatestTransactions({ transactionData }: Props) {
           {transactionData?.map((item) => {
             return (
               <tr key={item._id}>
-                <td>{item.name}</td>
-                <td>{item.date}</td>
-                <td>{item.amount}</td>
-                <td>{item.status}</td>
+                <td>{item.products[0].title}</td>
+                <td>{new Date(item.createdAt).toLocaleString()}</td>
+                <td>{item.quantity}</td>
+                {item.status === 'PAID' ? (
+                  <td style={{ color: 'green' }}>{item.status}</td>
+                ) : (
+                  <td style={{ color: 'red' }}>{item.status}</td>
+                )}
               </tr>
             );
           })}
