@@ -16,7 +16,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import type { OrderType } from '../consts';
+import { columns, type OrderType } from '../consts';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store/store';
 import { Loader } from '../components/ui/Loader';
@@ -33,6 +33,7 @@ function Orders() {
   const sessionToken = userData?.token || '';
 
   const [ordersData, setOrdersData] = React.useState<OrderType[]>([]);
+
   const [loading, setLoading] = React.useState(true);
 
   const [searchParams] = useSearchParams();
@@ -69,38 +70,6 @@ function Orders() {
     fetchData();
   }, [searchParams]);
 
-  const columns: { id: keyof OrderType; label: string }[] = [
-    {
-      id: 'status',
-      label: 'Status',
-    },
-    {
-      id: 'userEmail',
-      label: 'User Email',
-    },
-    {
-      id: 'userName',
-      label: 'User Name',
-    },
-    {
-      id: 'quantity',
-      label: 'Amount of Products',
-    },
-    {
-      id: 'totalPrice',
-      label: 'Total Price',
-    },
-    {
-      id: 'createdAt',
-      label: 'Created At',
-    },
-
-    {
-      id: 'stripeId',
-      label: 'Payment ID',
-    },
-  ];
-
   function rowsData() {
     return ordersData.map((row) => {
       return (
@@ -132,7 +101,7 @@ function Orders() {
               );
             } else if (column.id === 'totalPrice') {
               return (
-                <TableCell key={column.id} style={{ minWidth: 200 }}>
+                <TableCell key={column.id} style={{ minWidth: 150 }}>
                   <p>
                     {new Intl.NumberFormat('en-US', {
                       style: 'currency',
@@ -141,9 +110,31 @@ function Orders() {
                   </p>
                 </TableCell>
               );
+            } else if (column.id === 'status') {
+              return (
+                <TableCell key={column.id} style={{ minWidth: 100 }}>
+                  {row[column.id] === 'PAID' ? (
+                    <p className='text-green-500 font-medium'>
+                      <b>{row[column.id]}</b>
+                    </p>
+                  ) : (
+                    <p className='text-red-500 font-medium'>{row[column.id]}</p>
+                  )}
+                </TableCell>
+              );
+            } else if (column.id === 'products') {
+              return (
+                <TableCell key={column.id} style={{ minWidth: 100 }}>
+                  <img
+                    className='w-14  object-contain'
+                    src={row[column.id][0].image as string}
+                    alt='product'
+                  />
+                </TableCell>
+              );
             } else {
               return (
-                <TableCell key={column.id} style={{ minWidth: 200 }}>
+                <TableCell key={column.id} style={{ minWidth: 150 }}>
                   <p>{row[column.id] as string}</p>
                 </TableCell>
               );

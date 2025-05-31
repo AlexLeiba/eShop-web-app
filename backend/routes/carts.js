@@ -17,7 +17,7 @@ router.get('/cart', verifyTokenAuthorization, async (req, res) => {
     const cart = await Cart.findOne({ userId: req.user.id });
 
     if (!cart) {
-      return res.status(404).json({ error: 'Cart not found' });
+      return res.status(200).json({ data: null });
     }
 
     const responseWithLocalization = cart.products.map((item) => {

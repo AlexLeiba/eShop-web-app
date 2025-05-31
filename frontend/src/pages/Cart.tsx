@@ -63,6 +63,7 @@ function Cart() {
     }
     fetchData();
   }, []);
+
   return (
     <div className='flex min-h-screen flex-col'>
       {/* Navbar */}
@@ -116,7 +117,7 @@ function Cart() {
                       </div>
                     );
                   })}
-                  {cartData?.products.length === 0 && (
+                  {!cartData?.products?.length && (
                     <div className='flex flex-col items-center justify-center'>
                       <h2 className='text-2xl font-bold'>{t('emptyCart')}</h2>
                       <Spacer size={4} />
@@ -137,7 +138,7 @@ function Cart() {
                   total={cartData.total}
                   subtotal={cartData.total}
                   items={cartData?.products
-                    .map((item) => item.quantity)
+                    ?.map((item) => item.quantity)
                     .reduce((acc, curr) => (acc += curr), 0)}
                   shipping={0}
                 />

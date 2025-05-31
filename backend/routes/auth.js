@@ -166,10 +166,6 @@ router.post('/forgot-password', async (req, res) => {
 
     userUpdated.save();
 
-    // SAVE THE CODE WHICH I SENT TO EMAIL , save to Users databse
-    // After user is typing the code in the input field, we check if the code matches with DB.
-    // If code matches we delete it. If code is deleted from DB ( not exist),we let user to reset password
-
     const emailBody = `
     <h2>Reset your password</h2>
     <p>Hello <b>${userUpdated.userName}</b>,</p>
@@ -246,8 +242,8 @@ router.post('/reset-password', async (req, res) => {
       return res.status(400).json({ error: 'User not found' });
     }
 
-    if (!userExists.otpVerified) {
-      return res.status(400).json({ error: 'Otp not verified' });
+    if (!userExists.otpVerified && !userExists.forgotPasswordCode) {
+      return res.status(400).json({ error: 'Otp is not verified' });
     }
 
     const encryptedPassword = CryptoJS.AES.encrypt(

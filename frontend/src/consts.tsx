@@ -167,6 +167,7 @@ export type OrderType = {
   status: string;
   createdAt: string;
   updatedAt: string;
+  image: string;
   __v: number;
 };
 
@@ -298,5 +299,41 @@ export const languages = [
   {
     name: 'Romanian',
     slug: 'RO',
+  },
+];
+
+export const columns: { id: keyof OrderType; label: string }[] = [
+  {
+    id: 'status',
+    label: 'Status',
+  },
+  {
+    id: 'products',
+    label: 'Image',
+  },
+  {
+    id: 'userEmail',
+    label: 'User Email',
+  },
+  {
+    id: 'userName',
+    label: 'User Name',
+  },
+  {
+    id: 'quantity',
+    label: 'Amount of Products',
+  },
+  {
+    id: 'totalPrice',
+    label: 'Total Price',
+  },
+  {
+    id: 'createdAt',
+    label: 'Created At',
+  },
+
+  {
+    id: 'stripeId',
+    label: 'Payment ID',
   },
 ];
