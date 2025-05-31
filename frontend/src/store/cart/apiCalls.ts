@@ -111,7 +111,7 @@ export async function deleteFromCart({
     );
 
     const deletedCartProduct = await response.json();
-    console.log('🚀 ~ deletedCartProduct:\n\n\n', deletedCartProduct);
+
     if (deletedCartProduct.data) {
       dispatch(removeFromCart(deletedCartProduct.data));
       return { data: deletedCartProduct.data, error: null };

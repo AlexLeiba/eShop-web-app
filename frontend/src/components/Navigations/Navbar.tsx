@@ -100,11 +100,9 @@ export function Navbar() {
             </div>
 
             {sessionToken ? (
-              <>
-                <MyAccountDropdown
-                  userData={userData?.data as UserType['data']['data']}
-                />
-              </>
+              <MyAccountDropdown
+                userData={userData?.data as UserType['data']['data']}
+              />
             ) : (
               navLinks.map((navLink) => {
                 return (
