@@ -122,13 +122,13 @@ function ProductsPage() {
       field: 'categories',
       headerName: 'Category',
       width: 130,
-      valueGetter: (value, row) => row.categories[0],
+      valueGetter: (_, row) => row.categories[0],
     },
     {
       field: 'isPublished',
       headerName: 'Published',
       width: 100,
-      valueGetter: (value, row) => {
+      valueGetter: (_, row) => {
         return row.isPublished ? 'Yes' : 'No';
       },
       renderCell: (params) => {
@@ -163,7 +163,7 @@ function ProductsPage() {
       field: 'createdAt',
       headerName: 'Created At',
       width: 100,
-      valueGetter: (value, row) =>
+      valueGetter: (_, row) =>
         new Date(row.createdAt).toLocaleDateString('en-US', {
           year: '2-digit',
           month: 'short',

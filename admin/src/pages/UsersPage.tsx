@@ -117,7 +117,7 @@ function UsersPage() {
       field: 'name',
       headerName: 'Full name',
       width: 150,
-      valueGetter: (value, row) => `${row.name || ''} ${row.lastName || ''}`,
+      valueGetter: (_, row) => `${row.name || ''} ${row.lastName || ''}`,
     },
     {
       field: 'email',
@@ -150,7 +150,7 @@ function UsersPage() {
       field: 'createdAt',
       headerName: 'Joined At',
       width: 100,
-      valueGetter: (value, row) =>
+      valueGetter: (_, row) =>
         new Date(row.createdAt).toLocaleDateString('en-US', {
           year: '2-digit',
           month: 'short',

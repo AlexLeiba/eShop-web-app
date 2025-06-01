@@ -152,7 +152,7 @@ function TransactionsPage() {
       field: 'createdAt',
       headerName: 'Created At',
       width: 100,
-      valueGetter: (value, row) =>
+      valueGetter: (_, row) =>
         new Date(row.createdAt).toLocaleDateString('en-US', {
           year: '2-digit',
           month: 'short',

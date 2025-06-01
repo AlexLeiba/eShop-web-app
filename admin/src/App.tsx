@@ -8,16 +8,13 @@ import TransactionsPage from './pages/TransactionsPage';
 import LoginPage from './pages/auth/LoginPage';
 import SingleProductPage from './pages/SingleProductPage';
 import SingleUserPage from './pages/SingleUserPage';
-import './index.css';
-import './SCSS.scss';
 import NewProductPage from './pages/NewProductPage';
 import { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 import { type RootState } from './store/config';
-import {
-  ProtectedRoute,
-  // ProtectedRoutes,
-} from './components/ProtectedRoutes/ProtectedRoutes';
+import { ProtectedRoute } from './components/ProtectedRoutes/ProtectedRoutes';
+import './index.css';
+import './SCSS.scss';
 
 function App() {
   const userData = useSelector((state: RootState) => state.user.userData);
