@@ -71,13 +71,13 @@ function Wishlist() {
         linkTitle='Read More'
       />
 
-      <Spacer sm={16} md={24} lg={24} />
+      <Spacer size={24} />
 
       <div className='flex flex-grow-1 flex-col'>
         <Container>
           <div className='flex gap-2 justify-center items-center'>
             <h1 className='text-4xl font-medium text-center'> {t('title')} </h1>
-            <IconHeart size={32} />
+            <IconHeart size={32} className='text-red-500' />
           </div>
           <Loader loading={loading} className='h-[152px]'>
             <div className=''>
@@ -86,19 +86,24 @@ function Wishlist() {
                 {wishListData.length > 0 && (
                   <div className='flex justify-between'>
                     <Link to='/products?sort=newest&page=1'>
-                      <Button className='w-[250px]' variant='secondary'>
-                        <IconChevronLeft className='ml-2' />
-                        {t('continueShoppingButton')}
+                      <Button
+                        className='lg:w-[250px] w-[100px] flex justify-center items-center'
+                        variant='secondary'
+                      >
+                        <IconChevronLeft className='lg:ml-2' />
+
+                        <p className='lg:block hidden'>
+                          {t('continueShoppingButton')}
+                        </p>
                       </Button>
                     </Link>
-
                     <Button
                       onClick={handleClearList}
+                      className='lg:w-[200px] w-[100px]  flex justify-center items-center'
                       variant='secondary'
-                      className='w-[150px]'
                     >
-                      {t('clearListButton')}
-                      <IconTrash className='ml-2 text-red-500' />
+                      <p className='lg:block hidden'>{t('clearListButton')}</p>
+                      <IconTrash className='lg:ml-2 text-red-500' />
                     </Button>
                   </div>
                 )}

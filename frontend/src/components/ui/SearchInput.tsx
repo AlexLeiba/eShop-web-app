@@ -18,7 +18,7 @@ export function SearchInput({
   type = 'text',
 }: Props) {
   return (
-    <div className='w-[200px] relative h-8'>
+    <div className='min-w-[150px] relative h-8'>
       <IconSearch className='absolute top-2 left-2 text-black' size={18} />
       {value !== '' && (
         <IconX

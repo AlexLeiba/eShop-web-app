@@ -58,7 +58,7 @@ export function Products({ productsData, type, loading }: ProductsProps) {
       <Spacer size={2} />
 
       <Loader loading={loading} className='h-[200px]'>
-        <div className='grid lg:grid-cols-4 md:grid-cols-3 gap-4  '>
+        <div className='grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4  '>
           {productsData?.data && productsData.data.length > 0 ? (
             productsData.data?.map((data) => {
               return <ProductsCard data={data} key={data._id} />;

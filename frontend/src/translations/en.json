@@ -204,6 +204,8 @@
       "email": "Email",
       "role": "Role",
       "myOrders": "My Orders",
+      "wishlist": "Wishlist",
+      "cart": "Cart",
       "logout": "Logout"
     }
   }

@@ -94,7 +94,7 @@ export function OrderSummary({
       <Button
         disabled={total === 0}
         onClick={handleMakePayment}
-        className='w-[250px]'
+        className='lg:w-[250px]'
       >
         {t('placeOrderButton')}
       </Button>

@@ -74,7 +74,7 @@ function ProductsList() {
         linkTitle='Read More'
       />
 
-      <Spacer sm={16} md={24} lg={24} />
+      <Spacer size={24} />
 
       <div className=''>
         <Container>
@@ -95,10 +95,10 @@ function ProductsList() {
           <Spacer size={8} />
 
           {/* Filters */}
-          <div className='flex justify-between items-center '>
-            <div className='flex align-center gap-2'>
+          <div className='flex justify-between items-center flex-wrap gap-4'>
+            <div className='flex align-center gap-2 flex-wrap'>
               <p className='text-2xl font-semibold'>{t('filter')} :</p>
-              <div className='flex gap-4'>
+              <div className='flex gap-4 flex-wrap'>
                 <Filter type='color' data={filterColors} />
                 <Filter type='size' data={filterSizes} />
                 <Filter type='category' data={filterCategories} />

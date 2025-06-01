@@ -74,35 +74,42 @@ function Cart() {
         linkTitle='Read More'
       />
 
-      <Spacer sm={16} md={24} lg={24} />
+      <Spacer size={24} />
 
       <div className='flex flex-grow-1 flex-col'>
         <Container>
           <div className='flex gap-2 justify-center items-center'>
             <h1 className='text-4xl font-medium text-center'> {t('title')}</h1>
-            <IconShoppingCart size={32} />
+            <IconShoppingCart size={32} className='text-green-500' />
           </div>
 
           <Loader loading={loading} className='h-[152px]'>
-            <div className='grid grid-cols-[3fr_1fr] gap-8'>
+            <div className='grid lg:grid-cols-[3fr_1fr] grid-cols-1 gap-8'>
               <div className='grid span-2 '>
                 <Spacer size={8} />
                 {cartData?.products?.length > 0 && (
-                  <div className='flex justify-between'>
+                  <div className='flex justify-between '>
+                    {/* CONTINUE SHOPPING */}
                     <Link to='/products?sort=newest&page=1'>
-                      <Button className='w-[250px]' variant='secondary'>
-                        <IconChevronLeft className='ml-2' />{' '}
-                        {t('continueShoppingButton')}
+                      <Button
+                        className='lg:w-[250px] w-[100px] flex justify-center items-center'
+                        variant='secondary'
+                      >
+                        <IconChevronLeft className='lg:ml-2' />{' '}
+                        <p className='lg:block hidden'>
+                          {t('continueShoppingButton')}
+                        </p>
                       </Button>
                     </Link>
 
+                    {/* CLEAR CART */}
                     <Button
                       onClick={handleClearList}
-                      className='w-[200px]'
+                      className='lg:w-[200px] w-[100px]  flex justify-center items-center'
                       variant='secondary'
                     >
-                      {t('clearCartButton')}{' '}
-                      <IconTrash className='ml-2 text-red-500' />
+                      <p className='lg:block hidden'>{t('clearCartButton')} </p>
+                      <IconTrash className='lg:ml-2 text-red-500' />
                     </Button>
                   </div>
                 )}

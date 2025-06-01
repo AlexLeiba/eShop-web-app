@@ -38,7 +38,7 @@ export function LanguagesSelect() {
     i18next.changeLanguage(language.toLowerCase(), (err, t) => {
       if (err)
         return console.log('something went wrong changing translation', err);
-      t('key'); // -> same as i18next.t
+      t('key'); // -> same as i18next.tglob
     });
     window.location.reload();
   }
@@ -47,7 +47,7 @@ export function LanguagesSelect() {
       <div
         title='Language'
         onClick={() => setOpen(!open)}
-        className='hover:text-white shadow-md relative rounded-full w-8 h-8 flex justify-center items-center hover:bg-gray-500 transition-all cursor-pointer'
+        className='hover:text-white  shadow-md relative rounded-full w-8 h-8 flex justify-center items-center hover:bg-gray-500 transition-all cursor-pointer languageButton'
       >
         <p>{selectLanguages}</p>
       </div>

@@ -203,6 +203,8 @@
       "email": "Email",
       "role": "Rolul",
       "myOrders": "Comenzile mele",
+      "wishlist": "Favorite",
+      "cart": "Cosul",
       "logout": "Logout"
     }
   }

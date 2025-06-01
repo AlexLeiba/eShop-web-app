@@ -60,7 +60,7 @@ export function Slider({ data }: SliderProps) {
             >
               <div className='grid lg:grid-cols-2  md:grid-cols-1 items-center'>
                 <img
-                  className='w-[700px] lg:h-[500px] h-[300px] object-contain'
+                  className='w-[700px] lg:h-[500px] h-[250px] object-contain'
                   src={item.image}
                   alt={item.title}
                 />
@@ -71,7 +71,7 @@ export function Slider({ data }: SliderProps) {
                   <p className='text-xl'>{item.description}</p>
                   <Link to={`/product/${item._id}`}>
                     <Button
-                      className='w-[200px]'
+                      className='lg:w-[200px] w-full '
                       size='large'
                       variant='primary'
                     >

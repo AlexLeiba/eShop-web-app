@@ -8,8 +8,14 @@ import { Link } from 'react-router-dom';
 
 type Props = {
   userData: UserType['data']['data'];
+  withListQuantity: number;
+  cartQuantity: number;
 };
-export function MyAccountDropdown({ userData }: Props) {
+export function MyAccountDropdown({
+  userData,
+  withListQuantity,
+  cartQuantity,
+}: Props) {
   const { t } = useTranslation('translation', {
     keyPrefix: 'HeaderSection.MyAccount',
   });
@@ -36,6 +42,42 @@ export function MyAccountDropdown({ userData }: Props) {
     window.location.reload();
   }
 
+  const dropdownLinks = [
+    {
+      name: t('wishlist'),
+      slug: '/wishlist',
+      value: withListQuantity,
+    },
+    {
+      name: t('cart'),
+      slug: '/cart',
+      value: cartQuantity,
+    },
+    {
+      name: t('myOrders'),
+      slug: '/orders',
+      value: null,
+    },
+  ];
+  const dropdownUserData = [
+    {
+      name: t('username'),
+      value: userData?.userName,
+    },
+    {
+      name: t('fullName'),
+      value: userData?.name + ' ' + userData?.lastName || '',
+    },
+    {
+      name: t('role'),
+      value: userData?.isAdmin ? 'Admin' : 'User',
+    },
+    {
+      name: t('email'),
+      value: userData?.email,
+    },
+  ];
+
   return (
     <div className='relative' ref={containerRef} title='My Account'>
       <div
@@ -49,39 +91,37 @@ export function MyAccountDropdown({ userData }: Props) {
       </div>
 
       {open && (
-        <div className='absolute top-10 right-0 w-[260px] bg-white/90 shadow-lg  rounded-md z-50 p-3 gap-2 flex flex-col'>
-          <div className='  px-2 relative rounded-sm w-full flex-col flex   transition-all '>
-            <p className='line-clamp-1'>
-              <b>{t('username')}: </b>
-              {userData?.userName}
-            </p>
-          </div>
-          <div className='  px-2 relative rounded-sm w-full flex-col flex   transition-all '>
-            <p className='line-clamp-1'>
-              <b>{t('fullName')}: </b>
-              {userData?.name + ' ' + userData?.lastName || ''}
-            </p>
-          </div>
-          <div className='  px-2 relative rounded-sm w-full flex-col flex   transition-all '>
-            <p className='line-clamp-1'>
-              <b>{t('role')}: </b>
-              {userData?.isAdmin ? 'Admin' : 'User'}
-            </p>
-          </div>
-          <div className='  px-2 relative rounded-sm w-full flex-col flex   transition-all '>
-            <p className=' wrap-break-word '>
-              <b>{t('email')}: </b>
-              {userData?.email}
-            </p>
-          </div>
+        <div className='absolute top-10 right-0 w-[280px] bg-white/90 shadow-lg  rounded-md z-50 p-3 gap-2 flex flex-col'>
+          {dropdownLinks.map((dropdownLink) => {
+            return (
+              <Link to={dropdownLink.slug} key={dropdownLink.slug}>
+                <div className='  px-2 relative rounded-sm w-full flex-col flex   transition-all '>
+                  <p className='line-clamp-1'>
+                    <b>{dropdownLink.name}</b>
+                    {dropdownLink.value && (
+                      <span className='ml-2'>{dropdownLink.value}</span>
+                    )}
+                  </p>
+                </div>
+              </Link>
+            );
+          })}
+
           <Spacer size={2} />
-          <Link to={`/orders`}>
-            <div className='  px-2 relative rounded-sm w-full flex-col flex   transition-all '>
-              <p className=' wrap-break-word '>
-                <b>{t('myOrders')} </b>
-              </p>
-            </div>
-          </Link>
+
+          {dropdownUserData.map((dropdownUserData) => {
+            return (
+              <div key={dropdownUserData.name}>
+                <p className=' wrap-break-word '>
+                  <b>{dropdownUserData.name}</b>
+                  {dropdownUserData.value && (
+                    <span className='ml-2'>{dropdownUserData.value}</span>
+                  )}
+                </p>
+              </div>
+            );
+          })}
+
           <Spacer size={4} />
           <div
             onClick={handleLogout}

@@ -35,7 +35,7 @@ export function CategoriesCard({
           <h2 className='text-3xl font-bold'>{data.title}</h2>
           <p className='text-sm'>{data.description}</p>
 
-          <Button className='w-[200px] bg-black text-white'>
+          <Button className='lg:w-[200px] w-full  bg-black text-white'>
             {data.buttonTitle}
           </Button>
         </div>

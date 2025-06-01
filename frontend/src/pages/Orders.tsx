@@ -154,7 +154,7 @@ function Orders() {
         linkTitle='Read More'
       />
 
-      <Spacer sm={16} md={24} lg={24} />
+      <Spacer size={24} />
 
       <div className='flex flex-grow-1 flex-col'>
         <Container>

@@ -90,17 +90,20 @@ export function Navbar() {
           {/* Links */}
           <div className='flex flex-1 items-center justify-end gap-4'>
             {/* Wish list */}
-            <div title='Wish List'>
-              <WishList quantity={withListQuantity} />
-            </div>
+            <div className=' gap-4 items-center  lg:flex md:flex hidden'>
+              <div title='Wish List'>
+                <WishList quantity={withListQuantity} />
+              </div>
 
-            {/* Cart */}
-            <div title='Cart'>
-              <ShoppingCart quantity={cartQuantity} />
+              {/* Cart */}
+              <div title='Cart'>
+                <ShoppingCart quantity={cartQuantity} />
+              </div>
             </div>
-
             {sessionToken ? (
               <MyAccountDropdown
+                withListQuantity={withListQuantity}
+                cartQuantity={cartQuantity}
                 userData={userData?.data as UserType['data']['data']}
               />
             ) : (

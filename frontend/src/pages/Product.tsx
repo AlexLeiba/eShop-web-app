@@ -190,7 +190,7 @@ function Product() {
         linkTitle='Read More'
       />
 
-      <Spacer sm={12} md={24} lg={24} />
+      <Spacer size={24} />
 
       <Loader loading={loading} className='h-[616px]'>
         <Container>
@@ -204,7 +204,7 @@ function Product() {
         </Container>
         <Spacer sm={12} md={24} lg={24} />
         <Container>
-          <div className='grid grid-cols-2 gap-8 '>
+          <div className='grid lg:grid-cols-2 grid-cols-1 gap-8 '>
             {/* IMG */}
             <img
               src={

@@ -73,18 +73,18 @@ export function WishListCard({ data, type }: Props) {
           <p className='text-xl line-clamp-2 '>{data.description}</p>
         </div>
 
-        <div className='flex justify-between w-full'>
-          <div className='flex gap-4 items-center'>
+        <div className='flex justify-between w-full gap-4'>
+          <div className='flex gap-4 items-center   lg:flex-1 flex-1'>
             {type === 'wishList' && (
-              <Button onClick={() => handleAddToCart(data)}>
-                {t('addToCartButton')}
-                <IconShoppingCart className='ml-2' />
+              <Button onClick={() => handleAddToCart(data)} className='w-full'>
+                <p className='lg:flex hidden'>{t('addToCartButton')}</p>
+                <IconShoppingCart className='lg:ml-2' />
               </Button>
             )}
           </div>
 
-          <div>
-            <p className='text-3xl '>${data.price}</p>
+          <div className='flex lg:flex-1 justify-end'>
+            <p className='text-3xl  '>${data.price}</p>
           </div>
         </div>
       </div>
