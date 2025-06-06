@@ -110,7 +110,6 @@ router.get('/success', verifyTokenAuthorization, async (req, res) => {
 
 router.get('/cancel', verifyTokenAuthorization, async (req, res) => {
   const sessionId = req.query.sessionId;
-  console.log('🚀 ~ router.get ~ sessionId:\n\n\n', sessionId);
 
   try {
     const canceledPaymentOrder = await Order.findOne({ stripeId: sessionId });

@@ -248,7 +248,7 @@ function ProductsPage() {
               setRowsPerPage(e.pageSize);
             }}
             // @ts-ignore
-            rows={productsData}
+            // rows={productsData}
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[10, 20]}

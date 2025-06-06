@@ -56,7 +56,7 @@ export function MyAccountDropdown({
     {
       name: t('myOrders'),
       slug: '/orders',
-      value: null,
+      value: 0,
     },
   ];
   const dropdownUserData = [
@@ -95,11 +95,13 @@ export function MyAccountDropdown({
           {dropdownLinks.map((dropdownLink) => {
             return (
               <Link to={dropdownLink.slug} key={dropdownLink.slug}>
-                <div className='  px-2 relative rounded-sm w-full flex-col flex   transition-all '>
+                <div className='   relative rounded-sm w-full flex-col flex   transition-all '>
                   <p className='line-clamp-1'>
-                    <b>{dropdownLink.name}</b>
-                    {dropdownLink.value && (
-                      <span className='ml-2'>{dropdownLink.value}</span>
+                    <b className='hover:opacity-55'>{dropdownLink.name}</b>
+                    {dropdownLink.value !== 0 && (
+                      <span className='font-medium p-1 size-6 inline-flex justify-center items-center text-white bg-gray-900 rounded-full ml-2'>
+                        {dropdownLink.value}
+                      </span>
                     )}
                   </p>
                 </div>
