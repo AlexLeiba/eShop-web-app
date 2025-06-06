@@ -58,17 +58,21 @@ export function Slider({ data }: SliderProps) {
                 'pt-[152px] overflow-hidden h-[700px] text-black bg-white flex items-center'
               )}
             >
-              <div className='grid lg:grid-cols-2  md:grid-cols-1 items-center'>
-                <img
-                  className='w-[700px] lg:h-[500px] h-[250px] object-contain'
-                  src={item.image}
-                  alt={item.title}
-                />
+              <div className='grid lg:grid-cols-2  md:grid-cols-1 items-center gap-8'>
+                <div className='flex justify-end'>
+                  <img
+                    className='w-[700px] lg:h-[500px] h-[250px] object-contain'
+                    src={item.image}
+                    alt={item.title}
+                  />
+                </div>
                 <div className='flex gap-4 flex-col'>
-                  <h1 className='text-5xl font-bold'>
+                  <h1 className='lg:text-5xl md:text-5xl text-3xl font-bold line-clamp-1'>
                     {item.title.toUpperCase()}
                   </h1>
-                  <p className='text-xl'>{item.description}</p>
+                  <p className='text-xl line-clamp-3 max-w-[600px] pr-8'>
+                    {item.description}
+                  </p>
                   <Link to={`/product/${item._id}`}>
                     <Button
                       className='lg:w-[200px] w-full '

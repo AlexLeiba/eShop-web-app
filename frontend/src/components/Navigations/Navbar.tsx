@@ -14,6 +14,8 @@ import React from 'react';
 import toast from 'react-hot-toast';
 import { fetchWishlist } from '../../store/wishList/apiCalls';
 import { fetchCartData } from '../../store/cart/apiCalls';
+import { IconShoppingBag } from '@tabler/icons-react';
+import { Link } from 'react-router-dom';
 
 export function Navbar() {
   const dispatch = useDispatch();
@@ -26,10 +28,10 @@ export function Navbar() {
   const withListQuantity = state?.wishlist?.data?.length;
 
   const navLinks = [
-    {
-      name: t('register'),
-      slug: '/register',
-    },
+    // {
+    //   name: t('register'),
+    //   slug: '/register',
+    // },
     {
       name: t('login'),
       slug: '/login',
@@ -74,16 +76,24 @@ export function Navbar() {
     <div className='w-full h-14 bg-gray-300 flex items-center fixed top-0 z-50'>
       <Container className='w-full h-full flex items-center justify-center'>
         <div className='flex justify-between w-full '>
-          <div className='flex flex-1 gap-4 items-center'>
+          <div className='flex flex-3 gap-4 items-center'>
             {/* Languages */}
             <LanguagesSelect />
 
             {/* Search */}
             <SearchSelector />
+            <Link to={'/'}>
+              <div>
+                <IconShoppingBag
+                  className='text-green-500 lg:hidden md:hidden'
+                  size={24}
+                />
+              </div>
+            </Link>
           </div>
 
           {/* Logo */}
-          <div className='flex flex-1 justify-center'>
+          <div className=' flex-1 justify-center hidden lg:flex md:flex'>
             <Logo />
           </div>
 
