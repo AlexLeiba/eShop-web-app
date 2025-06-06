@@ -31,9 +31,19 @@ app.use(express.json({ limit: '50mb' })); // parse application/json - all the re
 app.use(express.urlencoded({ limit: '50mb', extended: true })); //default is 100b for JSON payloads
 app.use(cookieParser()); // Parses cookies attached to the client request./ Extracts cookies from incoming HTTP requests and makes them available in req.cookies.
 
+const allowedOrigins = [
+  process.env.FRONTEND_BASE_URL,
+  process.env.ADMIN_BASE_URL,
+];
+
 const corsOptions = {
-  origin: process.env.FRONTEND_BASE_URL,
-  optionsSuccessStatus: 200,
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
 };
 
 app.use(cors(corsOptions)); // enable all cors
