@@ -30,7 +30,13 @@ cloudinaryConnect();
 app.use(express.json({ limit: '50mb' })); // parse application/json - all the req passed will be json format (with that config we will pass any json file to the server)
 app.use(express.urlencoded({ limit: '50mb', extended: true })); //default is 100b for JSON payloads
 app.use(cookieParser()); // Parses cookies attached to the client request./ Extracts cookies from incoming HTTP requests and makes them available in req.cookies.
-app.use(cors()); // enable cors
+
+const corsOptions = {
+  origin: process.env.FRONTEND_BASE_URL,
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions)); // enable all cors
 
 // SERVER TEST
 app.get('/', (req, res) => {

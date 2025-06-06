@@ -56,7 +56,7 @@ export function OrderSummary({
         sessionId: session.id,
       });
       console.log('🚀 ~ handleMakePayment ~ result:', result);
-      // if it wes payment successful then reset the cart
+      // if the payment was successful then reset the cart
     } catch (error) {
       console.log('Payment error:', error);
     }
