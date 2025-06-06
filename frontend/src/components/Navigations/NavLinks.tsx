@@ -7,9 +7,7 @@ type Props = {
 export function NavLinks({ name, slug }: Props) {
   return (
     <div>
-      <Link target='_blank' to={`${slug}`}>
-        {name}
-      </Link>
+      <Link to={slug}>{name}</Link>
     </div>
   );
 }
