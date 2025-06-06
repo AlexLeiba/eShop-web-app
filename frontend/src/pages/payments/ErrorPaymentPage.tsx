@@ -28,7 +28,7 @@ function ErrorPaymentPage() {
         );
         if (response.status === 200) {
           toast.success('Order was canceled');
-          navigate('/cart');
+          navigate('/orders');
         }
       } catch (error: any) {
         toast.error(error.message);

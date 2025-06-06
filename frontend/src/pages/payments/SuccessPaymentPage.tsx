@@ -31,7 +31,7 @@ function SuccessPaymentPage() {
         if (response.status === 200) {
           toast.success('Order paid successfully');
           dispatch(clearCart());
-          navigate('/products');
+          navigate('/orders');
         }
       } catch (error: any) {
         toast.error(error.message);
