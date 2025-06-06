@@ -76,7 +76,7 @@ export function Navbar() {
     <div className='w-full h-14 bg-gray-300 flex items-center fixed top-0 z-50'>
       <Container className='w-full h-full flex items-center justify-center'>
         <div className='flex justify-between w-full '>
-          <div className='flex flex-3 gap-4 items-center'>
+          <div className='flex flex-4 gap-4 items-center'>
             {/* Languages */}
             <LanguagesSelect />
 
