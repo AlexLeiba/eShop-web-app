@@ -8,7 +8,7 @@ import { LanguagesSelect } from '../../components/Language/LanguagesSelect';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../store/userData/apiCalls';
 import { LoginSchema } from '../../lib/schemas';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import type { RootState } from '../../store/store';
 import { IconLoader } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
@@ -135,9 +135,9 @@ function Login() {
             </p>
 
             <p className='text-sm text-gray-500'>
-              <a className='cursor-pointer underline' href='/forgot-password'>
+              <Link className='cursor-pointer underline' to='/forgot-password'>
                 {t('forgotPassword')}
-              </a>{' '}
+              </Link>{' '}
             </p>
           </div>
           <Button disabled={loginState.isFetching} type='submit'>

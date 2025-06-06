@@ -13,7 +13,7 @@ export function Footer() {
   const links = [
     {
       name: t('links.products'),
-      slug: '/products',
+      slug: '/products?sort=newest&page=1',
     },
     {
       name: t('links.wishlist'),

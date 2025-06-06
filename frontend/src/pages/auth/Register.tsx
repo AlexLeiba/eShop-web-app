@@ -3,7 +3,7 @@ import bgImage from '../../assets/bg-image.webp';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Logo } from '../../components/Navigations/Logo';
 import { LanguagesSelect } from '../../components/Language/LanguagesSelect';
 import { RegisterSchema } from '../../lib/schemas';
@@ -194,9 +194,9 @@ function Register() {
               </a>
             </p>
             <p className='text-sm text-gray-500'>
-              <a className='cursor-pointer underline' href='/forgot-password'>
+              <Link className='cursor-pointer underline' to='/forgot-password'>
                 {t('forgotPassword')}
-              </a>{' '}
+              </Link>{' '}
             </p>
           </div>
           <Button disabled={loading} type='submit'>
