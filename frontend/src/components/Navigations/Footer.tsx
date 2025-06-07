@@ -7,6 +7,7 @@ import {
   IconBrandLinkedin,
   IconMail,
 } from '@tabler/icons-react';
+import { Link } from 'react-router-dom';
 
 export function Footer() {
   const { t } = useTranslation('translation', { keyPrefix: 'FooterSection' });
@@ -32,18 +33,18 @@ export function Footer() {
     {
       name: t('contact.email'),
       icon: <IconMail />,
-      slug: 'mailto:info@example.com',
+      slug: 'mailto:leiba.alexandru@gmail.com',
     },
 
     {
       name: t('contact.github'),
       icon: <IconBrandGithub />,
-      slug: 'https://github.com/alex-ro/my-vite-app',
+      slug: 'https://github.com/AlexLeiba',
     },
     {
       name: t('contact.linkedin'),
       icon: <IconBrandLinkedin />,
-      slug: 'https://www.linkedin.com/in/alex-ro/',
+      slug: 'https://www.linkedin.com/in/alex-leiba-9205801ba?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app',
     },
   ];
   return (
@@ -76,9 +77,9 @@ export function Footer() {
             return (
               <div key={link.name} className='flex items-center gap-1'>
                 <div>{link.icon}</div>
-                <a href={link.slug} className=' text-md'>
+                <Link to={link.slug} className='text-md' target='_blank'>
                   {link.name}
-                </a>
+                </Link>
               </div>
             );
           })}
