@@ -53,6 +53,11 @@ app.get('/', (req, res) => {
   res.json({ message: 'Server is running on port 4000' });
 });
 
+app.use((req, res, next) => {
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+  next();
+});
+
 // ROUTES
 app.use('/api', authRoutes);
 app.use('/api', userRoutes);
@@ -65,11 +70,6 @@ app.use('/api', adminDashboardRoutes);
 
 ///// SERVER RUNNING//////
 const PORT = process.env.PORT || 4000;
-
-app.use((req, res, next) => {
-  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
-  next();
-});
 
 async function server() {
   try {
