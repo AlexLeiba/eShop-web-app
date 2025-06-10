@@ -54,9 +54,8 @@ app.get('/', (req, res) => {
 });
 
 app.use((req, res, next) => {
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
   res.setHeader(
-    'Cross-Origin-Opener-Policy',
-    'same-origin',
     'Content-Security-Policy',
     "default-src 'self'; script-src 'self'; object-src 'none'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com"
   );
