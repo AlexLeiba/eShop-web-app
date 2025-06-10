@@ -46,7 +46,7 @@ const corsOptions = {
   },
 };
 
-app.use(cors(corsOptions)); // enable all cors
+app.use(cors(corsOptions)); // enable specified cors options
 
 // SERVER TEST
 app.get('/', (req, res) => {
@@ -65,6 +65,11 @@ app.use('/api', adminDashboardRoutes);
 
 ///// SERVER RUNNING//////
 const PORT = process.env.PORT || 4000;
+
+app.use((req, res, next) => {
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+  next();
+});
 
 async function server() {
   try {
