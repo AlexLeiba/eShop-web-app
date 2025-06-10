@@ -26,7 +26,7 @@ export function Footer() {
     },
     {
       name: t('links.termsAndConditions'),
-      slug: '/terms',
+      slug: '/',
     },
   ];
   const contactLinks = [

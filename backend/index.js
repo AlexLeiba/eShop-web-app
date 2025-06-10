@@ -59,6 +59,12 @@ app.use((req, res, next) => {
     'Content-Security-Policy',
     "default-src 'self'; script-src 'self'; object-src 'none'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com"
   );
+
+  if (req.secure) {
+    next();
+  } else {
+    res.redirect(301, 'https://' + req.headers.host + req.url);
+  }
   next();
 });
 
