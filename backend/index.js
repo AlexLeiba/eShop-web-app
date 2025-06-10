@@ -53,21 +53,6 @@ app.get('/', (req, res) => {
   res.json({ message: 'Server is running on port 4000' });
 });
 
-app.use((req, res, next) => {
-  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
-  res.setHeader(
-    'Content-Security-Policy',
-    "default-src 'self'; script-src 'self'; object-src 'none'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com"
-  );
-
-  if (req.secure) {
-    next();
-  } else {
-    res.redirect(301, 'https://' + req.headers.host + req.url);
-  }
-  next();
-});
-
 // ROUTES
 app.use('/api', authRoutes);
 app.use('/api', userRoutes);
