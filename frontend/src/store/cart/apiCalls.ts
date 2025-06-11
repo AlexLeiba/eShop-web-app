@@ -8,6 +8,8 @@ import {
 } from './reducer';
 import type { ProductsInCartType } from '../../consts';
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 // FETCH
 type FetchCartDataProps = {
   dispatch: React.Dispatch<Action>;
@@ -21,7 +23,7 @@ export async function fetchCartData({
 }: FetchCartDataProps) {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/cart?language=${language}`,
+      `${BACKEND_URL}/api/cart?language=${language}`,
       {
         headers: {
           token: `Bearer ${token}`,
@@ -55,9 +57,7 @@ export async function updateCart({
 }: UpdateCartProps) {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/cart/product-new/${
-        product?._id
-      }`,
+      `${BACKEND_URL}/api/cart/product-new/${product?._id}`,
       {
         method: 'PUT',
         headers: {
@@ -99,9 +99,7 @@ export async function deleteFromCart({
 }: DeleteFromCartProps) {
   try {
     const response = await fetch(
-      `${
-        import.meta.env.VITE_BACKEND_URL
-      }/api/cart/product-delete/${productId}/${color}/${size}`,
+      `${BACKEND_URL}/api/cart/product-delete/${productId}/${color}/${size}`,
       {
         method: 'PUT',
         headers: {
@@ -134,15 +132,12 @@ export async function clearAllCartProducts({
   token,
 }: ClearCartProps) {
   try {
-    const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/cart`,
-      {
-        method: 'DELETE',
-        headers: {
-          token: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await fetch(`${BACKEND_URL}/api/cart`, {
+      method: 'DELETE',
+      headers: {
+        token: `Bearer ${token}`,
+      },
+    });
     const cartData = await response.json();
     if (cartData.data) {
       dispatch(clearCart());
@@ -175,9 +170,7 @@ export async function changeCartProductQuantity({
 }: AddCartProductQuantityProps) {
   try {
     const response = await fetch(
-      `${
-        import.meta.env.VITE_BACKEND_URL
-      }/api/cart/product-quantity/${productId}/${quantity}/${size}/${color}`,
+      `${BACKEND_URL}/api/cart/product-quantity/${productId}/${quantity}/${size}/${color}`,
       {
         method: 'PUT',
         headers: {

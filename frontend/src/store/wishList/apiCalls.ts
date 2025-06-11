@@ -2,6 +2,8 @@ import type { Action } from '@reduxjs/toolkit';
 import type { ProductsType } from '../../consts';
 import { addToWithList, getWishlist, removeFromWishList } from './reducer';
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 type FetchWishlistProps = {
   dispatch: React.Dispatch<Action>;
   token: string;
@@ -15,7 +17,7 @@ export async function fetchWishlist({
 }: FetchWishlistProps) {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/wishlist?language=${language}`,
+      `${BACKEND_URL}/api/wishlist?language=${language}`,
       {
         headers: {
           token: `Bearer ${token}`,
@@ -47,15 +49,12 @@ export async function deleteFromWishlist({
   token,
 }: DeleteFromWishlistProps) {
   try {
-    const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/wishlist/${productId}`,
-      {
-        method: 'DELETE',
-        headers: {
-          token: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await fetch(`${BACKEND_URL}/api/wishlist/${productId}`, {
+      method: 'DELETE',
+      headers: {
+        token: `Bearer ${token}`,
+      },
+    });
     const wishlistData = await response.json();
     if (wishlistData.data) {
       dispatch(removeFromWishList(wishlistData.data));
@@ -83,7 +82,7 @@ export async function updateWishlist({
 }: UpdateWishlistProps) {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/wishlist/${product?._id}`,
+      `${BACKEND_URL}/api/wishlist/${product?._id}`,
       {
         method: 'PUT',
         headers: {
@@ -117,15 +116,12 @@ export async function deleteAllElemensFromWishlist({
   token,
 }: DeleteAllElementsFromWishlistProps) {
   try {
-    const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/wishlist-delete`,
-      {
-        method: 'DELETE',
-        headers: {
-          token: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await fetch(`${BACKEND_URL}/api/wishlist-delete`, {
+      method: 'DELETE',
+      headers: {
+        token: `Bearer ${token}`,
+      },
+    });
     const wishlistData = await response.json();
     if (wishlistData.data) {
       dispatch(removeFromWishList([]));

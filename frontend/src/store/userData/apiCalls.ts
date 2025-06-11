@@ -2,6 +2,8 @@ import type { Action } from '@reduxjs/toolkit';
 import { loginError, loginFetching, loginSuccess } from './reducer';
 import type { LoginType, RegisterType } from '../../lib/schemas';
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 type LoginProps = {
   user: LoginType | null;
   dispatch: React.Dispatch<Action>;
@@ -9,16 +11,13 @@ type LoginProps = {
 export async function login({ dispatch, user }: LoginProps) {
   dispatch(loginFetching());
   try {
-    const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/login`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(user),
-      }
-    );
+    const response = await fetch(`${BACKEND_URL}/api/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    });
     const responseData = await response.json();
 
     if (responseData.error) {
@@ -40,16 +39,13 @@ type RegisterProps = {
 };
 export async function register({ registerData }: RegisterProps) {
   try {
-    const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/register`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(registerData),
-      }
-    );
+    const response = await fetch(`${BACKEND_URL}/api/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(registerData),
+    });
     const { data, error } = await response.json();
 
     if (data) {
@@ -68,16 +64,13 @@ export async function register({ registerData }: RegisterProps) {
 
 export async function sendOtpForgotPasswordEmail({ email }: { email: string }) {
   try {
-    const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/forgot-password`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
-      }
-    );
+    const response = await fetch(`${BACKEND_URL}/api/forgot-password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email }),
+    });
     const { data, error } = await response.json();
 
     if (data) {
@@ -100,16 +93,13 @@ export async function checkOtpForgotPasswordFromEmail({
   otp: number;
 }) {
   try {
-    const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/check-otp`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, otp }),
-      }
-    );
+    const response = await fetch(`${BACKEND_URL}/api/check-otp`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, otp }),
+    });
     const { data, error } = await response.json();
 
     if (data) {
@@ -132,16 +122,13 @@ export async function resetPasswordFromEmail({
   password: string;
 }) {
   try {
-    const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/reset-password`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      }
-    );
+    const response = await fetch(`${BACKEND_URL}/api/reset-password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
     const { data, error } = await response.json();
 
     if (data) {
