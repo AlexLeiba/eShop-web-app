@@ -151,7 +151,7 @@ export async function clearAllCartProducts({
   }
 }
 
-// DELETE ALL ELEMENTS FROM CART
+// CHANGE QUANTITY OF PRODUCT IN CART
 type AddCartProductQuantityProps = {
   dispatch: React.Dispatch<Action>;
   token: string;

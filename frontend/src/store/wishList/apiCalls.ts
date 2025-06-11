@@ -106,6 +106,7 @@ export async function updateWishlist({
   }
 }
 
+// DELETE ALL ELEMENTS FROM WISHLIST
 type DeleteAllElementsFromWishlistProps = {
   token: string;
   dispatch: React.Dispatch<Action>;

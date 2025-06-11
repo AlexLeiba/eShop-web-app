@@ -4,6 +4,7 @@ import type { LoginType, RegisterType } from '../../lib/schemas';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
+// LOGIN
 type LoginProps = {
   user: LoginType | null;
   dispatch: React.Dispatch<Action>;
@@ -34,6 +35,7 @@ export async function login({ dispatch, user }: LoginProps) {
   }
 }
 
+// REGISTER
 type RegisterProps = {
   registerData: RegisterType | null;
 };
