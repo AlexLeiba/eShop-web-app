@@ -17,7 +17,6 @@ type ContextType = {
 };
 const ModalContext = createContext<ContextType>({
   isModalOpen: false,
-
   title: '',
   description: '',
   setIsModalOpen: () => {},
@@ -26,13 +25,11 @@ const ModalContext = createContext<ContextType>({
 
 type Props = {
   isOpen?: boolean;
-  onConfirm: () => void;
-
   title: string;
   description: string;
   children: React.ReactNode;
-
   classNameCustome?: string;
+  onConfirm: () => void;
 };
 
 // PROVIDER (shares state between modal and its children)

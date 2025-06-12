@@ -6,12 +6,14 @@ import { cn } from '../../lib/utils';
 import { Container } from '../Grid/Container';
 import type { ProductsDataType } from '../../pages/ProductsList';
 import { useTranslation } from 'react-i18next';
+import { IconLoader } from '@tabler/icons-react';
 
 type SliderProps = {
   data: ProductsDataType['data'];
 };
 export function Slider({ data }: SliderProps) {
   const { t } = useTranslation('translation', { keyPrefix: 'DashboardPage' });
+
   const [slide, setSlide] = React.useState(0);
 
   function handleSlide(direction: 'prev' | 'next') {
@@ -93,9 +95,11 @@ export function Slider({ data }: SliderProps) {
             minWidth: '100vw',
           }}
           className={cn(
-            'pt-[152px] overflow-hidden h-[700px] text-black bg-gray-200 animate-pulse '
+            'pt-[56px] overflow-hidden h-[700px] text-black bg-gray-400 animate-pulse flex items-center justify-center'
           )}
-        ></div>
+        >
+          <IconLoader className='animate-spin text-white' />
+        </div>
       )}
     </div>
   );

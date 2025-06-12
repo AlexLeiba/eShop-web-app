@@ -28,17 +28,13 @@ export function Navbar() {
   const withListQuantity = state?.wishlist?.data?.length;
 
   const navLinks = [
-    // {
-    //   name: t('register'),
-    //   slug: '/register',
-    // },
     {
       name: t('login'),
       slug: '/login',
     },
   ];
 
-  // fetch cart and favorite data only if we do not have theior data in redux, this way we will prevent overfetching teh data each time
+  // fetch cart and favorite data only if we do not have their data in redux, this way we will prevent overfetching  data each time
   React.useEffect(() => {
     const language = localStorage.getItem('language');
     async function fetchData() {

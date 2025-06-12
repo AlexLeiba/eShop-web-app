@@ -14,7 +14,6 @@ type Props = {
   selectedColor: string;
 };
 function Colors({ colors, setColor, selectedColor }: Props) {
-  // const [selected, setSelected] = React.useState<SetStateAction<string>>('');
   return (
     <div className='flex gap-2'>
       {colors?.map((color) => {
@@ -30,8 +29,6 @@ function Colors({ colors, setColor, selectedColor }: Props) {
               )}
               style={{ backgroundColor: color }}
             ></div>
-
-            {/* {selectedColor === color && <p>{color}</p>} */}
           </div>
         );
       })}

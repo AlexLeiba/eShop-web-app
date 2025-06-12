@@ -16,6 +16,7 @@ type Props = {
 };
 export function CartCard({ productData, type }: Props) {
   const { t } = useTranslation('translation', { keyPrefix: 'CartPage' });
+
   const dispatch = useDispatch();
   const userData = useSelector((state: RootState) => state.user.userData?.data);
   const sessionToken = userData?.token || '';
