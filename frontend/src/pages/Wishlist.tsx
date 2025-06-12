@@ -18,6 +18,16 @@ import toast from 'react-hot-toast';
 import React from 'react';
 import { Loader } from '../components/ui/Loader';
 import { useTranslation } from 'react-i18next';
+import {
+  Modal,
+  ModalContent,
+  ModalDescription,
+  ModalFooter,
+  ModalHeader,
+  ModalProvider,
+  ModalTitle,
+  ModalTrigger,
+} from '../components/ui/Modal';
 
 function Wishlist() {
   const { t } = useTranslation('translation', { keyPrefix: 'WishlistPage' });
@@ -97,14 +107,32 @@ function Wishlist() {
                         </p>
                       </Button>
                     </Link>
-                    <Button
-                      onClick={handleClearList}
-                      className='lg:w-[200px] w-[100px]  flex justify-center items-center'
-                      variant='secondary'
+                    <ModalProvider
+                      onConfirm={handleClearList}
+                      title={'Are you sure you want to clear your wishlist?'}
+                      description={'This action cannot be undone.'}
                     >
-                      <p className='lg:block hidden'>{t('clearListButton')}</p>
-                      <IconTrash className='lg:ml-2 text-red-500' />
-                    </Button>
+                      <ModalTrigger>
+                        <Button
+                          className='lg:w-[200px] w-[100px]  flex justify-center items-center'
+                          variant='secondary'
+                        >
+                          <p className='lg:block hidden'>
+                            {t('clearListButton')}
+                          </p>
+                          <IconTrash className='lg:ml-2 text-red-500' />
+                        </Button>
+                      </ModalTrigger>
+                      <Modal>
+                        <ModalHeader>
+                          <ModalTitle />
+                        </ModalHeader>
+                        <ModalContent>
+                          <ModalDescription />
+                        </ModalContent>
+                        <ModalFooter />
+                      </Modal>
+                    </ModalProvider>
                   </div>
                 )}
 

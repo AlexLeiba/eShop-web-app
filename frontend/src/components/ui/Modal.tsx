@@ -1,26 +1,31 @@
-import React, { createContext, useContext } from 'react';
+import React, {
+  createContext,
+  useContext,
+  type Dispatch,
+  type SetStateAction,
+} from 'react';
 import { Button } from './Button';
 import { cn } from '../../lib/utils';
+import { IconX } from '@tabler/icons-react';
 
 type ContextType = {
-  isOpenModal: boolean;
+  isModalOpen: boolean;
   title?: string;
   description?: string;
-  onClose: (value: boolean) => void;
+  setIsModalOpen: Dispatch<SetStateAction<boolean>>;
   onConfirm: () => void;
 };
 const ModalContext = createContext<ContextType>({
-  isOpenModal: false,
+  isModalOpen: false,
 
   title: '',
   description: '',
-  onClose: () => {},
+  setIsModalOpen: () => {},
   onConfirm: () => {},
 });
 
 type Props = {
-  isOpenModal: boolean;
-  onClose: (value: boolean) => void;
+  isOpen?: boolean;
   onConfirm: () => void;
 
   title: string;
@@ -29,47 +34,74 @@ type Props = {
 
   classNameCustome?: string;
 };
-export function Modal({
+
+// PROVIDER (shares state between modal and its children)
+export function ModalProvider({
   title,
   description,
   children,
-  isOpenModal,
-  onClose,
+  isOpen = false,
   onConfirm,
-  classNameCustome,
 }: Props) {
+  const [isModalOpen, setIsModalOpen] = React.useState(isOpen);
   return (
     <ModalContext.Provider
       value={{
-        onClose,
+        setIsModalOpen,
         onConfirm,
-        isOpenModal,
+        isModalOpen,
         title,
         description,
       }}
     >
-      {/* Backdrop */}
-      <div>
-        <div
-          className={`${
-            isOpenModal ? 'block' : 'hidden'
-          } fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center `}
-        >
-          {/* Content */}
-          <div
-            className={cn(
-              `min-w-[100px] min-h-[100px] mx-[10%] bg-white rounded-md shadow-lg p-4 flex flex-col ${classNameCustome}`
-            )}
-          >
-            {children}
-          </div>
-        </div>
-      </div>
+      {children}
     </ModalContext.Provider>
   );
 }
 
-export function Title() {
+// MODAL
+export function Modal({
+  children,
+  classNameCustome,
+}: {
+  children: React.ReactNode;
+  classNameCustome?: string;
+}) {
+  const { isModalOpen, setIsModalOpen } = useContext(ModalContext);
+
+  return (
+    <>
+      <div
+        className={`${
+          isModalOpen ? 'block' : 'hidden'
+        } fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 `}
+      >
+        {/* Content */}
+        <div
+          className={cn(
+            `min-w-[100px] min-h-[100px] mx-[10%] bg-white z-50 rounded-md shadow-lg px-8 pt-10 pb-8 flex flex-col relative ${classNameCustome}`
+          )}
+        >
+          <IconX
+            className='absolute right-4 top-4 cursor-pointer'
+            onClick={() => setIsModalOpen(false)}
+          />
+          {children}
+        </div>
+      </div>
+    </>
+  );
+}
+
+// TRIGGER
+export function ModalTrigger({ children }: { children: React.ReactNode }) {
+  const { setIsModalOpen } = useContext(ModalContext);
+
+  return <div onClick={() => setIsModalOpen((prev) => !prev)}>{children}</div>;
+}
+
+// BODY CONTENT
+export function ModalTitle() {
   const { title } = useContext(ModalContext);
 
   if (!title) {
@@ -77,7 +109,7 @@ export function Title() {
   }
   return <h4 className='text-2xl font-bold pb-4'>{title}</h4>;
 }
-export function Description() {
+export function ModalDescription() {
   const { description } = useContext(ModalContext);
 
   if (!description) {
@@ -86,22 +118,22 @@ export function Description() {
   return <p className='pb-12'>{description}</p>;
 }
 
-export function Header({ children }: { children: React.ReactNode }) {
+export function ModalHeader({ children }: { children: React.ReactNode }) {
   return <div>{children}</div>;
 }
 
-export function Content({ children }: { children: React.ReactNode }) {
+export function ModalContent({ children }: { children: React.ReactNode }) {
   return <div className='flex-1'>{children}</div>;
 }
 
-export function Footer() {
-  const { onConfirm, onClose } = useContext(ModalContext);
+export function ModalFooter() {
+  const { onConfirm, setIsModalOpen } = useContext(ModalContext);
   return (
     <div className='flex lg:gap-8 md:gap-8 gap-4 w-full lg:flex-row md:flex-row flex-col'>
       <Button variant='secondary' onClick={() => onConfirm()}>
         Confirm
       </Button>
-      <Button onClick={() => onClose(false)}>Cancel</Button>
+      <Button onClick={() => setIsModalOpen(false)}>Cancel</Button>
     </div>
   );
 }
