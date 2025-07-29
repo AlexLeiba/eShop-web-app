@@ -60,7 +60,8 @@ app.use((_, res, next) => {
     'Strict-Transport-Security',
     'max-age=63072000; includeSubDomains; preload'
   );
-
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+  res.setHeader('X-Frame-Options', 'DENY');
   next();
 });
 
