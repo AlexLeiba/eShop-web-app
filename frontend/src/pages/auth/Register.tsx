@@ -101,6 +101,7 @@ function Register() {
       <div className='absolute top-0 right-0 left-0 bottom-0 w-full h-full z-10 bg-black opacity-50'></div>
       <div className='w-[550px]  bg-white rounded-md py-6 px-8 flex flex-col gap-4 z-20 '>
         <form
+          id='register-form'
           onSubmit={handleSubmit}
           className='flex flex-col justify-between h-full min-h-[450px]'
         >
