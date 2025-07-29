@@ -1,8 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Container } from '../components/Grid/Container';
 import { Newsletter } from '../components/Home/Newsletter';
-import { Footer } from '../components/Navigations/Footer';
-import { Navbar } from '../components/Navigations/Navbar';
 import { Announcement } from '../components/ui/Announcement';
 import { Button } from '../components/ui/Button';
 import { Spacer } from '../components/ui/spacer';
@@ -28,6 +26,7 @@ import {
   ModalTitle,
   ModalTrigger,
 } from '../components/ui/Modal';
+import { Layout } from '../components/Layout/Layout';
 
 function Wishlist() {
   const { t } = useTranslation('translation', { keyPrefix: 'WishlistPage' });
@@ -72,9 +71,7 @@ function Wishlist() {
     fetchData();
   }, []);
   return (
-    <div className='flex min-h-screen flex-col'>
-      {/* Navbar */}
-      <Navbar />
+    <Layout>
       <Announcement
         title='lorem20 is coming soon dsdsadsa sdadsa dsadsad'
         link='google.com'
@@ -172,9 +169,7 @@ function Wishlist() {
           <Newsletter />
         </Container>
       </div>
-
-      <Footer />
-    </div>
+    </Layout>
   );
 }
 

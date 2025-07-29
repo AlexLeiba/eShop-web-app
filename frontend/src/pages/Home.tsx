@@ -3,8 +3,6 @@ import { Container } from '../components/Grid/Container';
 import { Categories } from '../components/Home/Categories';
 import { Newsletter } from '../components/Home/Newsletter';
 import { Products } from '../components/Home/Products';
-import { Footer } from '../components/Navigations/Footer';
-import { Navbar } from '../components/Navigations/Navbar';
 import { Announcement } from '../components/ui/Announcement';
 import { Slider } from '../components/ui/Slider';
 import { Spacer } from '../components/ui/spacer';
@@ -13,6 +11,7 @@ import toast from 'react-hot-toast';
 import React from 'react';
 import type { ProductsDataType } from './ProductsList';
 import { useTranslation } from 'react-i18next';
+import { Layout } from '../components/Layout/Layout';
 
 function Home() {
   const { t } = useTranslation('translation', { keyPrefix: 'DashboardPage' });
@@ -73,8 +72,7 @@ function Home() {
     fetchData();
   }, [pathname]);
   return (
-    <div className='flex min-h-screen flex-col'>
-      <Navbar />
+    <Layout>
       <Announcement title='lorem20 is coming soon dsdsadsa sdadsa dsadsad' />
       <div className='flex flex-grow-1 flex-col'>
         {/* FEATURED PRODUCTS HERO SLIDER */}
@@ -112,8 +110,7 @@ function Home() {
           <Newsletter />
         </Container>
       </div>
-      <Footer />
-    </div>
+    </Layout>
   );
 }
 

@@ -1,8 +1,6 @@
 import { Container } from '../components/Grid/Container';
 import { Newsletter } from '../components/Home/Newsletter';
 import { Products } from '../components/Home/Products';
-import { Footer } from '../components/Navigations/Footer';
-import { Navbar } from '../components/Navigations/Navbar';
 import Filter from '../components/Products/Filter';
 import { Announcement } from '../components/ui/Announcement';
 
@@ -19,6 +17,7 @@ import {
   type ProductsType,
 } from '../consts';
 import { useTranslation } from 'react-i18next';
+import { Layout } from '../components/Layout/Layout';
 
 export type ProductsDataType = {
   data: ProductsType[];
@@ -65,9 +64,7 @@ function ProductsList() {
   }, [searchParams]);
 
   return (
-    <div className='flex min-h-screen flex-col'>
-      {/* Navbar */}
-      <Navbar />
+    <Layout>
       <Announcement
         title='lorem20 is coming soon dsdsadsa sdadsa dsadsad'
         link='google.com'
@@ -127,8 +124,7 @@ function ProductsList() {
           <Newsletter />
         </Container>
       </div>
-      <Footer />
-    </div>
+    </Layout>
   );
 }
 

@@ -8,8 +8,6 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Container } from '../components/Grid/Container';
 import { Newsletter } from '../components/Home/Newsletter';
-import { Footer } from '../components/Navigations/Footer';
-import { Navbar } from '../components/Navigations/Navbar';
 import { Announcement } from '../components/ui/Announcement';
 import { Spacer } from '../components/ui/spacer';
 import { useSearchParams } from 'react-router-dom';
@@ -20,6 +18,7 @@ import { columns, type OrderType } from '../consts';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store/store';
 import { Loader } from '../components/ui/Loader';
+import { Layout } from '../components/Layout/Layout';
 
 export type OrdersDataType = {
   data: OrderType[];
@@ -145,9 +144,7 @@ function Orders() {
     });
   }
   return (
-    <div className='flex min-h-screen flex-col'>
-      {/* Navbar */}
-      <Navbar />
+    <Layout>
       <Announcement
         title='lorem20 is coming soon dsdsadsa sdadsa dsadsad'
         link='google.com'
@@ -208,8 +205,7 @@ function Orders() {
           <Newsletter />
         </Container>
       </div>
-      <Footer />
-    </div>
+    </Layout>
   );
 }
 

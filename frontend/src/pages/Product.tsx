@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import { Container } from '../components/Grid/Container';
 import { Newsletter } from '../components/Home/Newsletter';
-import { Footer } from '../components/Navigations/Footer';
-import { Navbar } from '../components/Navigations/Navbar';
 import AddAmount from '../components/Products/AddAmount';
 import Colors from '../components/Products/Colors';
 import { Announcement } from '../components/ui/Announcement';
@@ -25,6 +23,7 @@ import type { RootState } from '../store/store';
 import { updateWishlist } from '../store/wishList/apiCalls';
 import { updateCart } from '../store/cart/apiCalls';
 import { useTranslation } from 'react-i18next';
+import { Layout } from '../components/Layout/Layout';
 
 function Product() {
   const { t } = useTranslation('translation', { keyPrefix: 'ProductPage' });
@@ -181,9 +180,7 @@ function Product() {
   }
 
   return (
-    <div className='flex min-h-screen flex-col'>
-      {/* Navbar */}
-      <Navbar />
+    <Layout>
       <Announcement
         title='lorem20 is coming soon dsdsadsa sdadsa dsadsad'
         link='google.com'
@@ -296,9 +293,7 @@ function Product() {
       <Container fluid className='bg-gray-100 '>
         <Newsletter />
       </Container>
-
-      <Footer />
-    </div>
+    </Layout>
   );
 }
 
