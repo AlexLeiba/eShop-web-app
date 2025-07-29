@@ -48,6 +48,22 @@ const corsOptions = {
 
 app.use(cors(corsOptions)); // enable specified cors options
 
+// SET HEADERS
+app.use((_, res, next) => {
+  res.setHeader(
+    'Content-Security-Policy',
+    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' ; object-src 'none';" //Controls which sources are allowed to load content (scripts, styles, etc.).This is the most powerful defense against XSS.
+  );
+  res.setHeader('X-Content-Type-Options', 'nosniff'); //Prevents the browser from MIME-sniffing a response away from the declared Content-Type.
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin'); //Prevents leaking sensitive URLs via Referer header.
+  res.setHeader(
+    'Strict-Transport-Security',
+    'max-age=63072000; includeSubDomains; preload'
+  );
+
+  next();
+});
+
 // SERVER TEST
 app.get('/', (req, res) => {
   res.json({ message: 'Server is running on port 4000' });
