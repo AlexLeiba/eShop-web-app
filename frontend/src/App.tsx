@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 import ProductsList from './pages/ProductsList';
 import Wishlist from './pages/Wishlist';
@@ -11,16 +11,11 @@ import SuccessPaymentPage from './pages/payments/SuccessPaymentPage';
 import ErrorPaymentPage from './pages/payments/ErrorPaymentPage';
 import { Toaster } from 'react-hot-toast';
 import { SetDefaultLanguage } from './components/Language/SetDefaultLanguage';
-import { useSelector } from 'react-redux';
-import type { RootState } from './store/store';
 import Orders from './pages/Orders';
 import ForgotPasswordPage from './pages/auth/ForgotPassword';
+import { ProtectedRoutes } from './lib/ProtectedRoutes';
 
 function App() {
-  const userData = useSelector((state: RootState) => state.user.userData?.data);
-
-  const sessionToken = userData?.token || '';
-
   return (
     <>
       <div>
@@ -37,32 +32,33 @@ function App() {
             {/* Private routes */}
             <Route
               path='/wishlist'
-              element={sessionToken ? <Wishlist /> : <Navigate to='/login' />}
+              element={
+                <ProtectedRoutes>
+                  <Wishlist />
+                </ProtectedRoutes>
+              }
             />
             <Route
               path='/cart'
-              element={sessionToken ? <Cart /> : <Navigate to='/login' />}
+              element={
+                <ProtectedRoutes>
+                  <Cart />
+                </ProtectedRoutes>
+              }
             />
             <Route
               path='/orders'
-              element={sessionToken ? <Orders /> : <Navigate to='/login' />}
+              element={
+                <ProtectedRoutes>
+                  <Orders />
+                </ProtectedRoutes>
+              }
             />
 
             {/* Auth routes */}
-            <Route
-              path='/login'
-              element={sessionToken ? <Navigate to='/' /> : <Login />}
-            />
-            <Route
-              path='/register'
-              element={sessionToken ? <Navigate to='/' /> : <Register />}
-            />
-            <Route
-              path='/forgot-password'
-              element={
-                sessionToken ? <Navigate to='/' /> : <ForgotPasswordPage />
-              }
-            />
+            <Route path='/login' element={<Login />} />
+            <Route path='/register' element={<Register />} />
+            <Route path='/forgot-password' element={<ForgotPasswordPage />} />
 
             {/* Payment Stripe */}
             <Route path='/success' element={<SuccessPaymentPage />} />
