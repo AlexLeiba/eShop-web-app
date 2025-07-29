@@ -72,6 +72,7 @@ export function Products({ productsData, type, loading }: ProductsProps) {
       {type === 'products-list' && (
         <div className='flex justify-between items-center gap-4'>
           <Button
+            title='Previous page'
             disabled={Number(searchParams.get('page')) === 1}
             variant='secondary'
             onClick={() => handleChangePage('prev')}
@@ -81,6 +82,7 @@ export function Products({ productsData, type, loading }: ProductsProps) {
           </Button>
 
           <Button
+            title='Next page'
             disabled={
               limitPerPage * Number(searchParams.get('page')) >
               productsData.count

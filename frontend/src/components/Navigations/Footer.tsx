@@ -57,7 +57,7 @@ export function Footer() {
         </div>
 
         <div>
-          <h4 className='text-2xl font-bold'>{t('links.title')}</h4>
+          <h5 className='text-2xl font-bold'>{t('links.title')}</h5>
           <Spacer sm={2} md={2} lg={2} />
           {links.map((link) => {
             return (

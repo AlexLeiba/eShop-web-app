@@ -1,3 +1,4 @@
+import React from 'react';
 import { Logo } from './Logo';
 import { NavLinks } from './NavLinks';
 import { ShoppingCart } from './ShoppingCart';
@@ -10,7 +11,6 @@ import SearchSelector from './SearchSelector';
 import { MyAccountDropdown } from './MyAccountDropdown';
 import type { UserType } from '../../store/userData/reducer';
 import { useTranslation } from 'react-i18next';
-import React from 'react';
 import toast from 'react-hot-toast';
 import { fetchWishlist } from '../../store/wishList/apiCalls';
 import { fetchCartData } from '../../store/cart/apiCalls';
@@ -78,7 +78,7 @@ export function Navbar() {
 
             {/* Search */}
             <SearchSelector />
-            <Link to={'/'}>
+            <Link to={'/'} title='Home'>
               <div>
                 <IconShoppingBag
                   className='text-green-500 lg:hidden md:hidden'
@@ -97,14 +97,11 @@ export function Navbar() {
           <div className='flex flex-1 items-center justify-end gap-4'>
             {/* Wish list */}
             <div className=' gap-4 items-center  lg:flex md:flex hidden'>
-              <div title='Wish List'>
-                <WishList quantity={withListQuantity} />
-              </div>
+              <WishList quantity={withListQuantity} />
 
               {/* Cart */}
-              <div title='Cart'>
-                <ShoppingCart quantity={cartQuantity} />
-              </div>
+
+              <ShoppingCart quantity={cartQuantity} />
             </div>
             {sessionToken ? (
               <MyAccountDropdown

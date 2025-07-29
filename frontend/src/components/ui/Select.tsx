@@ -13,8 +13,14 @@ type Props = {
 export function Select({ data, label, value, handleSelect }: Props) {
   return (
     <div className='relative'>
-      {label && <p className='text-1xl font-bold'>{label}</p>}
+      {label && (
+        <label htmlFor={label}>
+          <p className='text-1xl font-bold'>{label}</p>
+        </label>
+      )}
       <select
+        name={label}
+        id={label}
         value={value}
         onChange={(e) => handleSelect(e.target.value)}
         className='cursor-pointer   h-10 text-black rounded-full py-2 px-8 focus:border-none focus:outline-none bg-gray-200 transition-all z-10 hover:shadow-md'
