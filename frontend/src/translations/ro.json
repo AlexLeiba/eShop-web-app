@@ -20,34 +20,34 @@
     }
   },
   "ForgotPasswordPage": {
-    "title": "Forgot Password",
+    "title": "Ai uitat parola",
     "email": {
       "label": "Email",
-      "placeholder": "Enter your email"
+      "placeholder": "Introdu email-ul"
     },
     "passCode": {
-      "label": "The code we sent you",
-      "placeholder": "Enter the code we sent you through email"
+      "label": "Codul pe care l-am trimis",
+      "placeholder": "Introdu codul pe care l-am trimis prin email"
     },
     "newPassword": {
-      "label": "New Password",
-      "placeholder": "Enter your new password"
+      "label": "Parola noua",
+      "placeholder": "Introdu parola noua"
     },
     "confirmPassword": {
-      "label": "Confirm Password",
-      "placeholder": "Enter your password"
+      "label": "Confirma parola",
+      "placeholder": "Introdu parola"
     },
     "toast": {
-      "emailSentMessage": "Email was sent with the code successfully!",
-      "otpCheckMessage": "The code was checked successfully!",
+      "emailSentMessage": "Email-ul a fost trimis cu codul cu succes!",
+      "otpCheckMessage": "Codul a fost verificat cu succes!",
 
-      "resetPasswordMessage": "You have resetted your password successfully"
+      "resetPasswordMessage": "Parola ta a fost resetata cu succes"
     },
-    "buttonSendCode": "Send Code",
-    "buttonResetPassword": "Reset Password",
-    "saveNewPassword": "Save new password",
-    "register": "Register",
-    "login": "Login"
+    "buttonSendCode": "Trimite Cod",
+    "buttonResetPassword": "Reseteaza Parola",
+    "saveNewPassword": "Salveaza noua parola",
+    "register": "Inregistreaza-te",
+    "login": "Logheaza-te"
   },
   "RegisterPage": {
     "title": "Inregistrare",

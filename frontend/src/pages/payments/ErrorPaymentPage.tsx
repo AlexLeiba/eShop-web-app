@@ -38,7 +38,12 @@ function ErrorPaymentPage() {
 
     fetchData();
   }, []);
-  return <div>ErrorPaymentPage</div>;
+  return (
+    <div className='flex flex-col items-center justify-center h-screen'>
+      <h1>Something went wrong with your payment</h1>
+      <p>Please try again later</p>
+    </div>
+  );
 }
 
 export default ErrorPaymentPage;

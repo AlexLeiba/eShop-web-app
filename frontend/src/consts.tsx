@@ -291,6 +291,7 @@ export const filterCategories = {
   ],
 };
 
+// languages
 export const languages = [
   {
     name: 'English',
@@ -302,6 +303,7 @@ export const languages = [
   },
 ];
 
+// table columns
 export const columns: { id: keyof OrderType; label: string }[] = [
   {
     id: 'status',

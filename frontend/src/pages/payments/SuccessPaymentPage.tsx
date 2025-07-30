@@ -41,7 +41,12 @@ function SuccessPaymentPage() {
 
     fetchData();
   }, []);
-  return <div>SuccessPaymentPage</div>;
+  return (
+    <div className='flex flex-col items-center justify-center h-screen'>
+      <h1>Thank you for your purchase!</h1>
+      <p>Your payment was successful</p>
+    </div>
+  );
 }
 
 export default SuccessPaymentPage;
