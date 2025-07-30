@@ -20,7 +20,7 @@
     }
   },
   "ForgotPasswordPage": {
-    "title": "Ai uitat parola",
+    "title": "Schimba parola",
     "email": {
       "label": "Email",
       "placeholder": "Introdu email-ul"
