@@ -13,7 +13,9 @@ export function SetDefaultLanguage() {
   }, []);
 
   // Prevent rendering until language is set
-  if (!ready) return null;
+  if (!ready) {
+    return null;
+  }
 
   return null;
 }

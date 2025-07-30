@@ -19,8 +19,8 @@ function App() {
   return (
     <>
       <div>
-        <Toaster position='bottom-right' />
         <BrowserRouter>
+          <Toaster position='bottom-right' />
           <ScrollToTop />
           <SetDefaultLanguage />
           <Routes>

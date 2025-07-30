@@ -17,16 +17,18 @@ export function LanguagesSelect() {
       setSelectLanguage(language);
     }
 
-    document.addEventListener('click', (e) => {
+    function handleCheckClickOutside(e: MouseEvent) {
       if (
         containerRef.current &&
         !containerRef.current.contains(e.target as Node)
       ) {
         setOpen(false);
       }
-    });
+    }
 
-    return () => document.removeEventListener('click', () => {});
+    document.addEventListener('click', handleCheckClickOutside);
+
+    return () => document.removeEventListener('click', handleCheckClickOutside);
   }, []);
 
   function handleLanguageChange(language: string) {
