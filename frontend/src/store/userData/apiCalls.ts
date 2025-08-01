@@ -1,8 +1,7 @@
 import type { Action } from '@reduxjs/toolkit';
 import { loginError, loginFetching, loginSuccess } from './reducer';
 import type { LoginType, RegisterType } from '../../lib/schemas';
-
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+import { axiosInstance } from '../../lib/axiosInstance';
 
 // LOGIN
 type LoginProps = {
@@ -12,26 +11,25 @@ type LoginProps = {
 export async function login({ dispatch, user }: LoginProps) {
   dispatch(loginFetching());
   try {
-    const response = await fetch(`${BACKEND_URL}/api/login`, {
+    const { data: response } = await axiosInstance({
+      url: `/api/login`,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(user),
+      data: user,
     });
-    const responseData = await response.json();
 
-    if (responseData.error) {
-      dispatch(loginError(responseData.error));
-      return { data: null, error: responseData.error };
-    }
-    if (responseData.data) {
-      dispatch(loginSuccess(responseData));
-      return { data: responseData.data, error: null };
+    if (response.data) {
+      dispatch(loginSuccess(response));
+      return { data: response.data, error: null };
     }
   } catch (error: any) {
-    dispatch(loginError(error.message));
-    return { data: null, error: error.message };
+    dispatch(loginError(error.response.data.error || 'Something went wrong'));
+    return {
+      data: null,
+      error: error.response.data.error || 'Something went wrong',
+    };
   }
 }
 
@@ -41,23 +39,23 @@ type RegisterProps = {
 };
 export async function register({ registerData }: RegisterProps) {
   try {
-    const response = await fetch(`${BACKEND_URL}/api/register`, {
+    const { data: response } = await axiosInstance({
+      url: `/api/register`,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(registerData),
+      data: registerData,
     });
-    const { data, error } = await response.json();
 
-    if (data) {
-      return { data, error: null };
-    }
-    if (error) {
-      return { data: null, error: error };
+    if (response.data) {
+      return { data: response.data, error: null };
     }
   } catch (error: any) {
-    return { data: null, error: error.message };
+    return {
+      data: null,
+      error: error.response.data.error || 'Something went wrong',
+    };
   }
 }
 
@@ -66,23 +64,23 @@ export async function register({ registerData }: RegisterProps) {
 
 export async function sendOtpForgotPasswordEmail({ email }: { email: string }) {
   try {
-    const response = await fetch(`${BACKEND_URL}/api/forgot-password`, {
+    const { data: response } = await axiosInstance({
+      url: `/api/forgot-password`,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email }),
+      data: { email },
     });
-    const { data, error } = await response.json();
 
-    if (data) {
-      return { data, error: null };
-    }
-    if (error) {
-      return { data: null, error: error };
+    if (response.data) {
+      return { data: response.data, error: null };
     }
   } catch (error: any) {
-    return { data: null, error: error.message };
+    return {
+      data: null,
+      error: error.response.data.error || 'Something went wrong',
+    };
   }
 }
 
@@ -95,23 +93,23 @@ export async function checkOtpForgotPasswordFromEmail({
   otp: number;
 }) {
   try {
-    const response = await fetch(`${BACKEND_URL}/api/check-otp`, {
+    const { data: response } = await axiosInstance({
+      url: `/api/check-otp`,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, otp }),
+      data: { email, otp },
     });
-    const { data, error } = await response.json();
 
-    if (data) {
-      return { data, error: null };
-    }
-    if (error) {
-      return { data: null, error: error };
+    if (response.data) {
+      return { data: response.data, error: null };
     }
   } catch (error: any) {
-    return { data: null, error: error.message };
+    return {
+      data: null,
+      error: error.response.data.error || 'Something went wrong',
+    };
   }
 }
 
@@ -124,22 +122,22 @@ export async function resetPasswordFromEmail({
   password: string;
 }) {
   try {
-    const response = await fetch(`${BACKEND_URL}/api/reset-password`, {
+    const { data: response } = await axiosInstance({
+      url: `/api/reset-password`,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, password }),
+      data: { email, password },
     });
-    const { data, error } = await response.json();
 
-    if (data) {
-      return { data, error: null };
-    }
-    if (error) {
-      return { data: null, error: error };
+    if (response.data) {
+      return { data: response.data, error: null };
     }
   } catch (error: any) {
-    return { data: null, error: error.message };
+    return {
+      data: null,
+      error: error.response.data.error || 'Something went wrong',
+    };
   }
 }

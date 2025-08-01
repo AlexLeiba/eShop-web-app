@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { SearchInput } from '../ui/SearchInput';
 import { type ProductsType } from '../../consts';
 import { useNavigate } from 'react-router-dom';
@@ -6,17 +6,22 @@ import toast from 'react-hot-toast';
 import { IconLoader } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 
+const initialProductData: ProductsType[] = [];
+
 function SearchSelector() {
   const { t } = useTranslation('translation', { keyPrefix: 'HeaderSection' });
   const navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
   const [search, setSearch] = React.useState('');
-  const [productsData, setProductsData] = React.useState<ProductsType[]>([]);
+
+  const [productsData, setProductsData] =
+    React.useState<ProductsType[]>(initialProductData);
+
   const containerRef = React.useRef<HTMLDivElement>(null);
 
-  async function handleSearch(searchTerm: string) {
+  const handleSearch = useCallback((searchTerm: string) => {
     setSearch(searchTerm);
-  }
+  }, []);
 
   useEffect(() => {
     const language = localStorage.getItem('language') || 'en';
@@ -53,11 +58,15 @@ function SearchSelector() {
         containerRef.current &&
         !containerRef.current.contains(e.target as Node)
       ) {
-        setSearch('');
-        setProductsData([]);
+        if (search) {
+          setSearch('');
+        }
+        if (productsData.length > 0) {
+          setProductsData(initialProductData);
+        }
       }
     });
-  }, []);
+  }, [search, productsData]);
 
   return (
     <div className='relative w-full' ref={containerRef} title='Search Products'>

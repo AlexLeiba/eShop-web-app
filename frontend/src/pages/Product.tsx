@@ -25,6 +25,31 @@ import { updateCart } from '../store/cart/apiCalls';
 import { useTranslation } from 'react-i18next';
 import { Layout } from '../components/Layout/Layout';
 
+const initialProductData: ProductsType = {
+  title: '',
+  description: '',
+  price: 0,
+  image: '',
+  images: [],
+  categories: [],
+  color: [],
+  size: [],
+  _id: '',
+  isPublished: false,
+  inStock: false,
+  createdAt: '',
+  updatedAt: '',
+  featured: false,
+  featuredBackgroundColor: '',
+  quantity: 0,
+  __v: 0,
+};
+const initialItemFeatures = {
+  color: '',
+  size: '',
+  quantity: 1,
+};
+
 function Product() {
   const { t } = useTranslation('translation', { keyPrefix: 'ProductPage' });
   const dispatch = useDispatch();
@@ -36,15 +61,10 @@ function Product() {
   const productId = location.pathname.split('/')[2];
   const [loading, setLoading] = React.useState(true);
 
-  const [itemFeatures, setItemFeatures] = React.useState({
-    color: '',
-    size: '',
-    quantity: 1,
-  });
+  const [itemFeatures, setItemFeatures] = React.useState(initialItemFeatures); //change this state with redux ( this triggers re-renders to all components which are related to this useState)
 
-  const [product, setProduct] = React.useState<ProductsType>(
-    {} as ProductsType
-  );
+  const [product, setProduct] =
+    React.useState<ProductsType>(initialProductData);
 
   const [isFavorite, setIsFavorite] = React.useState(false);
   const [isInCart, setIsInCart] = React.useState(false);

@@ -1,8 +1,7 @@
 import type { Action } from '@reduxjs/toolkit';
 import type { ProductsType } from '../../consts';
 import { addToWithList, getWishlist, removeFromWishList } from './reducer';
-
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+import { axiosInstance } from '../../lib/axiosInstance';
 
 type FetchWishlistProps = {
   dispatch: React.Dispatch<Action>;
@@ -16,24 +15,23 @@ export async function fetchWishlist({
   language,
 }: FetchWishlistProps) {
   try {
-    const response = await fetch(
-      `${BACKEND_URL}/api/wishlist?language=${language}`,
-      {
-        headers: {
-          token: `Bearer ${token}`,
-        },
-      }
-    );
-    const wishlistData = await response.json();
-    if (wishlistData.data) {
-      dispatch(getWishlist(wishlistData.data));
-      return { data: wishlistData, error: null };
-    }
-    if (wishlistData.error) {
-      return { data: null, error: wishlistData.error };
+    const { data: response } = await axiosInstance({
+      url: `/api/wishlist?language=${language}`,
+      method: 'GET',
+      headers: {
+        token: `Bearer ${token}`,
+      },
+    });
+
+    if (response.data) {
+      dispatch(getWishlist(response.data));
+      return { data: response, error: null };
     }
   } catch (error: any) {
-    return { data: null, error: error.message };
+    return {
+      data: null,
+      error: error.response.data.error || 'Something went wrong',
+    };
   }
 }
 
@@ -49,22 +47,23 @@ export async function deleteFromWishlist({
   token,
 }: DeleteFromWishlistProps) {
   try {
-    const response = await fetch(`${BACKEND_URL}/api/wishlist/${productId}`, {
+    const { data: response } = await axiosInstance({
+      url: `/api/wishlist/${productId}`,
       method: 'DELETE',
       headers: {
         token: `Bearer ${token}`,
       },
     });
-    const wishlistData = await response.json();
-    if (wishlistData.data) {
-      dispatch(removeFromWishList(wishlistData.data));
-      return { data: wishlistData.data, error: null };
-    }
-    if (wishlistData.error) {
-      return { data: null, error: wishlistData.error };
+
+    if (response.data) {
+      dispatch(removeFromWishList(response.data));
+      return { data: response.data, error: null };
     }
   } catch (error: any) {
-    return { data: null, error: error.message };
+    return {
+      data: null,
+      error: error.response.data.error || 'Something went wrong',
+    };
   }
 }
 
@@ -81,28 +80,25 @@ export async function updateWishlist({
   token,
 }: UpdateWishlistProps) {
   try {
-    const response = await fetch(
-      `${BACKEND_URL}/api/wishlist/${product?._id}`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          token: `Bearer ${token}`,
-        },
-        body: JSON.stringify(product),
-      }
-    );
+    const { data: response } = await axiosInstance({
+      method: 'PUT',
+      url: `/api/wishlist/${product?._id}`,
+      headers: {
+        'Content-Type': 'application/json',
+        token: `Bearer ${token}`,
+      },
+      data: product,
+    });
 
-    const productData = await response.json();
-    if (productData.data) {
-      dispatch(addToWithList(productData.data));
-      return { data: productData.data, error: null };
-    }
-    if (productData.error) {
-      return { data: null, error: productData.error };
+    if (response.data) {
+      dispatch(addToWithList(response.data));
+      return { data: response.data, error: null };
     }
   } catch (error: any) {
-    return { data: null, error: error.message };
+    return {
+      data: null,
+      error: error.response.data.error || 'Something went wrong',
+    };
   }
 }
 
@@ -117,21 +113,22 @@ export async function deleteAllElemensFromWishlist({
   token,
 }: DeleteAllElementsFromWishlistProps) {
   try {
-    const response = await fetch(`${BACKEND_URL}/api/wishlist-delete`, {
+    const { data: response } = await axiosInstance({
+      url: `/api/wishlist-delete`,
       method: 'DELETE',
       headers: {
         token: `Bearer ${token}`,
       },
     });
-    const wishlistData = await response.json();
-    if (wishlistData.data) {
+
+    if (response.data) {
       dispatch(removeFromWishList([]));
-      return { data: wishlistData.data, error: null };
-    }
-    if (wishlistData.error) {
-      return { data: null, error: wishlistData.error };
+      return { data: response.data, error: null };
     }
   } catch (error: any) {
-    return { data: null, error: error.message };
+    return {
+      data: null,
+      error: error.response.data.error || 'Something went wrong',
+    };
   }
 }

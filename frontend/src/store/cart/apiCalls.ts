@@ -7,8 +7,7 @@ import {
   removeFromCart,
 } from './reducer';
 import type { ProductsInCartType } from '../../consts';
-
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+import { axiosInstance } from '../../lib/axiosInstance';
 
 // FETCH
 type FetchCartDataProps = {
@@ -22,24 +21,23 @@ export async function fetchCartData({
   language,
 }: FetchCartDataProps) {
   try {
-    const response = await fetch(
-      `${BACKEND_URL}/api/cart?language=${language}`,
-      {
-        headers: {
-          token: `Bearer ${token}`,
-        },
-      }
-    );
-    const cartData = await response.json();
-    if (cartData?.data) {
-      dispatch(getCartData(cartData.data));
-      return { data: cartData.data, error: null };
-    }
-    if (cartData.error) {
-      return { data: null, error: cartData.error };
+    const { data: response } = await axiosInstance({
+      method: 'GET',
+      url: `/api/cart?language=${language}`,
+      headers: {
+        token: `Bearer ${token}`,
+      },
+    });
+
+    if (response?.data) {
+      dispatch(getCartData(response.data));
+      return { data: response.data, error: null };
     }
   } catch (error: any) {
-    return { data: null, error: error.message };
+    return {
+      data: null,
+      error: error.response.data.error || 'Something went wrong',
+    };
   }
 }
 
@@ -56,28 +54,25 @@ export async function updateCart({
   token,
 }: UpdateCartProps) {
   try {
-    const response = await fetch(
-      `${BACKEND_URL}/api/cart/product-new/${product?._id}`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          token: `Bearer ${token}`,
-        },
-        body: JSON.stringify(product),
-      }
-    );
+    const { data: response } = await axiosInstance({
+      method: 'PUT',
+      url: `/api/cart/product-new/${product?._id}`,
+      headers: {
+        'Content-Type': 'application/json',
+        token: `Bearer ${token}`,
+      },
+      data: product,
+    });
 
-    const updatedCartProduct = await response.json();
-    if (updatedCartProduct) {
-      dispatch(addToCart(updatedCartProduct.data));
-      return { data: updatedCartProduct.data, error: null };
-    }
-    if (updatedCartProduct.error) {
-      return { data: null, error: updatedCartProduct.error };
+    if (response.data) {
+      dispatch(addToCart(response.data));
+      return { data: response.data, error: null };
     }
   } catch (error: any) {
-    return { data: null, error: error.message };
+    return {
+      data: null,
+      error: error.response.data.error || 'Something went wrong',
+    };
   }
 }
 
@@ -98,27 +93,23 @@ export async function deleteFromCart({
   size,
 }: DeleteFromCartProps) {
   try {
-    const response = await fetch(
-      `${BACKEND_URL}/api/cart/product-delete/${productId}/${color}/${size}`,
-      {
-        method: 'PUT',
-        headers: {
-          token: `Bearer ${token}`,
-        },
-      }
-    );
+    const { data: response } = await axiosInstance({
+      url: `/api/cart/product-delete/${productId}/${color}/${size}`,
+      method: 'PUT',
+      headers: {
+        token: `Bearer ${token}`,
+      },
+    });
 
-    const deletedCartProduct = await response.json();
-
-    if (deletedCartProduct.data) {
-      dispatch(removeFromCart(deletedCartProduct.data));
-      return { data: deletedCartProduct.data, error: null };
-    }
-    if (deletedCartProduct.error) {
-      return { data: null, error: deletedCartProduct.error };
+    if (response.data) {
+      dispatch(removeFromCart(response.data));
+      return { data: response.data, error: null };
     }
   } catch (error: any) {
-    return { data: null, error: error.message };
+    return {
+      data: null,
+      error: error.response.data.error || 'Something went wrong',
+    };
   }
 }
 
@@ -132,22 +123,23 @@ export async function clearAllCartProducts({
   token,
 }: ClearCartProps) {
   try {
-    const response = await fetch(`${BACKEND_URL}/api/cart`, {
+    const { data: response } = await axiosInstance({
+      url: `/api/cart`,
       method: 'DELETE',
       headers: {
         token: `Bearer ${token}`,
       },
     });
-    const cartData = await response.json();
-    if (cartData.data) {
+
+    if (response.data) {
       dispatch(clearCart());
-      return { data: cartData.data, error: null };
-    }
-    if (cartData.error) {
-      return { data: null, error: cartData.error };
+      return { data: response.data, error: null };
     }
   } catch (error: any) {
-    return { data: null, error: error.message };
+    return {
+      data: null,
+      error: error.response.data.error || 'Something went wrong',
+    };
   }
 }
 
@@ -169,26 +161,23 @@ export async function changeCartProductQuantity({
   color,
 }: AddCartProductQuantityProps) {
   try {
-    const response = await fetch(
-      `${BACKEND_URL}/api/cart/product-quantity/${productId}/${quantity}/${size}/${color}`,
-      {
-        method: 'PUT',
-        headers: {
-          token: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ quantity }),
-      }
-    );
-    const updatedCartProduct = await response.json();
+    const { data: response } = await axiosInstance({
+      url: `/api/cart/product-quantity/${productId}/${quantity}/${size}/${color}`,
+      method: 'PUT',
+      headers: {
+        token: `Bearer ${token}`,
+      },
+      data: { quantity },
+    });
 
-    if (updatedCartProduct.data) {
-      dispatch(addQuantityToCart(updatedCartProduct.data));
-      return { data: updatedCartProduct.data, error: null };
-    }
-    if (updatedCartProduct.error) {
-      return { data: null, error: updatedCartProduct.error };
+    if (response.data) {
+      dispatch(addQuantityToCart(response.data));
+      return { data: response.data, error: null };
     }
   } catch (error: any) {
-    return { data: null, error: error.message };
+    return {
+      data: null,
+      error: error.response.data.error || 'Something went wrong',
+    };
   }
 }

@@ -19,6 +19,7 @@
     "@stripe/stripe-js": "^7.3.0",
     "@tabler/icons-react": "^3.31.0",
     "@tailwindcss/vite": "^4.1.5",
+    "axios": "^1.11.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "i18next": "^25.1.3",
