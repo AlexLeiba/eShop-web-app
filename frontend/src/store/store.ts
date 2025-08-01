@@ -2,6 +2,9 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import cartReducer from './cart/reducer';
 import wishListReducer from './wishList/reducer';
 import userDataReducer from './userData/reducer';
+import filtersReducer from './filters/reducer';
+import searchReducer from './search/reducer';
+import productsReducer from './products/reducer';
 
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; //will save in localStorage
@@ -15,6 +18,9 @@ const rootReducer = combineReducers({
   cart: cartReducer,
   wishlist: wishListReducer,
   user: userDataReducer,
+  filters: filtersReducer,
+  search: searchReducer,
+  products: productsReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

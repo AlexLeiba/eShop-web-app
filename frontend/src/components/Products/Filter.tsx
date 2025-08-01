@@ -68,7 +68,7 @@ function Filter({ type, label, data }: Props) {
     <div>
       <Select
         value={searchParams.get(type) || ''}
-        handleSelect={setSelected}
+        handleSelect={setSelected} //TODO : to use redux for any useState passign as props ( to avoid re-renders)
         label={label}
         data={handleTypeOfFilter()}
       />

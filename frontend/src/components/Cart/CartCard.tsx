@@ -69,7 +69,6 @@ export function CartCard({ productData, type }: Props) {
                 color: productData.color,
                 quantity: productData.quantity,
               }}
-              quantity={productData.quantity}
               productId={productData._id}
               type='cartPage'
             />

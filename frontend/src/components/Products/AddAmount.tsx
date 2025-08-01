@@ -3,31 +3,19 @@ import { changeCartProductQuantity } from '../../store/cart/apiCalls';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../store/store';
 import toast from 'react-hot-toast';
+import { addQuantity, reduceQuantity } from '../../store/filters/reducer';
 
 type Props = {
   type?: 'cartPage' | 'productPage';
   productId?: string;
-  quantity?: number;
-  setProductData?: React.Dispatch<
-    React.SetStateAction<{
-      color: string;
-      size: string;
-      quantity: number;
-    }>
-  >;
+
   productData?: {
     color: string;
     size: string;
     quantity: number;
   };
 };
-function AddAmount({
-  type,
-  productId,
-  quantity,
-  setProductData,
-  productData,
-}: Props) {
+function AddAmount({ type, productId, productData }: Props) {
   const dispatch = useDispatch();
 
   const userData = useSelector((state: RootState) => state.user.userData?.data);
@@ -38,7 +26,12 @@ function AddAmount({
       const response = await changeCartProductQuantity({
         dispatch,
         productId: productId,
-        quantity: changeType === 'minus' ? ((quantity || 1) > 1 ? -1 : 0) : 1,
+        quantity:
+          changeType === 'minus'
+            ? productData?.quantity && productData?.quantity > 1
+              ? -1
+              : 0
+            : 1,
         token: sessionToken,
         size: productData?.size || '',
         color: productData?.color || '',
@@ -48,22 +41,12 @@ function AddAmount({
         return toast.error(response.error);
       }
     }
-    if (type === 'productPage' && setProductData) {
+    if (type === 'productPage') {
       if (changeType === 'minus') {
-        setProductData((prev) => {
-          return {
-            ...prev,
-            quantity: prev.quantity > 1 ? prev.quantity - 1 : prev.quantity,
-          };
-        });
+        dispatch(reduceQuantity());
       }
       if (changeType === 'plus') {
-        setProductData((prev) => {
-          return {
-            ...prev,
-            quantity: prev.quantity + 1,
-          };
-        });
+        dispatch(addQuantity(1));
       }
     }
   }
@@ -74,7 +57,7 @@ function AddAmount({
         onClick={() => handleAmount('minus')}
       />
       <p className='text-md font-bold border border-gray-300 rounded-full px-3 py-1 text-center shadow-md '>
-        {type === 'cartPage' ? quantity : productData?.quantity}
+        {productData?.quantity}
       </p>
       <IconPlus
         className='hover:bg-gray-400 rounded-full hover:text-white transition-all cursor-pointer'

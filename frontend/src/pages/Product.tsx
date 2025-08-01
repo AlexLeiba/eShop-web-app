@@ -24,35 +24,16 @@ import { updateWishlist } from '../store/wishList/apiCalls';
 import { updateCart } from '../store/cart/apiCalls';
 import { useTranslation } from 'react-i18next';
 import { Layout } from '../components/Layout/Layout';
-
-const initialProductData: ProductsType = {
-  title: '',
-  description: '',
-  price: 0,
-  image: '',
-  images: [],
-  categories: [],
-  color: [],
-  size: [],
-  _id: '',
-  isPublished: false,
-  inStock: false,
-  createdAt: '',
-  updatedAt: '',
-  featured: false,
-  featuredBackgroundColor: '',
-  quantity: 0,
-  __v: 0,
-};
-const initialItemFeatures = {
-  color: '',
-  size: '',
-  quantity: 1,
-};
+import { fetchProduct } from '../store/products/apiCalls';
+import { setCart, setWishlist } from '../store/products/reducer';
 
 function Product() {
   const { t } = useTranslation('translation', { keyPrefix: 'ProductPage' });
   const dispatch = useDispatch();
+  const selectedValues = useSelector((state: RootState) => state.filters);
+  const { productData, isInCart, isInWishlist } = useSelector(
+    (state: RootState) => state.products.product
+  );
 
   const userData = useSelector((state: RootState) => state.user.userData?.data);
   const sessionToken = userData?.token || '';
@@ -61,98 +42,38 @@ function Product() {
   const productId = location.pathname.split('/')[2];
   const [loading, setLoading] = React.useState(true);
 
-  const [itemFeatures, setItemFeatures] = React.useState(initialItemFeatures); //change this state with redux ( this triggers re-renders to all components which are related to this useState)
-
-  const [product, setProduct] =
-    React.useState<ProductsType>(initialProductData);
-
-  const [isFavorite, setIsFavorite] = React.useState(false);
-  const [isInCart, setIsInCart] = React.useState(false);
-
   useEffect(() => {
     const language = localStorage.getItem('language');
     async function fetchData() {
-      try {
-        setLoading(true);
-        // PRODUCT ELEMENT
-        const response = await fetch(
-          `${
-            import.meta.env.VITE_BACKEND_URL
-          }/api/products/${productId}?language=${language?.toLowerCase()}`
-        );
-        const responseProduct: { data: ProductsType } = await response.json();
-        if (responseProduct.data) {
-          setProduct(responseProduct.data);
-          setItemFeatures({
-            color:
-              responseProduct.data.color.length === 1
-                ? responseProduct.data.color[0]
-                : '',
-            size:
-              responseProduct.data.size.length === 1
-                ? responseProduct.data.size[0]
-                : '',
-            quantity: 1,
-          });
-        }
+      setLoading(true);
 
-        if (sessionToken) {
-          //  CART ELEMENT
-          const responseCart = await fetch(
-            `${import.meta.env.VITE_BACKEND_URL}/api/cart`,
-            {
-              headers: {
-                token: `Bearer ${sessionToken}`,
-              },
-            }
-          );
-          const responseCartData = await responseCart.json();
+      const response = await fetchProduct({
+        dispatch,
+        productId,
+        language: language?.toLowerCase() || 'en',
+        sessionToken,
+      });
 
-          const isProductInCart = responseCartData?.data?.products?.find(
-            (item: ProductsType) => item._id === productId
-          );
-          if (isProductInCart) {
-            setIsInCart(true);
-          }
-          // WISH LIST ELEMENT
-          const responseWishList = await fetch(
-            `${import.meta.env.VITE_BACKEND_URL}/api/wishlist`,
-            {
-              headers: {
-                token: `Bearer ${sessionToken}`,
-              },
-            }
-          );
-          const responseWishListData = await responseWishList.json();
-
-          const isProductInWishList = responseWishListData?.data?.find(
-            (item: ProductsType) => item._id === productId
-          );
-          if (isProductInWishList) {
-            setIsFavorite(true);
-          }
-        }
-      } catch (error: any) {
-        toast.error(error.message);
-      } finally {
-        setLoading(false);
+      if (response.error) {
+        toast.error(response.error);
       }
+      setLoading(false);
     }
 
     fetchData();
-  }, [location.pathname]);
+  }, []);
 
   async function handleAddToCart(product: ProductsType) {
     if (
-      (!itemFeatures.size || itemFeatures.size === 'Selectsize') &&
-      !itemFeatures.color
+      (!selectedValues.size || selectedValues.size === 'Selectsize') &&
+      !selectedValues.color
     ) {
       toast.error(t('toasts.selectSizeAndColor'));
       return;
-    } else if (!itemFeatures.size || itemFeatures.size === 'Selectsize') {
+    } else if (!selectedValues.size || selectedValues.size === 'Selectsize') {
       toast.error(t('toasts.selectSize'));
       return;
-    } else if (!itemFeatures.color) {
+    } else if (!selectedValues.color) {
       return toast.error(t('toasts.selectColor'));
     }
 
@@ -160,9 +81,9 @@ function Product() {
       dispatch,
       product: {
         ...product,
-        color: itemFeatures.color,
-        size: itemFeatures.size,
-        quantity: itemFeatures.quantity,
+        color: selectedValues.color,
+        size: selectedValues.size,
+        quantity: selectedValues.quantity,
         categories: product.categories[0], // Use the first category as a string
         productId: product._id,
       },
@@ -173,7 +94,7 @@ function Product() {
     }
     if (response?.data) {
       toast.success(t('toasts.addedToCart'));
-      setIsInCart(true);
+      dispatch(setCart(true));
     }
   }
 
@@ -189,13 +110,13 @@ function Product() {
     }
     if (response?.data) {
       toast.success(t('toasts.addedToWishlist'));
-      setIsFavorite(true);
+      dispatch(setWishlist(true));
     }
   }
 
   function showSelectedImageColor() {
-    return product.images.filter(
-      (item) => item.colorName === itemFeatures.color
+    return productData?.images.filter(
+      (item) => item.colorName === selectedValues.color
     )[0].image;
   }
 
@@ -225,51 +146,46 @@ function Product() {
             {/* IMG */}
             <img
               src={
-                !itemFeatures.color ? product.image : showSelectedImageColor()
+                !selectedValues.color
+                  ? productData.image
+                  : showSelectedImageColor()
               }
-              alt={product.title}
+              alt={productData.title}
             />
 
             {/* Details */}
 
             <div>
-              <h3 className='text-4xl '>{product.title}</h3>
+              <h3 className='text-4xl '>{productData.title}</h3>
               <Spacer size={4} />
-              <p>{product.description}</p>
+              <p>{productData.description}</p>
 
               <Spacer size={4} />
-              <p className='text-3xl'>${product.price}</p>
+              <p className='text-3xl'>${productData.price}</p>
               <Spacer size={12} />
+
+              {/* COLORS */}
               <div className='flex items-center gap-2'>
                 <p className='text-xl'>{t('color')}</p>
-                <Colors
-                  selectedColor={itemFeatures.color}
-                  setColor={setItemFeatures}
-                  colors={product.color}
-                />
-              </div>
-              <Spacer size={6} />
-              <div className='flex items-center gap-2'>
-                <p className='text-xl'>{t('size')}</p>
-                <SizeSelector
-                  setSize={setItemFeatures}
-                  size={itemFeatures.size}
-                  type='size'
-                  data={product.size}
-                />
+                <Colors colors={productData.color} />
               </div>
               <Spacer size={6} />
 
+              {/* SIZE */}
               <div className='flex items-center gap-2'>
-                <AddAmount
-                  type='productPage'
-                  setProductData={setItemFeatures}
-                  productData={itemFeatures}
-                />
+                <p className='text-xl'>{t('size')}</p>
+                <SizeSelector type='size' data={productData.size} />
               </div>
               <Spacer size={6} />
+
+              {/* AMOUNT */}
+              <div className='flex items-center gap-2'>
+                <AddAmount type='productPage' productData={selectedValues} />
+              </div>
+
+              <Spacer size={6} />
               <Button
-                onClick={() => handleAddToCart(product)}
+                onClick={() => handleAddToCart(productData)}
                 disabled={!sessionToken}
               >
                 {isInCart ? (
@@ -286,11 +202,11 @@ function Product() {
               </Button>
               <Spacer size={6} />
               <Button
-                disabled={isFavorite || !sessionToken}
+                disabled={isInWishlist || !sessionToken}
                 variant='secondary'
-                onClick={() => handleAddToWishList(product)}
+                onClick={() => handleAddToWishList(productData)}
               >
-                {isFavorite ? (
+                {isInWishlist ? (
                   <>
                     {t('addedToWishlist')}
                     <IconHeartFilled className='ml-2 text-red-500' />

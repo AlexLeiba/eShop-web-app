@@ -1,20 +1,17 @@
-import React from 'react';
 import { Select } from '../ui/Select';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectSize } from '../../store/filters/reducer';
+import type { RootState } from '../../store/store';
 
 type Props = {
   type: 'color' | 'size' | 'sort' | 'category';
   label?: string;
   data: string[];
-  setSize: React.Dispatch<
-    React.SetStateAction<{
-      size: string;
-      color: string;
-      quantity: number;
-    }>
-  >;
-  size: string;
 };
-export function SizeSelector({ label, data, size, setSize }: Props) {
+export function SizeSelector({ label, data }: Props) {
+  const dispatch = useDispatch();
+  const selectedSize = useSelector((state: RootState) => state.filters.size);
+
   function handleTypeOfFilter() {
     const sizeData = [{ value: 'Selectsize', title: 'Select size' }];
     data?.forEach((item) => {
@@ -29,8 +26,8 @@ export function SizeSelector({ label, data, size, setSize }: Props) {
   return (
     <div>
       <Select
-        value={size as string}
-        handleSelect={(v) => setSize((prev) => ({ ...prev, size: v }))}
+        value={selectedSize as string}
+        handleSelect={(v) => dispatch(selectSize(v))}
         label={label}
         data={handleTypeOfFilter()}
       />
