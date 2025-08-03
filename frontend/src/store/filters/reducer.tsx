@@ -48,5 +48,6 @@ export const {
   selectSize,
   addQuantity,
   reduceQuantity,
+  selectFilter,
 } = filtersSlice.actions;
 export default filtersSlice.reducer;

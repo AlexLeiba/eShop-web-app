@@ -51,7 +51,7 @@ export function Products({ productsData, type, loading }: ProductsProps) {
           </p>
           <p>
             {t('page')}: {searchParams.get('page')} /{' '}
-            {Math.round(productsData.count / limitPerPage) || 1}
+            {Math.ceil(productsData.count / limitPerPage) || 1}
           </p>
         </div>
       )}

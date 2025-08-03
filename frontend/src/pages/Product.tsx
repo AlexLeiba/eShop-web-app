@@ -117,7 +117,7 @@ function Product() {
   function showSelectedImageColor() {
     return productData?.images.filter(
       (item) => item.colorName === selectedValues.color
-    )[0].image;
+    )[0]?.image;
   }
 
   return (
@@ -144,14 +144,16 @@ function Product() {
         <Container>
           <div className='grid lg:grid-cols-2 grid-cols-1 gap-8 '>
             {/* IMG */}
-            <img
-              src={
-                !selectedValues.color
-                  ? productData.image
-                  : showSelectedImageColor()
-              }
-              alt={productData.title}
-            />
+            {productData.image && (
+              <img
+                src={
+                  !selectedValues.color
+                    ? productData.image
+                    : showSelectedImageColor()
+                }
+                alt={productData.title}
+              />
+            )}
 
             {/* Details */}
 
