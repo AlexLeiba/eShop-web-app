@@ -105,13 +105,13 @@ router.post('/login', async (req, res) => {
     updatedUserData.save();
     /////////////
 
-    res.cookie('jwt', refreshToken, {
-      //Set refresh token to cookies http only
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
-      maxAge: 120 * 10000, // 120 seconds TODO to change after testing
-    });
+    // res.cookie('jwt', refreshToken, {
+    //   //Set refresh token to cookies http only
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === 'production',
+    //   sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+    //   maxAge: 120 * 10000, // 120 seconds TODO to change after testing
+    // });
 
     const { password, ...others } = loggedUser._doc;
     //send token to client and user data
