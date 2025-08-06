@@ -18,7 +18,7 @@ type LoginProps = {
   dispatch: React.Dispatch<Action>;
 };
 export async function login({ dispatch, user }: LoginProps) {
-  dispatch(loginFetching());
+  dispatch(loginFetching(true));
   try {
     const { data: response } = await axiosInstance({
       url: `/api/login`,
@@ -47,6 +47,8 @@ export async function login({ dispatch, user }: LoginProps) {
       data: null,
       error: error.response.data.error || 'Something went wrong',
     };
+  } finally {
+    dispatch(loginFetching(false));
   }
 }
 
@@ -69,6 +71,7 @@ export async function logout({ dispatch, sessionToken }: LogoutProps) {
       dispatch(logoutAction());
       dispatch(clearCart());
       dispatch(clearWishList());
+      localStorage.removeItem('persist:root');
       return { data: response.data, error: null };
     }
   } catch (error: any) {
