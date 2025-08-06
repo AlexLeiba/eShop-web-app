@@ -22,18 +22,24 @@ export async function fetchProducts({
       url: `/api/featured-products?language=${language?.toLowerCase()}`,
       method: 'GET',
     });
+    if (productsResponse?.error) {
+      throw new Error(productsResponse.error);
+    }
+    if (featuredProductsResponse?.error) {
+      throw new Error(featuredProductsResponse.error);
+    }
 
     dispatch(
       getProducts({
-        data: productsResponse.data,
-        count: productsResponse.count,
+        data: productsResponse?.data,
+        count: productsResponse?.count,
       })
     );
 
     dispatch(
       getFeaturedProducts({
-        data: featuredProductsResponse.data,
-        count: featuredProductsResponse.data.length,
+        data: featuredProductsResponse?.data,
+        count: featuredProductsResponse?.data.length,
       })
     );
 
