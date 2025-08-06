@@ -6,10 +6,9 @@ import { IconLogout } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { logout } from '../../store/userData/apiCalls';
-// import { axiosPrivateInstance } from '../../lib/axiosInstance';
 import toast from 'react-hot-toast';
-import { useDispatch } from 'react-redux';
-import { axiosInstance } from '../../lib/axiosInstance';
+import { useDispatch, useSelector } from 'react-redux';
+import type { RootState } from '../../store/store';
 
 type Props = {
   userData: UserType['data'];
@@ -28,6 +27,10 @@ export function MyAccountDropdown({
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const sessionToken = useSelector(
+    (state: RootState) => state.user.userData?.token
+  );
+
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [open, setOpen] = React.useState(false);
@@ -45,16 +48,10 @@ export function MyAccountDropdown({
     return () => document.removeEventListener('click', () => {});
   }, []);
 
-  // function handleLogout() {
-  //   logout({ dispatch, axiosPrivateInstance });
-  //   localStorage.removeItem('persist:root');
-  //   window.location.reload();
-  // }
-
   async function handleLogout() {
     const responseLogin = await logout({
       dispatch,
-      axiosInstance,
+      sessionToken,
     });
 
     if (responseLogin?.data) {

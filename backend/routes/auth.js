@@ -5,6 +5,7 @@ import CryptoJS from 'crypto-js';
 import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 import nodemailer from 'nodemailer';
+import { verifyTokenAuthorization } from '../config/verifyToken.js';
 dotenv.config();
 
 const router = express.Router();
@@ -127,18 +128,18 @@ router.post('/login', async (req, res) => {
 });
 
 // LOGOUT
-router.post('/logout', async (req, res) => {
+router.post('/logout', verifyTokenAuthorization, async (req, res) => {
   const userId = req.user.id;
 
   try {
-    if (!cookies.jwt) {
+    if (!userId) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    const currentUser = await User.findOne({ id: userId });
+    const currentUser = await User.findOne({ _id: userId });
 
     if (!currentUser) {
-      return res.status(401).json({ error: 'Unauthorized' });
+      return res.status(401).json({ error: 'User not found' });
     }
 
     // DELETE refresh token from database
@@ -152,7 +153,7 @@ router.post('/logout', async (req, res) => {
     //   sameSite: 'none',
     //   maxAge: 120 * 10000, // 120 seconds TODO to change after testing
     // });
-    res.status(204).json({ message: 'Logged out successfully' });
+    res.status(200).json({ message: 'Logged out successfully' });
   } catch (error) {
     console.log('🚀 ~ error:', error);
     res.status(500).json(error);

@@ -9,6 +9,8 @@ import {
 } from './reducer';
 import type { LoginType, RegisterType } from '../../lib/schemas';
 import { axiosInstance } from '../../lib/axiosInstance';
+import { clearWishList } from '../wishList/reducer';
+import { clearCart } from '../cart/reducer';
 
 // LOGIN
 type LoginProps = {
@@ -50,23 +52,23 @@ export async function login({ dispatch, user }: LoginProps) {
 
 type LogoutProps = {
   dispatch: React.Dispatch<Action>;
-  axiosInstance: any;
+  sessionToken: string;
 };
-export async function logout({
-  dispatch,
-  axiosInstance,
-}: // axiosInstance,
-LogoutProps) {
+export async function logout({ dispatch, sessionToken }: LogoutProps) {
   dispatch(logoutFetching());
   try {
-    const { data: response } = await axiosInstance({
+    const response = await axiosInstance({
       url: `/api/logout`,
       method: 'POST',
+      headers: {
+        token: `Bearer ${sessionToken}`,
+      },
     });
-    console.log('🚀 ~ logout ~ response:', response);
 
-    if (response.data) {
+    if (response.status === 200) {
       dispatch(logoutAction());
+      dispatch(clearCart());
+      dispatch(clearWishList());
       return { data: response.data, error: null };
     }
   } catch (error: any) {
