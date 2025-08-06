@@ -13,7 +13,7 @@ const router = express.Router();
 // GET ALL PUBLISHED PRODUCTS
 router.get('/products', async (req, res) => {
   const queryLanguage = req.query.language; //TODO: ADD THIS: verifyTokenAuthorization
-  const queryNew = req.query.sort === 'newest';
+  const queryNew = req.query['?sort'] === 'newest';
   const queryCategory = req.query.category;
   const querySize = req.query.size;
   const queryColor = req.query.color;

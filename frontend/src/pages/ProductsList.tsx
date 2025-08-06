@@ -18,6 +18,9 @@ import {
 } from '../consts';
 import { useTranslation } from 'react-i18next';
 import { Layout } from '../components/Layout/Layout';
+import { getProducts } from '../store/products/reducer';
+import { useDispatch } from 'react-redux';
+import { axiosInstance } from '../lib/axiosInstance';
 
 export type ProductsDataType = {
   data: ProductsType[];
@@ -27,11 +30,8 @@ export type ProductsDataType = {
 function ProductsList() {
   const { t } = useTranslation('translation', { keyPrefix: 'ProductsPage' });
   const location = useLocation();
+  const dispatch = useDispatch();
 
-  const [productsData, setProductsData] = React.useState<ProductsDataType>({
-    data: [],
-    count: 0,
-  });
   const [loading, setLoading] = React.useState(true);
 
   const [searchParams] = useSearchParams();
@@ -43,25 +43,28 @@ function ProductsList() {
     const language = localStorage.getItem('language');
     async function fetchData() {
       try {
-        const response = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/products?language=${
-            language?.toLowerCase() || 'en'
-          }&${location.search}`
-        );
-        const responseData: ProductsDataType = await response.json();
-
-        setProductsData({
-          data: responseData.data,
-          count: responseData.count,
+        const { data: responseData } = await axiosInstance({
+          url: `/api/products?language=${language?.toLowerCase() || 'en'}&${
+            location.search
+          }`,
+          method: 'GET',
         });
+
+        dispatch(
+          getProducts({
+            data: responseData.data,
+            count: responseData.count,
+          })
+        );
       } catch (error: any) {
         toast.error(error.message);
       } finally {
         setLoading(false);
       }
     }
+
     fetchData();
-  }, [searchParams]);
+  }, [searchParams, dispatch, location.search]);
 
   return (
     <Layout>
@@ -111,11 +114,7 @@ function ProductsList() {
 
           {/* Products */}
           <Spacer size={8} />
-          <Products
-            loading={loading}
-            productsData={productsData}
-            type='products-list'
-          />
+          <Products loading={loading} type='products-list' />
         </Container>
         <Spacer sm={16} md={24} lg={24} />
 

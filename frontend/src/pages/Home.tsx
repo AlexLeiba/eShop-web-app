@@ -27,8 +27,6 @@ function Home() {
   useEffect(() => {
     const language = localStorage.getItem('language') || 'en';
     async function fetchData() {
-      // let loadingTimer:number;
-
       let timerStarted = false;
       const timer = setTimeout(() => {
         if (!timerStarted) {
