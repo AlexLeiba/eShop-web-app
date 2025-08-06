@@ -113,6 +113,9 @@
       "title": "Newsletter",
       "description": "Subscribe to our newsletter to get the latest updates",
       "placeholder": "Your email"
+    },
+    "toast": {
+      "loading": "Please wait until database is loaded, It can take up to 1 min if you openend the app for the first time"
     }
   },
   "ProductsPage": {

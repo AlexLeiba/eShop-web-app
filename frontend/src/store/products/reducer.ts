@@ -3,6 +3,8 @@ import type { ProductsType } from '../../consts';
 
 const initialState: {
   products: ProductsType[];
+  productsCount: number;
+  featuredProducts: { data: ProductsType[]; count: number };
   product: {
     productData: ProductsType;
     isInCart: boolean;
@@ -10,6 +12,12 @@ const initialState: {
   };
 } = {
   products: [],
+  productsCount: 0,
+
+  featuredProducts: {
+    data: [],
+    count: 0,
+  },
   product: {
     isInCart: false,
     isInWishlist: false,
@@ -40,7 +48,12 @@ const productsSlice = createSlice({
   initialState,
   reducers: {
     getProducts: (state, action) => {
-      state.products = action.payload;
+      state.products = action.payload.data;
+      state.productsCount = action.payload.count;
+    },
+    getFeaturedProducts: (state, action) => {
+      state.featuredProducts.data = action.payload.data;
+      state.featuredProducts.count = action.payload.count;
     },
     getProduct: (state, action) => {
       state.product.productData = action.payload.productData;
@@ -56,6 +69,11 @@ const productsSlice = createSlice({
   },
 });
 
-export const { getProducts, getProduct, setWishlist, setCart } =
-  productsSlice.actions;
+export const {
+  getProducts,
+  getProduct,
+  setWishlist,
+  setCart,
+  getFeaturedProducts,
+} = productsSlice.actions;
 export default productsSlice.reducer;

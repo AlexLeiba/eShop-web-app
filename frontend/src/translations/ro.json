@@ -112,6 +112,9 @@
       "title": "Newsletter",
       "description": "Aboneaza-ma la newsletter pentru a primi ultimele actualizari",
       "placeholder": "Email-ul tau"
+    },
+    "toast": {
+      "loading": "Vă rugăm așteptați până la încărcarea bazei de date, poate dura câteva minute dacă deschideți aplicația pentru prima oară"
     }
   },
   "ProductsPage": {

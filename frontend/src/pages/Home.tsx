@@ -9,68 +9,59 @@ import { Spacer } from '../components/ui/spacer';
 import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import React from 'react';
-import type { ProductsDataType } from './ProductsList';
 import { useTranslation } from 'react-i18next';
 import { Layout } from '../components/Layout/Layout';
+import { fetchProducts } from '../store/products/apiCalls';
+import { useDispatch, useSelector } from 'react-redux';
+import type { RootState } from '../store/store';
 
 function Home() {
   const { t } = useTranslation('translation', { keyPrefix: 'DashboardPage' });
   const { pathname } = useLocation();
-  const [productsData, setProductsData] = React.useState<ProductsDataType>({
-    data: [],
-    count: 0,
-  });
+  const dispatch = useDispatch();
+  const featuredProductsData = useSelector(
+    (state: RootState) => state.products.featuredProducts
+  );
   const [loading, setLoading] = React.useState(true);
-
-  const [featuredProductsData, setFeaturedProductsData] =
-    React.useState<ProductsDataType>({
-      data: [],
-      count: 0,
-    });
 
   useEffect(() => {
     const language = localStorage.getItem('language') || 'en';
     async function fetchData() {
+      // let loadingTimer:number;
+
+      let timerStarted = false;
+      const timer = setTimeout(() => {
+        if (!timerStarted) {
+          toast.loading(`${t('toast.loading')}`, {
+            id: 'loading',
+          });
+        }
+        timerStarted = true;
+      }, 2000);
+
       try {
         setLoading(true);
-        // get products
-        const responseProductsData = await fetch(
-          `${
-            import.meta.env.VITE_BACKEND_URL
-          }/api/products?sort=newest&limit=8&language=${language?.toLowerCase()}`
-        );
-        const parsedProductsData: ProductsDataType =
-          await responseProductsData.json();
 
-        setProductsData({
-          data: parsedProductsData.data,
-          count: parsedProductsData.count,
+        const response = await fetchProducts({
+          dispatch,
+          language: language?.toLowerCase() || 'en',
         });
 
-        // get featured products
-
-        const responseFeaturedProductsData = await fetch(
-          `${
-            import.meta.env.VITE_BACKEND_URL
-          }/api/featured-products?language=${language?.toLowerCase()}`
-        );
-
-        const parsedFeaturedProductsData: ProductsDataType =
-          await responseFeaturedProductsData.json();
-
-        setFeaturedProductsData({
-          data: parsedFeaturedProductsData.data,
-          count: parsedFeaturedProductsData.data.length,
-        });
+        if (response?.error) {
+          throw new Error(response.error);
+        }
+        clearTimeout(timer);
       } catch (error: any) {
         toast.error(error.message);
       } finally {
         setLoading(false);
+        clearTimeout(timer);
+        toast.dismiss('loading');
       }
     }
 
     fetchData();
-  }, [pathname]);
+  }, [pathname, dispatch, t]);
   return (
     <Layout>
       <Announcement title='lorem20 is coming soon dsdsadsa sdadsa dsadsad' />
@@ -97,11 +88,7 @@ function Home() {
               </p>
             </Link>
           </div>
-          <Products
-            loading={loading}
-            type='dashboard'
-            productsData={productsData}
-          />
+          <Products loading={loading} type='dashboard' />
         </Container>
 
         {/* NEWSLETTER */}

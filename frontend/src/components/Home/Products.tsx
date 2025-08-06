@@ -3,16 +3,17 @@ import { ProductsCard } from './ProductsCard';
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import { Button } from '../ui/Button';
 import { useSearchParams } from 'react-router-dom';
-import type { ProductsDataType } from '../../pages/ProductsList';
 import { Loader } from '../ui/Loader';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../store/store';
 
 type ProductsProps = {
-  productsData: ProductsDataType;
   type: 'dashboard' | 'products-list';
   loading: boolean;
 };
-export function Products({ productsData, type, loading }: ProductsProps) {
+export function Products({ type, loading }: ProductsProps) {
+  const productsData = useSelector((state: RootState) => state.products);
   const { t } = useTranslation('translation', { keyPrefix: 'ProductsPage' });
   const [searchParams, setSearchParams] = useSearchParams();
   const limitPerPage = 12;
@@ -31,7 +32,7 @@ export function Products({ productsData, type, loading }: ProductsProps) {
     } else {
       const nextPage = (Number(searchParams.get('page')) || 0) + 1;
       // NEXT PAGE
-      if (productsData.count > limitPerPage * (nextPage - 1)) {
+      if (productsData.productsCount > limitPerPage * (nextPage - 1)) {
         // TODO: return all products counted from backend/ check on change page if : limitPerPage * PAGE < ALLProducts
         params.set('page', nextPage.toString());
         setSearchParams(params);
@@ -47,11 +48,11 @@ export function Products({ productsData, type, loading }: ProductsProps) {
       {type === 'products-list' && (
         <div className='flex gap-4 items-center'>
           <p className='text-1xl font-bold'>
-            {t('found')}: {productsData.count}
+            {t('found')}: {productsData.productsCount}
           </p>
           <p>
             {t('page')}: {searchParams.get('page')} /{' '}
-            {Math.ceil(productsData.count / limitPerPage) || 1}
+            {Math.ceil(productsData.productsCount / limitPerPage) || 1}
           </p>
         </div>
       )}
@@ -59,8 +60,8 @@ export function Products({ productsData, type, loading }: ProductsProps) {
 
       <Loader loading={loading} className='h-[200px]'>
         <div className='grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4  '>
-          {productsData?.data && productsData.data.length > 0 ? (
-            productsData.data?.map((data) => {
+          {productsData?.products && productsData.products.length > 0 ? (
+            productsData.products?.map((data) => {
               return <ProductsCard data={data} key={data._id} />;
             })
           ) : (
@@ -85,7 +86,7 @@ export function Products({ productsData, type, loading }: ProductsProps) {
             title='Next page'
             disabled={
               limitPerPage * Number(searchParams.get('page')) >
-              productsData.count
+              productsData.productsCount
             }
             variant='secondary'
             onClick={() => handleChangePage('next')}

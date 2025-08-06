@@ -1,23 +1,44 @@
 import type { Action } from '@reduxjs/toolkit';
 import { axiosInstance } from '../../lib/axiosInstance';
-import { getProduct, getProducts } from './reducer';
+import { getFeaturedProducts, getProduct, getProducts } from './reducer';
 import { selectDefaultValues } from '../filters/reducer';
 import type { ProductsType } from '../../consts';
 
 type FetchProductsProps = {
   dispatch: React.Dispatch<Action>;
+  language: string;
 };
-export async function fetchProducts({ dispatch }: FetchProductsProps) {
+export async function fetchProducts({
+  dispatch,
+  language,
+}: FetchProductsProps) {
   try {
-    const { data: response } = await axiosInstance({
-      url: `/api/products`,
+    const { data: productsResponse } = await axiosInstance({
+      url: `/api/products?sort=newest&limit=8&language=${language?.toLowerCase()}`,
       method: 'GET',
     });
 
-    dispatch(getProducts(response.data));
+    const { data: featuredProductsResponse } = await axiosInstance({
+      url: `/api/featured-products?language=${language?.toLowerCase()}`,
+      method: 'GET',
+    });
+
+    dispatch(
+      getProducts({
+        data: productsResponse.data,
+        count: productsResponse.count,
+      })
+    );
+
+    dispatch(
+      getFeaturedProducts({
+        data: featuredProductsResponse.data,
+        count: featuredProductsResponse.data.length,
+      })
+    );
 
     return {
-      data: response.data,
+      data: productsResponse.data,
       error: null,
     };
   } catch (error: any) {
