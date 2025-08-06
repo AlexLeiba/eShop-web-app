@@ -53,6 +53,7 @@ export async function fetchProducts({
       error: null,
     };
   } catch (error: any) {
+    console.log('🚀 ~ fetchProducts ~ error:', error);
     return {
       data: null,
       error: error.response.data.error || 'Something went wrong',
