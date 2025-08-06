@@ -1,13 +1,11 @@
-import { useDispatch, useSelector } from 'react-redux';
-import type { RootState } from '../store/store';
+import { useDispatch } from 'react-redux';
 import { axiosPrivateInstance } from '../lib/axiosInstance';
 import { refreshToken } from '../store/userData/reducer';
+// import { useSessionToken } from './useSesstionToken';
 
 export function useRefreshToken() {
-  const accessToken = useSelector(
-    (state: RootState) => state.user?.userData?.token
-  );
-  console.log('🚀 ~ useRefreshToken ~ accessToken:', accessToken);
+  // const sessionToken = useSessionToken();
+
   const dispatch = useDispatch();
 
   // dispatch(fetchUserData());

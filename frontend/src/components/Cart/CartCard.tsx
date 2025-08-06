@@ -3,12 +3,12 @@ import AddAmount from '../Products/AddAmount';
 import { Button } from '../ui/Button';
 import { type CartItemsType } from '../../store/cart/reducer';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import SelectedColor from '../Cart/SelectedColor';
 import { deleteFromCart } from '../../store/cart/apiCalls';
-import type { RootState } from '../../store/store';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import { useSessionToken } from '../../hooks/useSesstionToken';
 
 type Props = {
   productData: CartItemsType;
@@ -18,8 +18,7 @@ export function CartCard({ productData, type }: Props) {
   const { t } = useTranslation('translation', { keyPrefix: 'CartPage' });
 
   const dispatch = useDispatch();
-  const userData = useSelector((state: RootState) => state.user.userData);
-  const sessionToken = userData?.token || '';
+  const sessionToken = useSessionToken();
 
   async function handleRemove() {
     const response = await deleteFromCart({

@@ -1,14 +1,14 @@
 import { IconShoppingCart, IconX } from '@tabler/icons-react';
 import { Button } from '../ui/Button';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import type { ProductsType } from '../../consts';
 import { updateCart } from '../../store/cart/apiCalls';
-import type { RootState } from '../../store/store';
 import toast from 'react-hot-toast';
 import { deleteFromWishlist } from '../../store/wishList/apiCalls';
 import { useTranslation } from 'react-i18next';
 import { Spacer } from '../ui/spacer';
+import { useSessionToken } from '../../hooks/useSesstionToken';
 
 type Props = {
   data: ProductsType;
@@ -17,8 +17,7 @@ type Props = {
 export function WishListCard({ data, type }: Props) {
   const { t } = useTranslation('translation', { keyPrefix: 'WishlistPage' });
   const dispatch = useDispatch();
-  const userData = useSelector((state: RootState) => state.user.userData);
-  const sessionToken = userData?.token || '';
+  const sessionToken = useSessionToken();
 
   async function handleRemove() {
     const response = await deleteFromWishlist({

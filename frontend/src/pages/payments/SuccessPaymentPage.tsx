@@ -1,17 +1,16 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import type { RootState } from '../../store/store';
+import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { clearCart } from '../../store/cart/reducer';
+import { useSessionToken } from '../../hooks/useSesstionToken';
 
 function SuccessPaymentPage() {
   const { search } = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const userData = useSelector((state: RootState) => state.user?.userData);
-  const sessionToken = userData?.token || '';
+  const sessionToken = useSessionToken();
 
   useEffect(() => {
     async function fetchData() {

@@ -27,13 +27,13 @@ import {
   ModalTrigger,
 } from '../components/ui/Modal';
 import { Layout } from '../components/Layout/Layout';
+import { useSessionToken } from '../hooks/useSesstionToken';
 
 function Wishlist() {
   const { t } = useTranslation('translation', { keyPrefix: 'WishlistPage' });
   const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(true);
-  const userData = useSelector((state: RootState) => state.user.userData);
-  const sessionToken = userData?.token || '';
+  const sessionToken = useSessionToken();
 
   const {
     wishlist: { data: wishListData },
@@ -106,8 +106,8 @@ function Wishlist() {
                     </Link>
                     <ModalProvider
                       onConfirm={handleClearList}
-                      title={'Are you sure you want to clear your wishlist?'}
-                      description={'This action cannot be undone.'}
+                      title={t('modal.title')}
+                      description={t('modal.description')}
                     >
                       <ModalTrigger>
                         <Button

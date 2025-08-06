@@ -1,15 +1,13 @@
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import type { RootState } from '../../store/store';
 import { useLocation, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { useSessionToken } from '../../hooks/useSesstionToken';
 
 function ErrorPaymentPage() {
   const { search } = useLocation();
   const navigate = useNavigate();
 
-  const userData = useSelector((state: RootState) => state.user?.userData);
-  const sessionToken = userData?.token || '';
+  const sessionToken = useSessionToken();
 
   useEffect(() => {
     async function fetchData() {

@@ -159,6 +159,12 @@
     "toast": {
       "clearedCart": "Cart was cleared successfully",
       "productRemoved": "Product was removed"
+    },
+    "modal": {
+      "title": "Are you sure you want to clear your cart?",
+      "description": "This action cannot be undone.",
+      "buttonConfirm": "Confirm",
+      "buttonCancel": "Cancel"
     }
   },
   "WishlistPage": {
@@ -171,6 +177,12 @@
       "clearedList": "Wishlist was cleared successfully",
       "productRemoved": "Product was removed",
       "productAddedToWishlist": "Product was added to wishlist"
+    },
+    "modal": {
+      "title": "Are you sure you want to clear your wishlist?",
+      "description": "This action cannot be undone.",
+      "buttonConfirm": "Confirm",
+      "buttonCancel": "Cancel"
     }
   },
   "OrdersPage": {

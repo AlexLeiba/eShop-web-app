@@ -29,6 +29,7 @@ import {
   ModalTrigger,
 } from '../components/ui/Modal';
 import { Layout } from '../components/Layout/Layout';
+import { useSessionToken } from '../hooks/useSesstionToken';
 
 function Cart() {
   const { t } = useTranslation('translation', { keyPrefix: 'CartPage' });
@@ -37,8 +38,7 @@ function Cart() {
 
   const { cart: cartData } = useSelector((state: RootState) => state);
 
-  const userData = useSelector((state: RootState) => state.user.userData);
-  const sessionToken = userData?.token || '';
+  const sessionToken = useSessionToken();
 
   async function handleClearList() {
     const response = await clearAllCartProducts({
@@ -113,8 +113,8 @@ function Cart() {
 
                     <ModalProvider
                       onConfirm={handleClearList}
-                      title={'Are you sure you want to clear your cart?'}
-                      description={'This action cannot be undone.'}
+                      title={t('modal.title')}
+                      description={t('modal.description')}
                     >
                       <ModalTrigger>
                         <Button

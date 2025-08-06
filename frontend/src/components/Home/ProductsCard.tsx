@@ -2,12 +2,12 @@ import { Link } from 'react-router-dom';
 import type { ProductsType } from '../../consts';
 import { Button } from '../ui/Button';
 import { IconEye, IconHeart, IconShoppingCart } from '@tabler/icons-react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { updateWishlist } from '../../store/wishList/apiCalls';
-import type { RootState } from '../../store/store';
 import toast from 'react-hot-toast';
 import { updateCart } from '../../store/cart/apiCalls';
 import { useTranslation } from 'react-i18next';
+import { useSessionToken } from '../../hooks/useSesstionToken';
 
 type Props = {
   data: ProductsType;
@@ -15,9 +15,8 @@ type Props = {
 
 export function ProductsCard({ data }: Props) {
   const { t } = useTranslation('translation', { keyPrefix: 'ProductsPage' });
-  const userData = useSelector((state: RootState) => state.user.userData);
-  const sessionToken = userData?.token || '';
   const dispatch = useDispatch();
+  const sessionToken = useSessionToken();
 
   async function handleAddToCart(product: ProductsType) {
     const response = await updateCart({

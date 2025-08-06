@@ -1,11 +1,9 @@
-import { useSelector } from 'react-redux';
 import type { CartItemsType } from '../../store/cart/reducer';
 import { Button } from '../ui/Button';
 import { Spacer } from '../ui/spacer';
-
 import { loadStripe } from '@stripe/stripe-js';
-import type { RootState } from '../../store/store';
 import { useTranslation } from 'react-i18next';
+import { useSessionToken } from '../../hooks/useSesstionToken';
 
 type Props = {
   total: number;
@@ -22,8 +20,7 @@ export function OrderSummary({
   cartProducts,
 }: Props) {
   const { t } = useTranslation('translation', { keyPrefix: 'CartPage' });
-  const userData = useSelector((state: RootState) => state.user?.userData);
-  const sessionToken = userData?.token || '';
+  const sessionToken = useSessionToken();
 
   async function handleMakePayment() {
     const language = localStorage.getItem('language');

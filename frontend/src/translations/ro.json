@@ -158,6 +158,12 @@
     "toast": {
       "clearedCart": "Cosul de cumparaturi a fost sters cu succes",
       "productRemoved": "Produsul a fost sters"
+    },
+    "modal": {
+      "title": "Esti sigur ca vrei sa stergi cosul de cumparaturi?",
+      "description": "Aceasta actiune nu poate fi anulata.",
+      "buttonConfirm": "Confirma",
+      "buttonCancel": "Anuleaza"
     }
   },
   "WishlistPage": {
@@ -170,6 +176,12 @@
       "clearedList": "Lista de favorite a fost stearsa cu succes",
       "productRemoved": "Produsul a fost sters",
       "productAddedToWishlist": "Produsul a fost adaugat in cosul de cumparaturi"
+    },
+    "modal": {
+      "title": "Esti sigur ca vrei sa stergi lista de favorite?",
+      "description": "Aceasta actiune nu poate fi anulata.",
+      "buttonConfirm": "Confirma",
+      "buttonCancel": "Anuleaza"
     }
   },
   "OrdersPage": {

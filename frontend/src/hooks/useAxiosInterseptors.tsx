@@ -1,15 +1,12 @@
-import { useSelector } from 'react-redux';
 import { useRefreshToken } from './useRefreshToken';
-import type { RootState } from '../store/store';
 import { axiosPrivateInstance } from '../lib/axiosInstance';
 import { useEffect } from 'react';
+import { useSessionToken } from './useSesstionToken';
 
 export function useAxiosInterseptors() {
   const { handleRefreshToken } = useRefreshToken();
 
-  const accesToken = useSelector(
-    (state: RootState) => state.user.userData.token
-  );
+  const sessionToken = useSessionToken();
 
   useEffect(() => {
     //Will fire before any req
@@ -17,7 +14,7 @@ export function useAxiosInterseptors() {
       (config) => {
         if (!config.headers['Token']) {
           //if we do not have header Authorization, we will add it
-          config.headers['Token'] = `Bearer ${accesToken}`;
+          config.headers['Token'] = `Bearer ${sessionToken}`;
         }
         return config;
       },
@@ -49,7 +46,7 @@ export function useAxiosInterseptors() {
       axiosPrivateInstance.interceptors.response.eject(responseIntersept); //remove interceptor
       axiosPrivateInstance.interceptors.request.eject(requestIntersept);
     }; //remove interceptor} ]
-  }, [accesToken, handleRefreshToken]);
+  }, [sessionToken, handleRefreshToken]);
 
   return axiosPrivateInstance; //by the time we return the axios instance, the token will be refreshed and set in headers
 }

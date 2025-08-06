@@ -15,10 +15,9 @@ import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { columns, type OrderType } from '../consts';
-import { useSelector } from 'react-redux';
-import type { RootState } from '../store/store';
 import { Loader } from '../components/ui/Loader';
 import { Layout } from '../components/Layout/Layout';
+import { useSessionToken } from '../hooks/useSesstionToken';
 
 export type OrdersDataType = {
   data: OrderType[];
@@ -28,8 +27,7 @@ export type OrdersDataType = {
 function Orders() {
   const { t } = useTranslation('translation', { keyPrefix: 'OrdersPage' });
 
-  const userData = useSelector((state: RootState) => state.user.userData);
-  const sessionToken = userData?.token || '';
+  const sessionToken = useSessionToken();
 
   const [ordersData, setOrdersData] = React.useState<OrderType[]>([]);
 

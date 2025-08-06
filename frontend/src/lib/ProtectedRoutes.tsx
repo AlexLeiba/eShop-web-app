@@ -1,11 +1,8 @@
-import { useSelector } from 'react-redux';
-import type { RootState } from '../store/store';
 import { Navigate } from 'react-router-dom';
+import { useSessionToken } from '../hooks/useSesstionToken';
 
 export function ProtectedRoutes({ children }: { children: React.ReactNode }) {
-  const userData = useSelector((state: RootState) => state.user.userData);
+  const accessToken = useSessionToken();
 
-  const sessionToken = userData?.token || '';
-
-  return <>{sessionToken ? children : <Navigate to='/login' />}</>;
+  return <>{accessToken ? children : <Navigate to='/login' />}</>;
 }

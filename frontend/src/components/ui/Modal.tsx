@@ -7,6 +7,7 @@ import React, {
 import { Button } from './Button';
 import { cn } from '../../lib/utils';
 import { IconX } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 
 type ContextType = {
   isModalOpen: boolean;
@@ -124,13 +125,17 @@ export function ModalContent({ children }: { children: React.ReactNode }) {
 }
 
 export function ModalFooter() {
+  const { t } = useTranslation('translation', { keyPrefix: 'CartPage' });
   const { onConfirm, setIsModalOpen } = useContext(ModalContext);
   return (
     <div className='flex lg:gap-8 md:gap-8 gap-4 w-full lg:flex-row md:flex-row flex-col'>
       <Button variant='secondary' onClick={() => onConfirm()}>
-        Confirm
+        {t('modal.buttonConfirm')}
       </Button>
-      <Button onClick={() => setIsModalOpen(false)}>Cancel</Button>
+      <Button onClick={() => setIsModalOpen(false)}>
+        {' '}
+        {t('modal.buttonCancel')}
+      </Button>
     </div>
   );
 }

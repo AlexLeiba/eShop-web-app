@@ -7,8 +7,8 @@ import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { logout } from '../../store/userData/apiCalls';
 import toast from 'react-hot-toast';
-import { useDispatch, useSelector } from 'react-redux';
-import type { RootState } from '../../store/store';
+import { useDispatch } from 'react-redux';
+import { useSessionToken } from '../../hooks/useSesstionToken';
 
 type Props = {
   userData: UserType['data'];
@@ -26,10 +26,7 @@ export function MyAccountDropdown({
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const sessionToken = useSelector(
-    (state: RootState) => state.user.userData?.token
-  );
+  const sessionToken = useSessionToken();
 
   const containerRef = useRef<HTMLDivElement>(null);
 

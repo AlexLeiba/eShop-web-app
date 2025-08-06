@@ -1,9 +1,9 @@
 import { IconMinus, IconPlus } from '@tabler/icons-react';
 import { changeCartProductQuantity } from '../../store/cart/apiCalls';
-import { useDispatch, useSelector } from 'react-redux';
-import type { RootState } from '../../store/store';
+import { useDispatch } from 'react-redux';
 import toast from 'react-hot-toast';
 import { addQuantity, reduceQuantity } from '../../store/filters/reducer';
+import { useSessionToken } from '../../hooks/useSesstionToken';
 
 type Props = {
   type?: 'cartPage' | 'productPage';
@@ -17,9 +17,7 @@ type Props = {
 };
 function AddAmount({ type, productId, productData }: Props) {
   const dispatch = useDispatch();
-
-  const userData = useSelector((state: RootState) => state.user.userData);
-  const sessionToken = userData?.token || '';
+  const sessionToken = useSessionToken();
 
   async function handleAmount(changeType: 'minus' | 'plus') {
     if (type === 'cartPage' && productId) {

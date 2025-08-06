@@ -26,6 +26,7 @@ import { useTranslation } from 'react-i18next';
 import { Layout } from '../components/Layout/Layout';
 import { fetchProduct } from '../store/products/apiCalls';
 import { setCart, setWishlist } from '../store/products/reducer';
+import { useSessionToken } from '../hooks/useSesstionToken';
 
 function Product() {
   const { t } = useTranslation('translation', { keyPrefix: 'ProductPage' });
@@ -35,8 +36,7 @@ function Product() {
     (state: RootState) => state.products.product
   );
 
-  const userData = useSelector((state: RootState) => state.user.userData);
-  const sessionToken = userData?.token || '';
+  const sessionToken = useSessionToken();
 
   const location = useLocation();
   const productId = location.pathname.split('/')[2];
