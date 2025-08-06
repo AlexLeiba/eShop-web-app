@@ -24,7 +24,7 @@ router.post('/register', async (req, res) => {
   const encryptedPassword = CryptoJS.AES.encrypt(
     req.body.password,
     process.env.SECRET_PASSPHRASE
-  );
+  ).toString();
 
   const newUser = new User({
     ...req.body,
@@ -46,10 +46,10 @@ router.post('/login', async (req, res) => {
   try {
     const loggedUser = await User.findOne({
       email: req.body.email,
-    }).select('-refreshToken');
+    });
 
     if (!loggedUser) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ error: 'User not found' });
     }
 
     // decrypt password and compare with the one user introduced
@@ -63,7 +63,7 @@ router.post('/login', async (req, res) => {
     );
 
     if (decryptedPasswordFromDB !== req.body.password) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ error: 'Password is incorrect' });
     }
 
     // Access Token for client
