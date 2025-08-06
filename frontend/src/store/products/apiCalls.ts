@@ -13,38 +13,43 @@ export async function fetchProducts({
   language,
 }: FetchProductsProps) {
   try {
-    const { data: productsResponse } = await axiosInstance({
+    const productsResponse = await axiosInstance({
       url: `/api/products?sort=newest&limit=8&language=${language?.toLowerCase()}`,
       method: 'GET',
     });
 
-    const { data: featuredProductsResponse } = await axiosInstance({
+    const featuredProductsResponse = await axiosInstance({
       url: `/api/featured-products?language=${language?.toLowerCase()}`,
       method: 'GET',
     });
-    if (productsResponse?.error) {
-      throw new Error(productsResponse.error);
+
+    if (productsResponse?.data?.error) {
+      throw new Error(productsResponse.data.error);
     }
-    if (featuredProductsResponse?.error) {
-      throw new Error(featuredProductsResponse.error);
+    if (featuredProductsResponse?.data?.error) {
+      throw new Error(featuredProductsResponse.data.error);
     }
 
-    dispatch(
-      getProducts({
-        data: productsResponse?.data,
-        count: productsResponse?.count,
-      })
-    );
+    if (productsResponse?.data?.data) {
+      dispatch(
+        getProducts({
+          data: productsResponse?.data?.data,
+          count: productsResponse?.data?.count,
+        })
+      );
+    }
 
-    dispatch(
-      getFeaturedProducts({
-        data: featuredProductsResponse?.data,
-        count: featuredProductsResponse?.data.length,
-      })
-    );
+    if (featuredProductsResponse?.data?.data) {
+      dispatch(
+        getFeaturedProducts({
+          data: featuredProductsResponse?.data?.data,
+          count: featuredProductsResponse?.data?.data.length,
+        })
+      );
+    }
 
     return {
-      data: productsResponse.data,
+      data: productsResponse?.data?.data,
       error: null,
     };
   } catch (error: any) {

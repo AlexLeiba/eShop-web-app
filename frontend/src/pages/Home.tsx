@@ -48,7 +48,6 @@ function Home() {
         if (response?.error) {
           throw new Error(response.error);
         }
-        clearTimeout(timer);
       } catch (error: any) {
         toast.error(error.message);
       } finally {
