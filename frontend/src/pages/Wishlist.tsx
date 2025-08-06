@@ -32,7 +32,7 @@ function Wishlist() {
   const { t } = useTranslation('translation', { keyPrefix: 'WishlistPage' });
   const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(true);
-  const userData = useSelector((state: RootState) => state.user.userData?.data);
+  const userData = useSelector((state: RootState) => state.user.userData);
   const sessionToken = userData?.token || '';
 
   const {

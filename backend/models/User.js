@@ -43,6 +43,10 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    refreshToken: {
+      type: String,
+      required: false,
+    },
   },
   {
     timestamps: true, //will create createdAt and updatedAt fields

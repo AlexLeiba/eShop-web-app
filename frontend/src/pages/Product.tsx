@@ -35,7 +35,7 @@ function Product() {
     (state: RootState) => state.products.product
   );
 
-  const userData = useSelector((state: RootState) => state.user.userData?.data);
+  const userData = useSelector((state: RootState) => state.user.userData);
   const sessionToken = userData?.token || '';
 
   const location = useLocation();

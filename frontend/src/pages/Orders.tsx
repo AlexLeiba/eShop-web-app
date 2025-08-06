@@ -28,7 +28,7 @@ export type OrdersDataType = {
 function Orders() {
   const { t } = useTranslation('translation', { keyPrefix: 'OrdersPage' });
 
-  const userData = useSelector((state: RootState) => state.user.userData?.data);
+  const userData = useSelector((state: RootState) => state.user.userData);
   const sessionToken = userData?.token || '';
 
   const [ordersData, setOrdersData] = React.useState<OrderType[]>([]);

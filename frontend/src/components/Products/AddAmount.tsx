@@ -18,7 +18,7 @@ type Props = {
 function AddAmount({ type, productId, productData }: Props) {
   const dispatch = useDispatch();
 
-  const userData = useSelector((state: RootState) => state.user.userData?.data);
+  const userData = useSelector((state: RootState) => state.user.userData);
   const sessionToken = userData?.token || '';
 
   async function handleAmount(changeType: 'minus' | 'plus') {

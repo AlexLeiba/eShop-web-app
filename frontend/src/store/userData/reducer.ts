@@ -2,26 +2,34 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export type UserType = {
   data: {
-    data: {
-      _id: string;
-      email: string;
-      name: string;
-      isAdmin: string;
-      userName: string;
-      lastName: string;
-    };
-    token: string;
+    _id: string;
+    email: string;
+    name: string;
+    isAdmin: string;
+    userName: string;
+    lastName: string;
   };
+  token: string;
 };
 export type UserDataType = {
-  userData: UserType | null;
+  userData: UserType;
   isFetching: boolean;
   error: boolean;
   errorMessage: string;
 };
 
 const initialState: UserDataType = {
-  userData: null,
+  userData: {
+    data: {
+      _id: '',
+      email: '',
+      name: '',
+      isAdmin: '',
+      userName: '',
+      lastName: '',
+    },
+    token: '',
+  },
   isFetching: false,
   error: false,
   errorMessage: '',
@@ -35,15 +43,41 @@ const userSlice = createSlice({
     },
     loginSuccess: (state, action) => {
       state.isFetching = false;
-      state.userData = action.payload;
+      state.userData.data = action.payload.userData;
+      state.userData.token = action.payload.token;
     },
     loginError: (state, action) => {
       state.isFetching = false;
       state.error = true;
       state.errorMessage = action.payload.error;
     },
+    refreshToken: (state, action) => {
+      state.userData.token = action.payload.token;
+    },
+    logoutAction: (state) => {
+      state.userData = initialState.userData;
+      state.isFetching = false;
+      state.error = false;
+      state.errorMessage = '';
+    },
+    logoutError: (state, action) => {
+      state.isFetching = false;
+      state.error = true;
+      state.errorMessage = action.payload.error;
+    },
+    logoutFetching: (state) => {
+      state.isFetching = true;
+    },
   },
 });
 
-export const { loginFetching, loginSuccess, loginError } = userSlice.actions;
+export const {
+  loginFetching,
+  loginSuccess,
+  loginError,
+  refreshToken,
+  logoutAction,
+  logoutError,
+  logoutFetching,
+} = userSlice.actions;
 export default userSlice.reducer;

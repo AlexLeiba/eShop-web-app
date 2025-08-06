@@ -1,5 +1,12 @@
 import type { Action } from '@reduxjs/toolkit';
-import { loginError, loginFetching, loginSuccess } from './reducer';
+import {
+  loginError,
+  loginFetching,
+  loginSuccess,
+  logoutAction,
+  logoutError,
+  logoutFetching,
+} from './reducer';
 import type { LoginType, RegisterType } from '../../lib/schemas';
 import { axiosInstance } from '../../lib/axiosInstance';
 
@@ -21,11 +28,49 @@ export async function login({ dispatch, user }: LoginProps) {
     });
 
     if (response.data) {
-      dispatch(loginSuccess(response));
+      dispatch(
+        loginSuccess({
+          userData: response.data.data,
+          token: response.data.token,
+        })
+      );
       return { data: response.data, error: null };
+    }
+    if (response.status.toString().includes('4')) {
+      throw new Error('Something went wrong');
     }
   } catch (error: any) {
     dispatch(loginError(error.response.data.error || 'Something went wrong'));
+    return {
+      data: null,
+      error: error.response.data.error || 'Something went wrong',
+    };
+  }
+}
+
+type LogoutProps = {
+  dispatch: React.Dispatch<Action>;
+  axiosInstance: any;
+};
+export async function logout({
+  dispatch,
+  axiosInstance,
+}: // axiosInstance,
+LogoutProps) {
+  dispatch(logoutFetching());
+  try {
+    const { data: response } = await axiosInstance({
+      url: `/api/logout`,
+      method: 'POST',
+    });
+    console.log('🚀 ~ logout ~ response:', response);
+
+    if (response.data) {
+      dispatch(logoutAction());
+      return { data: response.data, error: null };
+    }
+  } catch (error: any) {
+    dispatch(logoutError(error.response.data.error || 'Something went wrong'));
     return {
       data: null,
       error: error.response.data.error || 'Something went wrong',

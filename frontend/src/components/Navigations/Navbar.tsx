@@ -21,7 +21,7 @@ export function Navbar() {
   const dispatch = useDispatch();
   const { t } = useTranslation('translation', { keyPrefix: 'HeaderSection' });
   const state = useSelector((state: RootState) => state);
-  const userData = useSelector((state: RootState) => state.user.userData?.data);
+  const userData = useSelector((state: RootState) => state.user.userData);
   const sessionToken = userData?.token || '';
 
   const cartQuantity = state.cart.quantity;
@@ -108,7 +108,7 @@ export function Navbar() {
               <MyAccountDropdown
                 withListQuantity={withListQuantity}
                 cartQuantity={cartQuantity}
-                userData={userData?.data as UserType['data']['data']}
+                userData={userData?.data as UserType['data']}
               />
             ) : (
               navLinks.map((navLink) => {

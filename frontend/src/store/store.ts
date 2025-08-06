@@ -6,7 +6,7 @@ import filtersReducer from './filters/reducer';
 import searchReducer from './search/reducer';
 import productsReducer from './products/reducer';
 
-import { persistStore, persistReducer } from 'redux-persist';
+import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; //will save in localStorage
 
 const persistConfig = {

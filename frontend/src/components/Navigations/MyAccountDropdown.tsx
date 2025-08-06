@@ -4,10 +4,15 @@ import type { UserType } from '../../store/userData/reducer';
 import { cn } from '../../lib/utils';
 import { IconLogout } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { logout } from '../../store/userData/apiCalls';
+// import { axiosPrivateInstance } from '../../lib/axiosInstance';
+import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
+import { axiosInstance } from '../../lib/axiosInstance';
 
 type Props = {
-  userData: UserType['data']['data'];
+  userData: UserType['data'];
   withListQuantity: number;
   cartQuantity: number;
 };
@@ -19,6 +24,9 @@ export function MyAccountDropdown({
   const { t } = useTranslation('translation', {
     keyPrefix: 'HeaderSection.MyAccount',
   });
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -37,9 +45,24 @@ export function MyAccountDropdown({
     return () => document.removeEventListener('click', () => {});
   }, []);
 
-  function handleLogout() {
-    localStorage.removeItem('persist:root');
-    window.location.reload();
+  // function handleLogout() {
+  //   logout({ dispatch, axiosPrivateInstance });
+  //   localStorage.removeItem('persist:root');
+  //   window.location.reload();
+  // }
+
+  async function handleLogout() {
+    const responseLogin = await logout({
+      dispatch,
+      axiosInstance,
+    });
+
+    if (responseLogin?.data) {
+      navigate('/login');
+    }
+    if (responseLogin?.error) {
+      toast.error(responseLogin.error);
+    }
   }
 
   const dropdownLinks = [

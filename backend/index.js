@@ -15,6 +15,7 @@ import orderRoutes from './routes/orders.js';
 import stripeRoutes from './routes/stripe.js';
 import wishListRoutes from './routes/wishList.js';
 import adminDashboardRoutes from './routes/adminDashboard.js';
+import refreshToken from './routes/refreshToken.js';
 
 dotenv.config(); //to use .env file
 
@@ -44,6 +45,8 @@ const corsOptions = {
       callback(new Error('Not allowed by CORS'));
     }
   },
+  // credentials: true,
+  // withCredentials: true,
 };
 
 app.use(cors(corsOptions)); // enable specified cors options
@@ -62,6 +65,7 @@ app.use((_, res, next) => {
   );
   res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
   res.setHeader('X-Frame-Options', 'DENY');
+
   next();
 });
 
@@ -79,6 +83,8 @@ app.use('/api', orderRoutes);
 app.use('/api', stripeRoutes);
 app.use('/api', wishListRoutes);
 app.use('/api', adminDashboardRoutes);
+
+app.use('/api', refreshToken);
 
 ///// SERVER RUNNING//////
 const PORT = process.env.PORT || 4000;

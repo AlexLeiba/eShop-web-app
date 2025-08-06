@@ -17,7 +17,7 @@ type Props = {
 export function WishListCard({ data, type }: Props) {
   const { t } = useTranslation('translation', { keyPrefix: 'WishlistPage' });
   const dispatch = useDispatch();
-  const userData = useSelector((state: RootState) => state.user.userData?.data);
+  const userData = useSelector((state: RootState) => state.user.userData);
   const sessionToken = userData?.token || '';
 
   async function handleRemove() {

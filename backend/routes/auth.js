@@ -45,7 +45,7 @@ router.post('/login', async (req, res) => {
   try {
     const loggedUser = await User.findOne({
       email: req.body.email,
-    });
+    }).select('-refreshToken');
 
     if (!loggedUser) {
       return res.status(401).json({ error: 'Invalid credentials' });
@@ -65,7 +65,7 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    // verify jwt and send token
+    // Access Token for client
     const accessToken = jwt.sign(
       {
         id: loggedUser._id,
@@ -74,9 +74,43 @@ router.post('/login', async (req, res) => {
         isUberAdmin: loggedUser.isUberAdmin,
         userName: loggedUser.userName,
       },
-      process.env.JWT_SECRET_KEY,
+      process.env.JWT_TOKEN_SECRET_KEY,
       { expiresIn: '7d' }
     );
+
+    // Refresh Token for server | will be used when access token expires in order to refresh it .
+    // Refresh token will be stored on database in order to check if user is valid when a new AccessToken is requested
+    const refreshToken = jwt.sign(
+      {
+        id: loggedUser._id,
+        email: loggedUser.email,
+        isAdmin: loggedUser.isAdmin,
+        isUberAdmin: loggedUser.isUberAdmin,
+        userName: loggedUser.userName,
+      },
+      process.env.JWT_REFRESH_SECRET_KEY,
+      { expiresIn: '30d' }
+    );
+
+    const updatedUserData = await User.findOneAndUpdate(
+      { _id: loggedUser._id },
+      {
+        $set: {
+          refreshToken: refreshToken,
+        },
+      }
+    );
+
+    updatedUserData.save();
+    /////////////
+
+    res.cookie('jwt', refreshToken, {
+      //Set refresh token to cookies http only
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+      maxAge: 120 * 10000, // 120 seconds TODO to change after testing
+    });
 
     const { password, ...others } = loggedUser._doc;
     //send token to client and user data
@@ -87,9 +121,45 @@ router.post('/login', async (req, res) => {
       },
     });
   } catch (error) {
+    console.log('🚀 ~ error:', error);
     res.status(500).json(error);
   }
 });
+
+// LOGOUT
+router.post('/logout', async (req, res) => {
+  const userId = req.user.id;
+
+  try {
+    if (!cookies.jwt) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const currentUser = await User.findOne({ id: userId });
+
+    if (!currentUser) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    // DELETE refresh token from database
+    currentUser.refreshToken = null;
+    await currentUser.save();
+
+    // DELETE refresh token cookie
+    // req.clearCookie('jwt', {
+    //   httpOnly: true,
+    //   secure: true,
+    //   sameSite: 'none',
+    //   maxAge: 120 * 10000, // 120 seconds TODO to change after testing
+    // });
+    res.status(204).json({ message: 'Logged out successfully' });
+  } catch (error) {
+    console.log('🚀 ~ error:', error);
+    res.status(500).json(error);
+  }
+});
+
+// ADMIN LOGIN
 router.post('/admin/login', async (req, res) => {
   try {
     const loggedUser = await User.findOne({
@@ -125,7 +195,7 @@ router.post('/admin/login', async (req, res) => {
         userName: loggedUser.userName,
         isUberAdmin: loggedUser.isUberAdmin,
       },
-      process.env.JWT_SECRET_KEY,
+      process.env.JWT_TOKEN_SECRET_KEY,
       { expiresIn: '7d' }
     );
 
@@ -138,6 +208,7 @@ router.post('/admin/login', async (req, res) => {
       },
     });
   } catch (error) {
+    console.log('🚀 ~ error:', error);
     res.status(500).json(error);
   }
 });

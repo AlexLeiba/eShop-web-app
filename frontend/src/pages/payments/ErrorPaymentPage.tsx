@@ -8,9 +8,7 @@ function ErrorPaymentPage() {
   const { search } = useLocation();
   const navigate = useNavigate();
 
-  const userData = useSelector(
-    (state: RootState) => state.user?.userData?.data
-  );
+  const userData = useSelector((state: RootState) => state.user?.userData);
   const sessionToken = userData?.token || '';
 
   useEffect(() => {

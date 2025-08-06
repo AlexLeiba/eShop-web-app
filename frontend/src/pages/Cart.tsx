@@ -37,7 +37,7 @@ function Cart() {
 
   const { cart: cartData } = useSelector((state: RootState) => state);
 
-  const userData = useSelector((state: RootState) => state.user.userData?.data);
+  const userData = useSelector((state: RootState) => state.user.userData);
   const sessionToken = userData?.token || '';
 
   async function handleClearList() {
