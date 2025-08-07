@@ -76,7 +76,7 @@ router.post('/login', async (req, res) => {
         userName: loggedUser.userName,
       },
       process.env.JWT_TOKEN_SECRET_KEY,
-      { expiresIn: '30s' }
+      { expiresIn: '7d' }
     );
 
     // Refresh Token for server | will be used when access token expires in order to refresh it .
