@@ -61,6 +61,10 @@ router.post('/login', async (req, res) => {
     const decryptedPasswordFromDB = decryptedPassword.toString(
       CryptoJS.enc.Utf8
     );
+    console.log(
+      '🚀 ~ decryptedPasswordFromDB: \n\n\n',
+      decryptedPasswordFromDB
+    );
 
     if (decryptedPasswordFromDB !== req.body.password) {
       return res.status(401).json({ error: 'Password is incorrect' });

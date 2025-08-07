@@ -16,10 +16,6 @@ export function usePrivateAxiosInstance() {
     const requestIntersept = axiosPrivateInstance.interceptors.request.use(
       (config) => {
         const decodedUserData = jwtDecode(sessionToken);
-        console.log(
-          '🚀 ~ useAxiosInterseptors ~ decodedUserData:',
-          decodedUserData
-        );
 
         // exp is in seconds, so convert to ms
         if (sessionToken && decodedUserData.exp) {
