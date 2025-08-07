@@ -76,7 +76,7 @@ router.post('/login', async (req, res) => {
         userName: loggedUser.userName,
       },
       process.env.JWT_TOKEN_SECRET_KEY,
-      { expiresIn: '7d' }
+      { expiresIn: '30s' }
     );
 
     // Refresh Token for server | will be used when access token expires in order to refresh it .
@@ -128,15 +128,15 @@ router.post('/login', async (req, res) => {
 });
 
 // LOGOUT
-router.post('/logout', verifyTokenAuthorization, async (req, res) => {
-  const userId = req.user.id;
+router.post('/logout', async (req, res) => {
+  const userEmail = req.body.email;
 
   try {
-    if (!userId) {
+    if (!userEmail) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    const currentUser = await User.findOne({ _id: userId });
+    const currentUser = await User.findOne({ email: userEmail });
 
     if (!currentUser) {
       return res.status(401).json({ error: 'User not found' });

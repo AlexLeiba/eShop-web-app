@@ -80,11 +80,11 @@ function Login() {
 
   return (
     <div
-      className='h-screen flex justify-center items-center relative'
+      className='h-screen flex justify-center items-center relative overflow-y-auto'
       style={{ backgroundImage: `url(${bgImage})` }}
     >
       <div className='absolute top-0 right-0 left-0 bottom-0 w-full h-full z-10 bg-black opacity-50'></div>
-      <div className='w-[550px]  bg-white rounded-md py-6 px-8  gap-4 z-20 '>
+      <div className='w-[550px] min-h-[450px]  bg-white rounded-md py-6 px-8  gap-4 z-20 '>
         <form
           id='login-form'
           onSubmit={handleSubmit}

@@ -11,11 +11,16 @@ function verifyToken(req, res) {
   }
 
   if (token) {
+    //TODO check if token hasnt expired
     jwt.verify(
       token.split(' ')[1], //skip Bearer and get the token
       process.env.JWT_TOKEN_SECRET_KEY,
       (err, decodedUserData) => {
-        if (err) {
+        console.log('🚀 ~ verifyToken ~ err:\n\n\n\n', err);
+        if (err && err.name === 'TokenExpiredError') {
+          return res.status(403).json({ error: 'Your session has expired' });
+        }
+        if (err && err.name !== 'TokenExpiredError') {
           return res.status(403).json({ error: 'Forbidden' });
         }
         req.user = decodedUserData; // decoded user data from token is added to user object  in request

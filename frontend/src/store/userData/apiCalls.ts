@@ -11,6 +11,7 @@ import type { LoginType, RegisterType } from '../../lib/schemas';
 import { axiosInstance } from '../../lib/axiosInstance';
 import { clearWishList } from '../wishList/reducer';
 import { clearCart } from '../cart/reducer';
+import { jwtDecode } from 'jwt-decode';
 
 // LOGIN
 type LoginProps = {
@@ -59,20 +60,21 @@ type LogoutProps = {
 export async function logout({ dispatch, sessionToken }: LogoutProps) {
   dispatch(logoutFetching());
   try {
-    const response = await axiosInstance({
-      url: `/api/logout`,
-      method: 'POST',
-      headers: {
-        token: `Bearer ${sessionToken}`,
-      },
-    });
+    const decodedUserData: { email: string } = jwtDecode(sessionToken);
+    if (decodedUserData.email) {
+      const response = await axiosInstance({
+        url: `/api/logout`,
+        method: 'POST',
+        data: { email: decodedUserData.email },
+      });
 
-    if (response.status === 200) {
-      dispatch(logoutAction());
-      dispatch(clearCart());
-      dispatch(clearWishList());
-      localStorage.removeItem('persist:root');
-      return { data: response.data, error: null };
+      if (response.status.toString().startsWith('2')) {
+        dispatch(logoutAction());
+        dispatch(clearCart());
+        dispatch(clearWishList());
+        localStorage.removeItem('persist:root');
+        return { data: response.data, error: null };
+      }
     }
   } catch (error: any) {
     dispatch(logoutError(error.response.data.error || 'Something went wrong'));

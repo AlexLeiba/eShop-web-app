@@ -1,7 +1,7 @@
 import type { Action } from '@reduxjs/toolkit';
 import type { ProductsType } from '../../consts';
 import { addToWithList, getWishlist, removeFromWishList } from './reducer';
-import { axiosInstance } from '../../lib/axiosInstance';
+import { axiosInstance, axiosPrivateInstance } from '../../lib/axiosInstance';
 
 type FetchWishlistProps = {
   dispatch: React.Dispatch<Action>;
@@ -15,7 +15,7 @@ export async function fetchWishlist({
   language,
 }: FetchWishlistProps) {
   try {
-    const { data: response } = await axiosInstance({
+    const { data: response } = await axiosPrivateInstance({
       url: `/api/wishlist?language=${language}`,
       method: 'GET',
       headers: {

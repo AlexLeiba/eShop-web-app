@@ -18,6 +18,7 @@ import { columns, type OrderType } from '../consts';
 import { Loader } from '../components/ui/Loader';
 import { Layout } from '../components/Layout/Layout';
 import { useSessionToken } from '../hooks/useSesstionToken';
+import { axiosPrivateInstance } from '../lib/axiosInstance';
 
 export type OrdersDataType = {
   data: OrderType[];
@@ -42,20 +43,14 @@ function Orders() {
     const language = localStorage.getItem('language');
     async function fetchData() {
       try {
-        const response = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/orders?language=${
-            language?.toLowerCase() || 'en'
-          }`,
-          {
+        const { data: responseData }: { data: OrderType[] } =
+          await axiosPrivateInstance({
+            url: `/api/orders?language=${language?.toLowerCase() || 'en'}`,
             method: 'GET',
             headers: {
-              'Content-Type': 'application/json',
               token: `Bearer ${sessionToken}`,
             },
-          }
-        );
-        const { data: responseData }: { data: OrderType[] } =
-          await response.json();
+          });
 
         setOrdersData(responseData || []);
       } catch (error: any) {
@@ -65,7 +60,7 @@ function Orders() {
       }
     }
     fetchData();
-  }, [searchParams]);
+  }, [searchParams, sessionToken]);
 
   function rowsData() {
     return ordersData.map((row) => {

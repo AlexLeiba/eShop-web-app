@@ -16,6 +16,7 @@ import { fetchWishlist } from '../../store/wishList/apiCalls';
 import { fetchCartData } from '../../store/cart/apiCalls';
 import { IconShoppingBag } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
+import { usePrivateAxiosInstance } from '../../hooks/useValidAccessToken';
 
 export function Navbar() {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ export function Navbar() {
   const state = useSelector((state: RootState) => state);
   const userData = useSelector((state: RootState) => state.user.userData);
   const sessionToken = userData?.token || '';
+  usePrivateAxiosInstance();
 
   const cartQuantity = state.cart.quantity;
   const withListQuantity = state?.wishlist?.data?.length;

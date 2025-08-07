@@ -7,7 +7,7 @@ import {
   removeFromCart,
 } from './reducer';
 import type { ProductsInCartType } from '../../consts';
-import { axiosInstance } from '../../lib/axiosInstance';
+import { axiosInstance, axiosPrivateInstance } from '../../lib/axiosInstance';
 
 // FETCH
 type FetchCartDataProps = {
@@ -21,7 +21,7 @@ export async function fetchCartData({
   language,
 }: FetchCartDataProps) {
   try {
-    const { data: response } = await axiosInstance({
+    const { data: response } = await axiosPrivateInstance({
       method: 'GET',
       url: `/api/cart?language=${language}`,
       headers: {
