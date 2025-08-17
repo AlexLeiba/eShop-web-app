@@ -1,20 +1,20 @@
-import { Link } from 'react-router-dom';
-import type { ProductsType } from '../../consts';
-import { Button } from '../ui/Button';
-import { IconEye, IconHeart, IconShoppingCart } from '@tabler/icons-react';
-import { useDispatch } from 'react-redux';
-import { updateWishlist } from '../../store/wishList/apiCalls';
-import toast from 'react-hot-toast';
-import { updateCart } from '../../store/cart/apiCalls';
-import { useTranslation } from 'react-i18next';
-import { useSessionToken } from '../../hooks/useSesstionToken';
+import { Link } from "react-router-dom";
+import type { ProductsType } from "../../consts";
+import { Button } from "../ui/Button";
+import { IconEye, IconHeart, IconShoppingCart } from "@tabler/icons-react";
+import { useDispatch } from "react-redux";
+import { updateWishlist } from "../../store/wishList/apiCalls";
+import toast from "react-hot-toast";
+import { updateCart } from "../../store/cart/apiCalls";
+import { useTranslation } from "react-i18next";
+import { useSessionToken } from "../../hooks/useSesstionToken";
 
 type Props = {
   data: ProductsType;
 };
 
 export function ProductsCard({ data }: Props) {
-  const { t } = useTranslation('translation', { keyPrefix: 'ProductsPage' });
+  const { t } = useTranslation("translation", { keyPrefix: "ProductsPage" });
   const dispatch = useDispatch();
   const sessionToken = useSessionToken();
 
@@ -35,7 +35,7 @@ export function ProductsCard({ data }: Props) {
       toast.error(response.error);
     }
     if (response?.data) {
-      toast.success(t('toast.productAddedToCart'));
+      toast.success(t("toast.productAddedToCart"));
     }
   }
 
@@ -50,20 +50,20 @@ export function ProductsCard({ data }: Props) {
       toast.error(response.error);
     }
     if (response?.data) {
-      toast.success(t('toast.productAddedToWishlist'));
+      toast.success(t("toast.productAddedToWishlist"));
     }
   }
   return (
     <div
       key={data._id}
-      className='group relative  scale-100 hover:scale-101 shadow hover:shadow-2xl transition-all ease-in-out flex items-center gap-4 p-4 h-[300px] bg-white rounded-lg  overflow-hidden flex-col justify-between '
+      className="group relative  scale-100 hover:scale-101 shadow hover:shadow-2xl transition-all ease-in-out flex items-center gap-4 p-4 h-[300px] bg-white rounded-lg  overflow-hidden flex-col justify-between "
     >
-      <div className='transition-all lg:bg-transparent  lg:group-hover:bg-black/20 bg-black/20  absolute top-0 left-0 right-0 bottom-0 h-full w-full flex justify-center items-center gap-2'>
-        <div className='lg:group-hover:flex lg:hidden md:flex flex transition-all  gap-2'>
+      <div className="transition-all lg:bg-transparent  lg:group-hover:bg-black/20 bg-black/20  absolute top-0 left-0 right-0 bottom-0 h-full w-full flex justify-center items-center gap-2">
+        <div className="lg:group-hover:flex lg:hidden md:flex flex transition-all  gap-2">
           <Button
             disabled={!sessionToken}
             onClick={() => handleAddToCart(data)}
-            className='w-[40px] p-1 bg-black text-white flex items-center justify-center scale-100 hover:scale-105 transition-all '
+            className="w-[40px] p-1 bg-black text-white flex items-center justify-center scale-100 hover:scale-105 transition-all "
           >
             <IconShoppingCart />
           </Button>
@@ -71,13 +71,13 @@ export function ProductsCard({ data }: Props) {
           <Button
             disabled={!sessionToken}
             onClick={() => handleAddToWishList(data)}
-            className='w-[40px] p-1 bg-black text-white flex items-center justify-center scale-100 hover:scale-105 transition-all '
+            className="w-[40px] p-1 bg-black text-white flex items-center justify-center scale-100 hover:scale-105 transition-all "
           >
             <IconHeart />
           </Button>
 
           <Link to={`/product/${data._id}`}>
-            <Button className='w-[40px] p-1 bg-black text-white flex items-center justify-center scale-100 hover:scale-105 transition-all '>
+            <Button className="w-[40px] p-1 bg-black text-white flex items-center justify-center scale-100 hover:scale-105 transition-all ">
               <IconEye />
             </Button>
           </Link>
@@ -85,13 +85,14 @@ export function ProductsCard({ data }: Props) {
       </div>
 
       <img
-        className='w-full h-[200px] object-contain'
+        loading="lazy"
+        className="w-full h-[200px] object-contain"
         src={data.image}
         alt={data.title}
       />
 
-      <div className='flex flex-col gap-4'>
-        <h4 className='lg:text-2xl md:text-3xl text-xl font-bold line-clamp-2 text-center'>
+      <div className="flex flex-col gap-4">
+        <h4 className="lg:text-2xl md:text-3xl text-xl font-bold line-clamp-2 text-center">
           {data.title}
         </h4>
       </div>
