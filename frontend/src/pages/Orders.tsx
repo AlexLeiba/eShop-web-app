@@ -31,7 +31,6 @@ function Orders() {
   const sessionToken = useSessionToken();
 
   const [ordersData, setOrdersData] = React.useState<OrderType[]>([]);
-  console.log("🚀 ~ Orders ~ ordersData:", ordersData);
 
   const [loading, setLoading] = React.useState(true);
 
