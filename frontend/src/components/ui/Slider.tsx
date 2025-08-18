@@ -11,6 +11,13 @@ import { IconLoader } from "@tabler/icons-react";
 type SliderProps = {
   data: ProductsDataType["data"];
 };
+
+/**
+ * Slider component that displays a slideshow of products.
+ * @param {Object} props - The component props.
+ * @param {Array} props.data - An array of product data.
+ * @returns {JSX.Element} The rendered Slider component.
+ */
 export function Slider({ data }: SliderProps) {
   const { t } = useTranslation("translation", { keyPrefix: "DashboardPage" });
 

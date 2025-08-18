@@ -36,7 +36,7 @@ export function Navbar() {
     },
   ];
 
-  // fetch cart and favorite data only if we do not have their data in redux, this way we will prevent overfetching  data each time
+  // Fetch cart and favorite data only if we do not have their data in redux, this way we will prevent overfetching  data each time
   React.useEffect(() => {
     const language = localStorage.getItem('language');
     async function fetchData() {
