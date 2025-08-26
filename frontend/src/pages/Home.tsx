@@ -1,22 +1,22 @@
-import { Link, useLocation } from 'react-router-dom';
-import { Container } from '../components/Grid/Container';
-import { Categories } from '../components/Home/Categories';
-import { Newsletter } from '../components/Home/Newsletter';
-import { Products } from '../components/Home/Products';
-import { Announcement } from '../components/ui/Announcement';
-import { Slider } from '../components/ui/Slider';
-import { Spacer } from '../components/ui/spacer';
-import { useEffect } from 'react';
-import toast from 'react-hot-toast';
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { Layout } from '../components/Layout/Layout';
-import { fetchProducts } from '../store/products/apiCalls';
-import { useDispatch, useSelector } from 'react-redux';
-import type { RootState } from '../store/store';
+import { Link, useLocation } from "react-router-dom";
+import { Container } from "../components/Grid/Container";
+import { Categories } from "../components/Home/Categories";
+import { Newsletter } from "../components/Home/Newsletter";
+import { Products } from "../components/Home/Products";
+import { Announcement } from "../components/ui/Announcement";
+import { Slider } from "../components/ui/Slider";
+import { Spacer } from "../components/ui/spacer";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { Layout } from "../components/Layout/Layout";
+import { fetchProducts } from "../store/products/apiCalls";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../store/store";
 
 function Home() {
-  const { t } = useTranslation('translation', { keyPrefix: 'DashboardPage' });
+  const { t } = useTranslation("translation", { keyPrefix: "DashboardPage" });
   const { pathname } = useLocation();
   const dispatch = useDispatch();
   const featuredProductsData = useSelector(
@@ -25,13 +25,13 @@ function Home() {
   const [loading, setLoading] = React.useState(true);
 
   useEffect(() => {
-    const language = localStorage.getItem('language') || 'en';
+    const language = localStorage.getItem("language") || "en";
     async function fetchData() {
       let timerStarted = false;
       const timer = setTimeout(() => {
         if (!timerStarted) {
-          toast.loading(`${t('toast.loading')}`, {
-            id: 'loading',
+          toast.loading(`${t("toast.loading")}`, {
+            id: "loading",
           });
         }
         timerStarted = true;
@@ -42,7 +42,7 @@ function Home() {
 
         const response = await fetchProducts({
           dispatch,
-          language: language?.toLowerCase() || 'en',
+          language: language?.toLowerCase() || "en",
         });
 
         if (response?.error) {
@@ -53,7 +53,7 @@ function Home() {
       } finally {
         setLoading(false);
         clearTimeout(timer);
-        toast.dismiss('loading');
+        toast.dismiss("loading");
       }
     }
 
@@ -61,8 +61,8 @@ function Home() {
   }, [pathname, dispatch, t]);
   return (
     <Layout>
-      <Announcement title='lorem20 is coming soon dsdsadsa sdadsa dsadsad' />
-      <div className='flex flex-grow-1 flex-col'>
+      <Announcement title="lorem20 is coming soon dsdsadsa sdadsa dsadsad" />
+      <div className="flex flex-grow-1 flex-col">
         {/* FEATURED PRODUCTS HERO SLIDER */}
         <Container fluid>
           <Slider data={featuredProductsData.data} />
@@ -77,20 +77,28 @@ function Home() {
 
         {/* PRODUCTS */}
         <Container>
-          <div className='flex justify-between items-center'>
-            <h2 className='text-4xl font-bold'>{t('ProductsSection.title')}</h2>
-            <Link to={'/products?sort=newest&page=1'}>
-              <p className='text-2xl font-bold underline'>
-                {t('ProductsSection.allProducts')}
+          <div className="flex justify-between items-center">
+            <h2 className="dark:text-white text-4xl font-bold">
+              {t("ProductsSection.title")}
+            </h2>
+            <Link
+              to={"/products?sort=newest&page=1"}
+              title={t("ProductsSection.allProducts")}
+            >
+              <p className="text-2xl font-bold underline text-white">
+                {t("ProductsSection.allProducts")}
               </p>
             </Link>
           </div>
-          <Products loading={loading} type='dashboard' />
+          <Products loading={loading} type="dashboard" />
         </Container>
 
         {/* NEWSLETTER */}
         <Spacer sm={16} md={24} lg={24} />
-        <Container fluid className='bg-gray-100 '>
+        <Container
+          fluid
+          className="bg-gray-100 dark:bg-gray-800 dark:text-white "
+        >
           <Newsletter />
         </Container>
       </div>

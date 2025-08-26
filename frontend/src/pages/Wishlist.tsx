@@ -78,7 +78,7 @@ function Wishlist() {
 
       <Spacer size={24} />
 
-      <div className="flex flex-grow-1 flex-col">
+      <div className="flex flex-grow-1 flex-col dark:text-white">
         <Container>
           <div className="flex gap-2 justify-center items-center">
             <h1 className="text-4xl font-medium text-center"> {t("title")} </h1>
@@ -92,6 +92,7 @@ function Wishlist() {
                   <div className="flex justify-between">
                     <Link to="/products?sort=newest&page=1">
                       <Button
+                        title="Continue Shopping"
                         className="lg:w-[250px] w-[100px] flex justify-center items-center"
                         variant="secondary"
                       >
@@ -109,6 +110,7 @@ function Wishlist() {
                     >
                       <ModalTrigger>
                         <Button
+                          title="Clear WishList"
                           className="lg:w-[200px] w-[100px]  flex justify-center items-center"
                           variant="secondary"
                         >
@@ -163,7 +165,7 @@ function Wishlist() {
         <Spacer sm={16} md={24} lg={24} />
 
         {/* Newsletter */}
-        <Container fluid className="bg-gray-100 ">
+        <Container fluid className="bg-gray-100 dark:bg-gray-800">
           <Newsletter />
         </Container>
       </div>

@@ -52,6 +52,9 @@ function AddAmount({ type, productId, productData }: Props) {
   return (
     <div className="flex gap-2 items-center">
       <IconMinus
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => e.key === "Enter" && handleAmount("minus")}
         className="hover:bg-gray-400 rounded-full hover:text-white transition-all cursor-pointer"
         onClick={() => handleAmount("minus")}
       />
@@ -59,6 +62,9 @@ function AddAmount({ type, productId, productData }: Props) {
         {productData?.quantity}
       </p>
       <IconPlus
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => e.key === "Enter" && handleAmount("plus")}
         className="hover:bg-gray-400 rounded-full hover:text-white transition-all cursor-pointer"
         onClick={() => handleAmount("plus")}
       />

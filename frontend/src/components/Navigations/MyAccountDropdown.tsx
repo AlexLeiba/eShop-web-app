@@ -96,8 +96,15 @@ export function MyAccountDropdown({
   ];
 
   return (
-    <div className="relative" ref={containerRef}>
+    <div className="relative " ref={containerRef}>
       <div
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            setOpen(!open);
+          }
+        }}
+        role="button"
+        tabIndex={0}
         title="My Account"
         onClick={() => setOpen(!open)}
         className={cn(
@@ -109,7 +116,7 @@ export function MyAccountDropdown({
       </div>
 
       {open && (
-        <div className="absolute top-10 right-0 w-[280px] bg-white/90 shadow-lg  rounded-md z-50 p-3 gap-2 flex flex-col">
+        <div className="absolute top-10 right-0 w-[280px] bg-white/90 dark:bg-gray-950 shadow-lg  rounded-md z-50 p-3 gap-2 flex flex-col">
           {dropdownLinks.map((dropdownLink) => {
             return (
               <Link

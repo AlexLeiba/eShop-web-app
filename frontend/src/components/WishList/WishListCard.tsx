@@ -56,7 +56,7 @@ export function WishListCard({ data, type }: Props) {
     }
   }
   return (
-    <div className="flex gap-8  shadow rounded-md py-4 pl-4 pr-8 relative  lg:flex-row md:flex-row  flex-col">
+    <div className="flex gap-8  shadow rounded-md py-4 pl-4 pr-8 relative  lg:flex-row md:flex-row  flex-col dark:bg-gray-800">
       <Link to={`/product/${data._id}`}>
         <div>
           <img
@@ -77,7 +77,11 @@ export function WishListCard({ data, type }: Props) {
         <div className="flex justify-between w-full gap-4">
           <div className="flex gap-4 items-center   lg:flex-1 flex-1">
             {type === "wishList" && (
-              <Button onClick={handleAddToCart} className="w-full">
+              <Button
+                onClick={handleAddToCart}
+                className="w-full"
+                title="Add to cart"
+              >
                 <p className="lg:flex hidden">{t("addToCartButton")}</p>
                 <IconShoppingCart className="lg:ml-2" />
               </Button>
@@ -90,6 +94,10 @@ export function WishListCard({ data, type }: Props) {
         </div>
       </div>
       <IconX
+        title="Remove"
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => e.key === "Enter" && handleRemove()}
         onClick={handleRemove}
         className="absolute top-2 right-2 text-gray-500 cursor-pointer hover:text-red-500"
       />

@@ -71,11 +71,13 @@ export function Navbar() {
       }
     }
     sessionToken && fetchData();
+
+    // window.document.body.classList.add("dark");
   }, []);
   return (
-    <div className="w-full h-14 bg-gray-300 flex items-center fixed top-0 z-50">
+    <div className="w-full h-14 bg-gray-300 flex items-center fixed top-0 z-50   dark:bg-gray-800 ">
       <Container className="w-full h-full flex items-center justify-center">
-        <div className="flex justify-between w-full ">
+        <div className="flex justify-between w-full dark:text-white">
           {/* Logo */}
           <div className=" flex-1  hidden lg:flex md:flex">
             <Logo />

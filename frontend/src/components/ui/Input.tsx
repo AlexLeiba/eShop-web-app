@@ -45,7 +45,7 @@ export function Input({
         {...props}
         className={cn(
           handleSend ? "pr-10" : "pr-4",
-          "shadow focus-within:shadow-2xl  w-full bg-white focus:text-white focus:placeholder:text-white text-black rounded-full py-2 pl-4  focus:border-none focus:outline-none focus:bg-gray-400 transition-all"
+          "shadow focus-within:shadow-2xl  w-full bg-white dark:bg-gray-400 focus:text-white focus:placeholder:text-white text-black rounded-full py-2 pl-4  focus:border-none focus:outline-none focus:bg-gray-400 transition-all"
         )}
         type={type}
         placeholder={placeholder}

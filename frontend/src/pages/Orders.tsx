@@ -90,13 +90,13 @@ function Orders() {
                     style={{ minWidth: 200 }}
                     component="th"
                   >
-                    <p> {formattedDate}</p>
+                    <p className="dark:text-white"> {formattedDate}</p>
                   </TableCell>
                 );
               } else if (column.id === "totalPrice") {
                 return (
                   <TableCell key={column.id} style={{ minWidth: 150 }}>
-                    <p>
+                    <p className="dark:text-white">
                       {new Intl.NumberFormat("en-US", {
                         style: "currency",
                         currency: "USD",
@@ -131,7 +131,9 @@ function Orders() {
               } else {
                 return (
                   <TableCell key={column.id} style={{ minWidth: 150 }}>
-                    <p>{row[column.id] as string}</p>
+                    <p className="dark:text-white">
+                      {row[column.id] as string}
+                    </p>
                   </TableCell>
                 );
               }
@@ -155,7 +157,7 @@ function Orders() {
         <Container>
           <Loader loading={loading} className="h-[152px]">
             <div className="flex justify-between items-center">
-              <h2 className="text-4xl font-bold">
+              <h2 className="text-4xl font-bold dark:text-white">
                 {t("title")}
                 {selectedCategory && selectedCategory !== "all" && (
                   <span className="text-2xl text-gray-500">
@@ -175,13 +177,17 @@ function Orders() {
             ) : (
               <>
                 <TableContainer component={Paper}>
-                  <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                  <Table
+                    sx={{ minWidth: 650 }}
+                    aria-label="simple table"
+                    className="dark:bg-gray-800 "
+                  >
                     <TableHead>
                       <TableRow>
                         {columns.map((data) => {
                           return (
                             <TableCell sx={{ width: 800 }} key={data.id}>
-                              <p>
+                              <p className="dark:text-white">
                                 <b> {data.label}</b>
                               </p>
                             </TableCell>
@@ -199,7 +205,10 @@ function Orders() {
         <Spacer sm={16} md={24} lg={24} />
 
         {/* Newsletter */}
-        <Container fluid className="bg-gray-100 ">
+        <Container
+          fluid
+          className="bg-gray-100 dark:bg-gray-800 dark:text-white "
+        >
           <Newsletter />
         </Container>
       </div>

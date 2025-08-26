@@ -1,18 +1,18 @@
-import React, { useEffect } from 'react';
-import { SearchInput } from '../ui/SearchInput';
-import { type ProductsType } from '../../consts';
-import { useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
-import { IconLoader } from '@tabler/icons-react';
-import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
-import { setSearchTerm } from '../../store/search/reducer';
-import type { RootState } from '../../store/store';
+import React, { useEffect } from "react";
+import { SearchInput } from "../ui/SearchInput";
+import { type ProductsType } from "../../consts";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { IconLoader } from "@tabler/icons-react";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { setSearchTerm } from "../../store/search/reducer";
+import type { RootState } from "../../store/store";
 
 const initialProductData: ProductsType[] = [];
 
 function SearchSelector() {
-  const { t } = useTranslation('translation', { keyPrefix: 'HeaderSection' });
+  const { t } = useTranslation("translation", { keyPrefix: "HeaderSection" });
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
@@ -26,10 +26,10 @@ function SearchSelector() {
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const language = localStorage.getItem('language') || 'en';
+    const language = localStorage.getItem("language") || "en";
     setLoading(true);
     async function fetchData() {
-      if (searchValue !== '') {
+      if (searchValue !== "") {
         try {
           const response = await fetch(
             `${
@@ -55,13 +55,13 @@ function SearchSelector() {
   }, [searchValue]);
 
   useEffect(() => {
-    document.addEventListener('click', (e: Event) => {
+    document.addEventListener("click", (e: Event) => {
       if (
         containerRef.current &&
         !containerRef.current.contains(e.target as Node)
       ) {
         if (searchValue) {
-          dispatch(setSearchTerm(''));
+          dispatch(setSearchTerm(""));
         }
         if (productsData.length > 0) {
           setProductsData(initialProductData);
@@ -71,18 +71,18 @@ function SearchSelector() {
   }, [searchValue, productsData]);
 
   return (
-    <div className='relative w-full' ref={containerRef} title='Search Products'>
+    <div className="relative w-full" ref={containerRef} title="Search Products">
       <SearchInput
-        label={''}
-        placeholder={t('searchPlaceholder')}
-        error={''}
-        type={'text'}
+        label={""}
+        placeholder={t("searchPlaceholder")}
+        error={""}
+        type={"text"}
       />
 
       {searchValue && (
-        <div className='absolute top-10 left-0 w-full bg-white shadow-lg rounded-md z-50 px-2 py-4 flex flex-col gap-4'>
+        <div className="absolute top-10 left-0 w-full bg-white dark:bg-gray-500 shadow-lg rounded-md z-50 px-2 py-4 flex flex-col gap-4">
           {loading ? (
-            <div className='flex items-center justify-center animate-spin'>
+            <div className="flex items-center justify-center animate-spin">
               <IconLoader />
             </div>
           ) : productsData && productsData.length > 0 ? (
@@ -91,22 +91,22 @@ function SearchSelector() {
                 <div
                   onClick={() => {
                     navigate(`/product/${item._id}`);
-                    dispatch(setSearchTerm(''));
+                    dispatch(setSearchTerm(""));
                   }}
                   key={item._id + item.title}
-                  className='hover:text-white gap-4  px-2 relative rounded-sm w-full h-12 flex items-center hover:bg-gray-400 transition-all cursor-pointer'
+                  className="hover:text-white gap-4  px-2 relative rounded-sm w-full h-12 flex items-center hover:bg-gray-400 transition-all cursor-pointer"
                 >
                   <img
                     src={item.image}
                     alt={item.title}
-                    className='w-10 h-10 object-contain'
+                    className="w-10 h-10 object-contain"
                   />
                   <p>{item.title}</p>
                 </div>
               );
             })
           ) : (
-            <p>{t('noProductsFound')}</p>
+            <p>{t("noProductsFound")}</p>
           )}
         </div>
       )}

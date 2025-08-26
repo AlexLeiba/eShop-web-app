@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SlideButton from "./SlideButton";
 import { Button } from "./Button";
 import { Link } from "react-router-dom";
@@ -22,6 +22,7 @@ export function Slider({ data }: SliderProps) {
   const { t } = useTranslation("translation", { keyPrefix: "DashboardPage" });
 
   const [slide, setSlide] = React.useState(0);
+  const [iselementHovered, setIsElementHovered] = useState(false);
 
   function handleSlide(direction: "prev" | "next") {
     if (direction === "prev") {
@@ -37,8 +38,26 @@ export function Slider({ data }: SliderProps) {
       });
     }
   }
+
+  useEffect(() => {
+    if (!iselementHovered) {
+      const interval = setInterval(() => {
+        setSlide((prev) => {
+          if (data?.slice(0, 3).length - 1 === prev) return 0;
+
+          return prev + 1;
+        });
+      }, 3000);
+
+      return () => clearInterval(interval);
+    }
+  }, [iselementHovered, data]);
   return (
-    <div className="w-full h-full relative flex overflow-x-hidden ">
+    <div
+      className="w-full h-full relative flex overflow-x-hidden "
+      onMouseOver={() => setIsElementHovered(true)}
+      onMouseOut={() => setIsElementHovered(false)}
+    >
       <SlideButton
         disabled={data?.length === 0}
         direction="prev"
@@ -64,14 +83,14 @@ export function Slider({ data }: SliderProps) {
               }}
               key={item._id}
               className={cn(
-                "pt-[152px] overflow-hidden h-[700px] text-black bg-white flex items-center"
+                "pt-[152px] px-12 overflow-hidden h-[700px] text-black bg-white flex items-center"
               )}
             >
               <div className="grid lg:grid-cols-2  md:grid-cols-1 items-center gap-8">
                 <div className="flex justify-end">
                   <img
                     loading="lazy"
-                    className="w-[700px] lg:h-[500px] h-[250px] object-contain"
+                    className="w-[600px] lg:h-[400px] h-[250px] object-contain"
                     src={item.image}
                     alt={item.title}
                   />

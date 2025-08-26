@@ -31,20 +31,24 @@ export function SearchInput({
   const searchValue = useSelector(
     (state: RootState) => state.search.searchTerm
   );
-  // TODO: add dispatch on onChange | delete onChange props and value
+
   return (
     <div className="min-w-[150px] relative h-8">
-      <IconSearch className="absolute top-2 left-2 text-black" size={18} />
+      <IconSearch
+        className="absolute top-2 left-2 text-black dark:text-white"
+        size={18}
+      />
       {searchValue !== "" && (
         <IconX
+          title="Clear search"
           onClick={() => dispatch(setSearchTerm(""))}
-          className="absolute top-2 right-2 text-black cursor-pointer "
+          className="absolute top-2 right-2 text-black cursor-pointer dark:text-white"
           size={18}
         />
       )}
       {label && <label htmlFor={type}>{label}</label>}
       <input
-        className="hover:shadow bg-white focus:text-white focus:placeholder:text-white text-black rounded-full w-full pl-8 pr-8 h-full focus:border-none focus:outline-none focus:bg-gray-400 transition-all"
+        className="hover:shadow dark:bg-gray-700 bg-white dark:border-1 dark:border-white focus:text-white focus:placeholder:text-white text-black dark:text-white rounded-full w-full pl-8 pr-8 h-full focus:border-none focus:outline-none focus:bg-gray-400 dark:focus:bg-gray-500 transition-all"
         type={type}
         placeholder={placeholder || "Search"}
         value={searchValue}

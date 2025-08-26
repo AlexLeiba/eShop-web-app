@@ -86,7 +86,10 @@ function Cart() {
       <div className="flex flex-grow-1 flex-col">
         <Container>
           <div className="flex gap-2 justify-center items-center">
-            <h1 className="text-4xl font-medium text-center"> {t("title")}</h1>
+            <h1 className="text-4xl font-medium text-center dark:text-white">
+              {" "}
+              {t("title")}
+            </h1>
             <IconShoppingCart size={32} className="text-green-500" />
           </div>
 
@@ -99,6 +102,7 @@ function Cart() {
                     {/* CONTINUE SHOPPING */}
                     <Link to="/products?sort=newest&page=1">
                       <Button
+                        title="Continue Shopping"
                         className="lg:w-[250px] w-[100px] flex justify-center items-center"
                         variant="secondary"
                       >
@@ -118,6 +122,7 @@ function Cart() {
                     >
                       <ModalTrigger>
                         <Button
+                          title="Clear Cart"
                           className="lg:w-[200px] w-[100px]  flex justify-center items-center"
                           variant="secondary"
                         >
@@ -182,7 +187,10 @@ function Cart() {
         <Spacer sm={16} md={24} lg={24} />
 
         {/* Newsletter */}
-        <Container fluid className="bg-gray-100 ">
+        <Container
+          fluid
+          className="bg-gray-100 dark:bg-gray-800 dark:text-white"
+        >
           <Newsletter />
         </Container>
       </div>

@@ -133,11 +133,14 @@ function Product() {
       <Loader loading={loading} className="h-[616px]">
         <Container>
           <div
+            tabIndex={0}
+            role="button"
+            onKeyDown={(e) => e.key === "Enter" && window.history.back()}
             onClick={() => window.history.back()}
-            className="flex items-center  cursor-pointer shadow-md rounded-full p-2 w-fit hover:shadow-gray-400 transition-all"
+            className="flex items-center   cursor-pointer shadow-md rounded-full p-2 w-fit hover:shadow-gray-400 transition-all group"
             title="Go back"
           >
-            <IconChevronLeft />
+            <IconChevronLeft className="dark:text-white group-hover:-translate-x-2 transition-all duration-200" />
           </div>
         </Container>
         <Spacer sm={12} md={24} lg={24} />
@@ -157,7 +160,7 @@ function Product() {
 
             {/* Details */}
 
-            <div>
+            <div className="dark:text-white">
               <h3 className="text-4xl ">{productData.title}</h3>
               <Spacer size={4} />
               <p>{productData.description}</p>
@@ -174,8 +177,8 @@ function Product() {
               <Spacer size={6} />
 
               {/* SIZE */}
-              <div className="flex items-center gap-2">
-                <p className="text-xl">{t("size")}</p>
+              <div className="flex items-center gap-2 dark:text-black">
+                <p className="text-xl dark:text-gray-100">{t("size")}</p>
                 <SizeSelector type="size" data={productData.size} />
               </div>
               <Spacer size={6} />
@@ -189,12 +192,12 @@ function Product() {
               <Button onClick={handleAddToCart} disabled={!sessionToken}>
                 {isInCart ? (
                   <>
-                    {t("addedToCart")}
+                    <p>{t("addedToCart")}</p>
                     <IconShoppingCartFilled className="ml-2 text-green-500" />
                   </>
                 ) : (
                   <>
-                    {t("addToCartButton")}
+                    <p>{t("addToCartButton")}</p>
                     <IconShoppingCart className="ml-2" />
                   </>
                 )}
@@ -207,13 +210,15 @@ function Product() {
               >
                 {isInWishlist ? (
                   <>
-                    {t("addedToWishlist")}
+                    <p className="text-black">{t("addedToWishlist")}</p>
                     <IconHeartFilled className="ml-2 text-red-500" />
                   </>
                 ) : (
                   <>
-                    {t("addToWishlistButton")}
-                    <IconHeart className="ml-2" />
+                    <p>
+                      {t("addToWishlistButton")}
+                      <IconHeart className="ml-2" />
+                    </p>
                   </>
                 )}
               </Button>
@@ -225,7 +230,7 @@ function Product() {
       <Spacer sm={16} md={24} lg={24} />
 
       {/* Newsletter */}
-      <Container fluid className="bg-gray-100 ">
+      <Container fluid className="bg-gray-100 dark:bg-gray-800 text-white">
         <Newsletter />
       </Container>
     </Layout>

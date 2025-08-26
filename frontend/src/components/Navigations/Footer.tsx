@@ -48,7 +48,7 @@ export function Footer() {
     },
   ];
   return (
-    <div className="w-full  bg-gray-300 py-8 px-8 flex items-center">
+    <div className="w-full  bg-gray-300 dark:bg-gray-900 dark:text-white py-8 px-8 flex items-center">
       <Container className="grid grid-cols-3 gap-8">
         {/* left */}
         <div>
