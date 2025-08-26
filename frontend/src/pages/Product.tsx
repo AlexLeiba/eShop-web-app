@@ -9,7 +9,6 @@ import { Spacer } from "../components/ui/spacer";
 import toast from "react-hot-toast";
 import { useLocation } from "react-router-dom";
 import { SizeSelector } from "../components/Products/SizeSelector";
-import type { ProductsType } from "../consts";
 import { useDispatch, useSelector } from "react-redux";
 import {
   IconChevronLeft,
@@ -63,7 +62,8 @@ function Product() {
     fetchData();
   }, []);
 
-  async function handleAddToCart(product: ProductsType) {
+  async function handleAddToCart() {
+    console.log("first", productData._id);
     if (
       (!selectedValues.size || selectedValues.size === "Selectsize") &&
       !selectedValues.color
@@ -80,12 +80,12 @@ function Product() {
     const response = await updateCart({
       dispatch,
       product: {
-        ...product,
+        ...productData,
         color: selectedValues.color,
         size: selectedValues.size,
         quantity: selectedValues.quantity,
-        categories: product.categories[0], // Use the first category as a string
-        productId: product._id,
+        categories: productData.categories[0], // Use the first category as a string
+        productId: productData._id,
       },
       token: sessionToken,
     });
@@ -98,10 +98,10 @@ function Product() {
     }
   }
 
-  async function handleAddToWishList(product: ProductsType) {
+  async function handleAddToWishList() {
     const response = await updateWishlist({
       dispatch,
-      product: product,
+      product: productData,
       token: sessionToken,
     });
 
@@ -186,10 +186,7 @@ function Product() {
               </div>
 
               <Spacer size={6} />
-              <Button
-                onClick={() => handleAddToCart(productData)}
-                disabled={!sessionToken}
-              >
+              <Button onClick={handleAddToCart} disabled={!sessionToken}>
                 {isInCart ? (
                   <>
                     {t("addedToCart")}
@@ -206,7 +203,7 @@ function Product() {
               <Button
                 disabled={isInWishlist || !sessionToken}
                 variant="secondary"
-                onClick={() => handleAddToWishList(productData)}
+                onClick={handleAddToWishList}
               >
                 {isInWishlist ? (
                   <>
