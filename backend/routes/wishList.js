@@ -1,25 +1,25 @@
-import express from 'express';
-import { verifyTokenAuthorization } from '../config/verifyToken.js';
-import WishList from '../models/WishList.js';
-import dotenv from 'dotenv';
+import express from "express";
+import { verifyTokenAuthorization } from "../config/verifyToken.js";
+import WishList from "../models/WishList.js";
+import dotenv from "dotenv";
 dotenv.config();
 const router = express.Router();
 
 // GET WISHLIST
-router.get('/wishlist', verifyTokenAuthorization, async (req, res) => {
+router.get("/wishlist", verifyTokenAuthorization, async (req, res) => {
   const queryLanguage = req.query.language;
   try {
     const wishList = await WishList.find({ userId: req.user.id });
     if (!wishList) {
-      return res.status(404).json({ error: 'No wishlist found' });
+      return res.status(404).json({ error: "No wishlist found" });
     }
 
     const responseWithLocalization = wishList.map((item) => {
       return {
         ...item._doc,
-        title: queryLanguage === 'ro' ? item.roTitle : item.enTitle,
+        title: queryLanguage === "ro" ? item.roTitle : item.enTitle,
         description:
-          queryLanguage === 'ro' ? item.roDescription : item.enDescription,
+          queryLanguage === "ro" ? item.roDescription : item.enDescription,
       };
     });
 
@@ -31,7 +31,7 @@ router.get('/wishlist', verifyTokenAuthorization, async (req, res) => {
 
 // UPDATE
 router.put(
-  '/wishlist/:productId',
+  "/wishlist/:productId",
   verifyTokenAuthorization,
   async (req, res) => {
     const productId = req.params.productId;
@@ -44,12 +44,13 @@ router.put(
       if (isProductExistsInWishList) {
         return res
           .status(400)
-          .json({ error: 'The product already exists in the wishlist' });
+          .json({ error: "The product already exists in the wishlist" });
       }
       const newProductInWishList = new WishList({
+        ...req.body,
         userId: req.user.id,
         productId: productId,
-        ...req.body,
+        _id: productId + "_" + req.user.id,
       });
 
       newProductInWishList.save();
@@ -70,7 +71,7 @@ router.put(
 
 // DELETE
 router.delete(
-  '/wishlist/:productId',
+  "/wishlist/:productId",
   verifyTokenAuthorization,
   async (req, res) => {
     const productId = req.params.productId;
@@ -82,7 +83,7 @@ router.delete(
       if (!isProductExistsInWishList) {
         return res
           .status(404)
-          .json({ error: 'Product not found in the wishlist' });
+          .json({ error: "Product not found in the wishlist" });
       }
 
       const deletedProduct = await WishList.findOneAndDelete({
@@ -93,7 +94,7 @@ router.delete(
       if (!deletedProduct) {
         return res
           .status(404)
-          .json({ error: 'Product not found in the wishlist' });
+          .json({ error: "Product not found in the wishlist" });
       }
 
       const allWishlistProducts = await WishList.find({
@@ -109,7 +110,7 @@ router.delete(
 
 // DELETE ALL WISHLIST ELEMENTS
 router.delete(
-  '/wishlist-delete',
+  "/wishlist-delete",
   verifyTokenAuthorization,
   async (req, res) => {
     try {
@@ -117,7 +118,7 @@ router.delete(
         userId: req.user.id,
       });
       if (!wishlist) {
-        return res.status(404).json({ error: 'No wishlist was found' });
+        return res.status(404).json({ error: "No wishlist was found" });
       }
 
       res.status(200).json({ data: wishlist });

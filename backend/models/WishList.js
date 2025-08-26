@@ -1,7 +1,10 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const WishListSchema = new mongoose.Schema(
   {
+    _id: {
+      type: String,
+    },
     userId: {
       type: String,
       required: true,
@@ -61,11 +64,11 @@ const WishListSchema = new mongoose.Schema(
     },
     featuredBackgroundColor: {
       type: String,
-      default: '#fff',
+      default: "#fff",
     },
     language: {
       type: String,
-      default: 'en',
+      default: "en",
     },
     quantity: {
       type: Number,
@@ -77,4 +80,4 @@ const WishListSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model('WishList', WishListSchema);
+export default mongoose.model("WishList", WishListSchema);
