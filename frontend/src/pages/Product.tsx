@@ -229,15 +229,15 @@ function Product() {
               <Spacer size={6} />
             </div>
           </div>
+          <p className="font-medium text-xl dark:text-white">
+            Additional Information
+          </p>
+
+          <Spacer size={2} />
+          <SafeHTML html={productData.moreInfo} />
         </Container>
 
         <Spacer size={24} />
-        <p className="font-medium text-xl dark:text-white">
-          Additional Information
-        </p>
-
-        <Spacer size={2} />
-        <SafeHTML html={productData.moreInfo} />
       </Loader>
       <Spacer sm={16} md={24} lg={24} />
 
@@ -253,5 +253,10 @@ export default Product;
 
 function SafeHTML({ html }: { html: string }) {
   const cleanHTML = DOMPurify.sanitize(html);
-  return <div dangerouslySetInnerHTML={{ __html: cleanHTML }} />;
+  return (
+    <div
+      className="dark:text-white"
+      dangerouslySetInnerHTML={{ __html: cleanHTML }}
+    />
+  );
 }
