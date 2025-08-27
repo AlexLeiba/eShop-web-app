@@ -93,10 +93,10 @@ function Wishlist() {
                     <Link to="/products?sort=newest&page=1">
                       <Button
                         title="Continue Shopping"
-                        className="lg:w-[250px] w-[100px] flex justify-center items-center"
+                        className="lg:w-[250px] w-[100px] flex justify-center items-center group"
                         variant="secondary"
                       >
-                        <IconChevronLeft className="lg:ml-2" />
+                        <IconChevronLeft className="lg:ml-2 group-hover:-translate-x-3 transition-all duration-300" />
 
                         <p className="lg:block hidden">
                           {t("continueShoppingButton")}
@@ -111,13 +111,13 @@ function Wishlist() {
                       <ModalTrigger>
                         <Button
                           title="Clear WishList"
-                          className="lg:w-[200px] w-[100px]  flex justify-center items-center"
+                          className="lg:w-[200px] w-[100px]  flex justify-center items-center group"
                           variant="secondary"
                         >
                           <p className="lg:block hidden">
                             {t("clearListButton")}
                           </p>
-                          <IconTrash className="lg:ml-2 text-red-500" />
+                          <IconTrash className="lg:ml-2 text-red-500 group-hover:animate-pulse" />
                         </Button>
                       </ModalTrigger>
                       <Modal>

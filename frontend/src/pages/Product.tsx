@@ -34,6 +34,7 @@ function Product() {
   const { productData, isInCart, isInWishlist } = useSelector(
     (state: RootState) => state.products.product
   );
+  console.log("🚀 ~ Product ~ isInWishlist:", isInWishlist, productData);
 
   const sessionToken = useSessionToken();
 
@@ -215,10 +216,8 @@ function Product() {
                   </>
                 ) : (
                   <>
-                    <p>
-                      {t("addToWishlistButton")}
-                      <IconHeart className="ml-2" />
-                    </p>
+                    <p>{t("addToWishlistButton")}</p>
+                    <IconHeart className="ml-2" />
                   </>
                 )}
               </Button>

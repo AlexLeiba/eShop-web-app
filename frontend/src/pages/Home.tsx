@@ -82,12 +82,14 @@ function Home() {
               {t("ProductsSection.title")}
             </h2>
             <Link
+              className="group"
               to={"/products?sort=newest&page=1"}
               title={t("ProductsSection.allProducts")}
             >
-              <p className="text-2xl font-bold underline text-white">
+              <p className="text-2xl font-bold  text-white">
                 {t("ProductsSection.allProducts")}
               </p>
+              <div className="w-full h-[1px] bg-white group-hover:w-0 transition-all ease-in-out"></div>
             </Link>
           </div>
           <Products loading={loading} type="dashboard" />

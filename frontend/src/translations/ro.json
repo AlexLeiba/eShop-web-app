@@ -212,6 +212,7 @@
     "register": "Inregistrare",
     "searchPlaceholder": "Cauta...",
     "noProductsFound": "Nu s-au găsit produse",
+    "products": "Produse",
     "MyAccount": {
       "username": "Numele de utilizator",
       "fullName": "Numele complet",
@@ -220,6 +221,7 @@
       "myOrders": "Comenzile mele",
       "wishlist": "Favorite",
       "cart": "Cosul",
+      "products": "Produse",
       "logout": "Logout"
     }
   }

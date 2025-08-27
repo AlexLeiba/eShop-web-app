@@ -213,6 +213,7 @@
     "register": "Register",
     "searchPlaceholder": "Search...",
     "noProductsFound": "No products found",
+    "products": "Products",
     "MyAccount": {
       "username": "Username",
       "fullName": "Full Name",
@@ -221,6 +222,7 @@
       "myOrders": "My Orders",
       "wishlist": "Wishlist",
       "cart": "Cart",
+      "products": "Products",
       "logout": "Logout"
     }
   }

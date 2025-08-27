@@ -22,7 +22,7 @@ export function WishListCard({ data, type }: Props) {
   async function handleRemove() {
     const response = await deleteFromWishlist({
       dispatch,
-      productId: data._id,
+      productId: data._id.split("_")[0],
       token: sessionToken,
     });
 
@@ -79,11 +79,11 @@ export function WishListCard({ data, type }: Props) {
             {type === "wishList" && (
               <Button
                 onClick={handleAddToCart}
-                className="w-full"
+                className="w-full group"
                 title="Add to cart"
               >
                 <p className="lg:flex hidden">{t("addToCartButton")}</p>
-                <IconShoppingCart className="lg:ml-2" />
+                <IconShoppingCart className="lg:ml-2 group-hover:animate-bounce" />
               </Button>
             )}
           </div>

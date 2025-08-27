@@ -1,7 +1,7 @@
-import type { Action } from '@reduxjs/toolkit';
-import type { ProductsType } from '../../consts';
-import { addToWithList, getWishlist, removeFromWishList } from './reducer';
-import { axiosInstance, axiosPrivateInstance } from '../../lib/axiosInstance';
+import type { Action } from "@reduxjs/toolkit";
+import type { ProductsType } from "../../consts";
+import { addToWithList, getWishlist, removeFromWishList } from "./reducer";
+import { axiosInstance, axiosPrivateInstance } from "../../lib/axiosInstance";
 
 type FetchWishlistProps = {
   dispatch: React.Dispatch<Action>;
@@ -17,7 +17,7 @@ export async function fetchWishlist({
   try {
     const { data: response } = await axiosPrivateInstance({
       url: `/api/wishlist?language=${language}`,
-      method: 'GET',
+      method: "GET",
       headers: {
         token: `Bearer ${token}`,
       },
@@ -30,7 +30,7 @@ export async function fetchWishlist({
   } catch (error: any) {
     return {
       data: null,
-      error: error.response.data.error || 'Something went wrong',
+      error: error.response.data.error || "Something went wrong",
     };
   }
 }
@@ -49,7 +49,7 @@ export async function deleteFromWishlist({
   try {
     const { data: response } = await axiosInstance({
       url: `/api/wishlist/${productId}`,
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
         token: `Bearer ${token}`,
       },
@@ -62,7 +62,7 @@ export async function deleteFromWishlist({
   } catch (error: any) {
     return {
       data: null,
-      error: error.response.data.error || 'Something went wrong',
+      error: error.response.data.error || "Something went wrong",
     };
   }
 }
@@ -81,10 +81,10 @@ export async function updateWishlist({
 }: UpdateWishlistProps) {
   try {
     const { data: response } = await axiosInstance({
-      method: 'PUT',
+      method: "PUT",
       url: `/api/wishlist/${product?._id}`,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         token: `Bearer ${token}`,
       },
       data: product,
@@ -97,7 +97,7 @@ export async function updateWishlist({
   } catch (error: any) {
     return {
       data: null,
-      error: error.response.data.error || 'Something went wrong',
+      error: error.response.data.error || "Something went wrong",
     };
   }
 }
@@ -115,7 +115,7 @@ export async function deleteAllElemensFromWishlist({
   try {
     const { data: response } = await axiosInstance({
       url: `/api/wishlist-delete`,
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
         token: `Bearer ${token}`,
       },
@@ -128,7 +128,7 @@ export async function deleteAllElemensFromWishlist({
   } catch (error: any) {
     return {
       data: null,
-      error: error.response.data.error || 'Something went wrong',
+      error: error.response.data.error || "Something went wrong",
     };
   }
 }

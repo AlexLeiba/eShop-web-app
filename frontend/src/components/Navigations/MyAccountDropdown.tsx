@@ -2,9 +2,9 @@ import React, { useRef } from "react";
 import { Spacer } from "../ui/spacer";
 import type { UserType } from "../../store/userData/reducer";
 import { cn } from "../../lib/utils";
-import { IconLogout } from "@tabler/icons-react";
+import { IconCrown, IconLogout, IconUser } from "@tabler/icons-react";
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { logout } from "../../store/userData/apiCalls";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
@@ -26,6 +26,7 @@ export function MyAccountDropdown({
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const pathname = useLocation().pathname;
   const sessionToken = useSessionToken();
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -75,6 +76,11 @@ export function MyAccountDropdown({
       slug: "/orders",
       value: 0,
     },
+    {
+      name: t("products"),
+      slug: "/products?sort=newest&page=1",
+      value: 0,
+    },
   ];
   const dropdownUserData = [
     {
@@ -112,7 +118,7 @@ export function MyAccountDropdown({
           "border-2 border-white hover:text-white shadow-md relative rounded-full w-8 h-8 flex justify-center items-center hover:bg-gray-500 transition-all cursor-pointer"
         )}
       >
-        <p>{userData?.isAdmin ? "👑" : "👤"}</p>
+        {userData?.isAdmin ? <IconCrown /> : <IconUser />}
       </div>
 
       {open && (
@@ -123,6 +129,7 @@ export function MyAccountDropdown({
                 to={dropdownLink.slug}
                 key={dropdownLink.slug}
                 title={dropdownLink.name}
+                className="group"
               >
                 <div className="   relative rounded-sm w-full flex-col flex   transition-all ">
                   <p className="line-clamp-1">
@@ -133,6 +140,14 @@ export function MyAccountDropdown({
                       </span>
                     )}
                   </p>
+                  <div
+                    className={cn(
+                      " w-0 h-[1px] bg-gray-400 transition-all ease-in-out",
+                      pathname === dropdownLink.slug.split("?")[0]
+                        ? "w-full"
+                        : "group-hover:w-full"
+                    )}
+                  ></div>
                 </div>
               </Link>
             );
@@ -146,7 +161,9 @@ export function MyAccountDropdown({
                 <p className=" wrap-break-word ">
                   <b>{dropdownUserData.name}</b>
                   {dropdownUserData.value && (
-                    <span className="ml-2">{dropdownUserData.value}</span>
+                    <span className="ml-2 dark:text-gray-200">
+                      {dropdownUserData.value}
+                    </span>
                   )}
                 </p>
               </div>
@@ -157,7 +174,7 @@ export function MyAccountDropdown({
           <div
             title={t("logout")}
             onClick={handleLogout}
-            className="hover:text-white  p-2 relative rounded-sm w-full justify-between items-center flex  hover:bg-gray-400 transition-all cursor-pointer"
+            className="hover:text-white  p-2 relative rounded-sm w-full justify-between items-center flex  hover:bg-gray-600 transition-all cursor-pointer"
           >
             <b>{t("logout")}</b>
             <IconLogout size={18} />

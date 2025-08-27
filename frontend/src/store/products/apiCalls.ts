@@ -1,8 +1,8 @@
-import type { Action } from '@reduxjs/toolkit';
-import { axiosInstance } from '../../lib/axiosInstance';
-import { getFeaturedProducts, getProduct, getProducts } from './reducer';
-import { selectDefaultValues } from '../filters/reducer';
-import type { ProductsType } from '../../consts';
+import type { Action } from "@reduxjs/toolkit";
+import { axiosInstance } from "../../lib/axiosInstance";
+import { getFeaturedProducts, getProduct, getProducts } from "./reducer";
+import { selectDefaultValues } from "../filters/reducer";
+import type { ProductsType } from "../../consts";
 
 type FetchProductsProps = {
   dispatch: React.Dispatch<Action>;
@@ -15,12 +15,12 @@ export async function fetchProducts({
   try {
     const productsResponse = await axiosInstance({
       url: `/api/products?sort=newest&limit=8&language=${language?.toLowerCase()}`,
-      method: 'GET',
+      method: "GET",
     });
 
     const featuredProductsResponse = await axiosInstance({
       url: `/api/featured-products?language=${language?.toLowerCase()}`,
-      method: 'GET',
+      method: "GET",
     });
 
     if (productsResponse?.data?.error) {
@@ -53,10 +53,10 @@ export async function fetchProducts({
       error: null,
     };
   } catch (error: any) {
-    console.log('🚀 ~ fetchProducts ~ error:', error);
+    console.log("🚀 ~ fetchProducts ~ error:", error);
     return {
       data: null,
-      error: error.message || 'Something went wrong',
+      error: error.message || "Something went wrong",
     };
   }
 }
@@ -80,7 +80,7 @@ export async function fetchProduct({
   try {
     const { data: responseProduct } = await axiosInstance({
       url: `/api/products/${productId}?language=${language?.toLowerCase()}`,
-      method: 'GET',
+      method: "GET",
     });
 
     dispatch(
@@ -88,11 +88,11 @@ export async function fetchProduct({
         color:
           responseProduct.data.color.length === 1
             ? responseProduct.data.color[0]
-            : '',
+            : "",
         size:
           responseProduct.data.size.length === 1
             ? responseProduct.data.size[0]
-            : '',
+            : "",
         quantity: 1,
       })
     );
@@ -103,7 +103,7 @@ export async function fetchProduct({
 
       const { data: responseCart } = await axiosInstance({
         url: `/api/cart`,
-        method: 'GET',
+        method: "GET",
         headers: {
           token: `Bearer ${sessionToken}`,
         },
@@ -116,14 +116,14 @@ export async function fetchProduct({
       // WISH LIST ELEMENT
       const { data: responseWishList } = await axiosInstance({
         url: `/api/wishlist`,
-        method: 'GET',
+        method: "GET",
         headers: {
           token: `Bearer ${sessionToken}`,
         },
       });
 
       const isProductInWishList = responseWishList?.data?.find(
-        (item: ProductsType) => item._id === productId
+        (item: ProductsType) => item._id.split("_")[0] === productId
       );
 
       dispatch(
@@ -151,7 +151,7 @@ export async function fetchProduct({
   } catch (error: any) {
     return {
       data: null,
-      error: error.response.data.error || 'Something went wrong',
+      error: error.response.data.error || "Something went wrong",
     };
   }
 }

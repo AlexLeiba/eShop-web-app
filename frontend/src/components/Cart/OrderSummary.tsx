@@ -50,7 +50,7 @@ export function OrderSummary({
       const result = stripe?.redirectToCheckout({
         sessionId: session.id,
       });
-      console.log("🚀 ~ handleMakePayment ~ result:", result);
+      console.log("🚀 ~ redirectToCheckout:", result);
       // if the payment was successful then reset the cart
     } catch (error) {
       console.log("Payment error:", error);
@@ -89,9 +89,9 @@ export function OrderSummary({
       <Button
         disabled={total === 0}
         onClick={handleMakePayment}
-        className="lg:w-[250px]"
+        className="lg:w-[250px] "
       >
-        {t("placeOrderButton")}
+        <p>{t("placeOrderButton")}</p>
       </Button>
     </div>
   );

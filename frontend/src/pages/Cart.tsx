@@ -87,7 +87,6 @@ function Cart() {
         <Container>
           <div className="flex gap-2 justify-center items-center">
             <h1 className="text-4xl font-medium text-center dark:text-white">
-              {" "}
               {t("title")}
             </h1>
             <IconShoppingCart size={32} className="text-green-500" />
@@ -157,7 +156,9 @@ function Cart() {
                   })}
                   {!cartData?.products?.length && (
                     <div className="flex flex-col items-center justify-center">
-                      <h2 className="text-2xl font-bold">{t("emptyCart")}</h2>
+                      <h2 className="text-2xl font-bold dark:text-white">
+                        {t("emptyCart")}
+                      </h2>
                       <Spacer size={4} />
                       <Link to="/products?sort=newest&page=1">
                         <Button className="w-[250px]" variant="secondary">

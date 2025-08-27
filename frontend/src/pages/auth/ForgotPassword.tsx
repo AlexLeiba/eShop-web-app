@@ -41,7 +41,6 @@ function ForgotPasswordPage() {
   const [formDataErrors, setFormDataErrors] = React.useState<{
     [key: string]: string;
   }>(initialState);
-  console.log("🚀 ~ ForgotPasswordPage ~ formDataErrors:", formDataErrors);
 
   const handleChange = (e: string, field: string) => {
     setFormData((prev) => ({

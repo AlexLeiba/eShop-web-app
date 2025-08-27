@@ -77,11 +77,11 @@ export function Modal({
         {/* Content */}
         <div
           className={cn(
-            `min-w-[100px] min-h-[100px] mx-[10%] bg-white z-50 rounded-md shadow-lg px-8 pt-10 pb-8 flex flex-col relative ${classNameCustome}`
+            `dark:text-black min-w-[100px] min-h-[100px] mx-[10%] dark:bg-gray-200 bg-white z-50 rounded-md shadow-lg px-8 pt-10 pb-8 flex flex-col relative ${classNameCustome}`
           )}
         >
           <IconX
-            className="absolute right-4 top-4 cursor-pointer"
+            className="absolute right-4 top-4 cursor-pointer dark:text-black"
             onClick={() => setIsModalOpen(false)}
           />
           {children}
