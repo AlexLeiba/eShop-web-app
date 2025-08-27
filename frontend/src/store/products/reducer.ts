@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
-import type { ProductsType } from '../../consts';
+import { createSlice } from "@reduxjs/toolkit";
+import type { ProductsType } from "../../consts";
 
 const initialState: {
   products: ProductsType[];
@@ -22,21 +22,22 @@ const initialState: {
     isInCart: false,
     isInWishlist: false,
     productData: {
-      title: '',
-      description: '',
+      moreInfo: "",
+      title: "",
+      description: "",
       price: 0,
-      image: '',
+      image: "",
       images: [],
       categories: [],
       color: [],
       size: [],
-      _id: '',
+      _id: "",
       isPublished: false,
       inStock: false,
-      createdAt: '',
-      updatedAt: '',
+      createdAt: "",
+      updatedAt: "",
       featured: false,
-      featuredBackgroundColor: '',
+      featuredBackgroundColor: "",
       quantity: 0,
       __v: 0,
     },
@@ -44,7 +45,7 @@ const initialState: {
 };
 
 const productsSlice = createSlice({
-  name: 'products',
+  name: "products",
   initialState,
   reducers: {
     getProducts: (state, action) => {

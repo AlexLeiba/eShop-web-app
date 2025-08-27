@@ -124,20 +124,26 @@ function Login() {
 
             <p className="text-sm text-gray-500">
               {t("doNotHaveAccount")}{" "}
-              <a href="/register" className="cursor-pointer underline">
+              <a
+                href="/register"
+                className="cursor-pointer underline hover:text-gray-800"
+              >
                 {t("register")}
               </a>
             </p>
 
             <p className="text-sm text-gray-500">
               {t("byCreatingAccount")}{" "}
-              <a className="cursor-pointer underline">
+              <a className="cursor-pointer underline hover:text-gray-800">
                 {t("termsAndConditions")}
               </a>{" "}
             </p>
 
             <p className="text-sm text-gray-500">
-              <Link className="cursor-pointer underline" to="/forgot-password">
+              <Link
+                className="cursor-pointer underline hover:text-gray-800"
+                to="/forgot-password"
+              >
                 {t("forgotPassword")}
               </Link>{" "}
             </p>

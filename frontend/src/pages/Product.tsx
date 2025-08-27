@@ -26,7 +26,7 @@ import { Layout } from "../components/Layout/Layout";
 import { fetchProduct } from "../store/products/apiCalls";
 import { setCart, setWishlist } from "../store/products/reducer";
 import { useSessionToken } from "../hooks/useSesstionToken";
-
+import DOMPurify from "dompurify";
 function Product() {
   const { t } = useTranslation("translation", { keyPrefix: "ProductPage" });
   const dispatch = useDispatch();
@@ -34,7 +34,6 @@ function Product() {
   const { productData, isInCart, isInWishlist } = useSelector(
     (state: RootState) => state.products.product
   );
-  console.log("🚀 ~ Product ~ isInWishlist:", isInWishlist, productData);
 
   const sessionToken = useSessionToken();
 
@@ -148,16 +147,20 @@ function Product() {
         <Container>
           <div className="grid lg:grid-cols-2 grid-cols-1 gap-8 ">
             {/* IMG */}
-            {productData.image && (
-              <img
-                src={
-                  !selectedValues.color
-                    ? productData.image
-                    : showSelectedImageColor()
-                }
-                alt={productData.title}
-              />
-            )}
+            <div className="w-[480px] h-[288px]">
+              {productData.image && (
+                <img
+                  className="w-full h-full object-contain"
+                  loading="lazy"
+                  src={
+                    !selectedValues.color
+                      ? productData.image
+                      : showSelectedImageColor()
+                  }
+                  alt={productData.title}
+                />
+              )}
+            </div>
 
             {/* Details */}
 
@@ -185,16 +188,18 @@ function Product() {
               <Spacer size={6} />
 
               {/* AMOUNT */}
-              <div className="flex items-center gap-2">
-                <AddAmount type="productPage" productData={selectedValues} />
-              </div>
+              {sessionToken && (
+                <div className="flex items-center gap-2">
+                  <AddAmount type="productPage" productData={selectedValues} />
+                </div>
+              )}
 
               <Spacer size={6} />
               <Button onClick={handleAddToCart} disabled={!sessionToken}>
                 {isInCart ? (
                   <>
                     <p>{t("addedToCart")}</p>
-                    <IconShoppingCartFilled className="ml-2 text-green-500" />
+                    <IconShoppingCartFilled className="ml-2 text-green-500 " />
                   </>
                 ) : (
                   <>
@@ -225,6 +230,14 @@ function Product() {
             </div>
           </div>
         </Container>
+
+        <Spacer size={24} />
+        <p className="font-medium text-xl dark:text-white">
+          Additional Information
+        </p>
+
+        <Spacer size={2} />
+        <SafeHTML html={productData.moreInfo} />
       </Loader>
       <Spacer sm={16} md={24} lg={24} />
 
@@ -237,3 +250,8 @@ function Product() {
 }
 
 export default Product;
+
+function SafeHTML({ html }: { html: string }) {
+  const cleanHTML = DOMPurify.sanitize(html);
+  return <div dangerouslySetInnerHTML={{ __html: cleanHTML }} />;
+}

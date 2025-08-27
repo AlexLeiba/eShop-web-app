@@ -3,12 +3,14 @@ import React from "react";
 import { cn } from "../../lib/utils";
 
 const buttonVariants = cva(
-  "w-full disabled:pointer-events-none transition-all font-bold rounded-full py-2 px-4 text-md hover:opacity-80 cursor-pointer hover:shadow-gray-400 shadow flex items-center justify-center disabled:bg-gray-300 disabled:text-white disabled:hover:shadow-none disabled:shadow-none disabled:hover:opacity-100",
+  "w-full disabled:pointer-events-none transition-all font-bold rounded-full py-2 px-4 text-md hover:opacity-80 cursor-pointer hover:shadow-gray-400 shadow flex items-center justify-center disabled:text-white disabled:hover:shadow-none disabled:shadow-none disabled:hover:opacity-100",
   {
     variants: {
       variant: {
-        primary: "bg-black text-white dark:disabled:text-gray-500",
-        secondary: "bg-white text-black dark:bg-gray-800 dark:text-white ",
+        primary:
+          "bg-black text-white dark:disabled:text-gray-500 disabled:bg-gray-600 ",
+        secondary:
+          "bg-white text-black dark:bg-gray-800 dark:text-white dark:disabled:bg-gray-800 dark:disabled:text-gray-600 disabled:bg-gray-300 disabled:text-white",
       },
       size: {
         large: "text-2xl h-14 ",

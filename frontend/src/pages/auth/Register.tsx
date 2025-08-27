@@ -9,6 +9,7 @@ import { LanguagesSelect } from "../../components/Language/LanguagesSelect";
 import { RegisterSchema } from "../../lib/schemas";
 import { IconLoader } from "@tabler/icons-react";
 import { useTranslation } from "react-i18next";
+import { axiosInstance } from "../../lib/axiosInstance";
 
 const initialState = {
   name: "",
@@ -18,6 +19,7 @@ const initialState = {
   password: "",
   confirmPassword: "",
 };
+
 function Register() {
   const { t } = useTranslation("translation", { keyPrefix: "RegisterPage" });
   const navigate = useNavigate();
@@ -53,29 +55,24 @@ function Register() {
     }
 
     if (validatedValues.success) {
+      setFormDataErrors(initialState);
       setLoading(true);
       try {
-        const response = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/register`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(validatedValues.data),
-          }
-        );
-        const responseData = await response.json();
+        const response = await axiosInstance({
+          url: `/api/register`,
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          data: validatedValues.data,
+        });
 
-        if (responseData.data) {
+        if (response.status === 201) {
           toast.success(t("toast.registeredSuccessfully"));
           navigate("/login");
         }
-        if (responseData.error) {
-          toast.error(responseData.error);
-        }
       } catch (error: any) {
-        toast.error(error.message);
+        toast.error(error.response.data.error || error.message);
       } finally {
         setLoading(false);
       }
@@ -83,14 +80,7 @@ function Register() {
   }
 
   useEffect(() => {
-    setFormData({
-      name: "",
-      lastName: "",
-      userName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    });
+    setFormData(initialState);
   }, []);
 
   return (
@@ -105,7 +95,7 @@ function Register() {
           onSubmit={handleSubmit}
           className="flex flex-col justify-between h-full min-h-[450px]"
         >
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 space-y-2">
             <div className="flex justify-between">
               <h1 className="text-4xl font-semibold">{t("title")}</h1>
               <div className="flex gap-4 items-center">
@@ -138,6 +128,7 @@ function Register() {
             </div>
             <div className="flex gap-4">
               <Input
+                type="text"
                 label={`${t("username.label")} *`}
                 placeholder={t("username.placeholder")}
                 name="userName"
@@ -148,6 +139,7 @@ function Register() {
                 error={formDataErrors.userName as string}
               />
               <Input
+                type="email"
                 label={`${t("email.label")} *`}
                 placeholder={t("email.placeholder")}
                 name="email"
@@ -182,27 +174,36 @@ function Register() {
                 error={formDataErrors.confirmPassword as string}
               />
             </div>
-            <p className="text-sm text-gray-500">
-              {t("alreadyHaveAccount")}{" "}
-              <a href="/login" className="cursor-pointer underline">
-                {t("login")}
-              </a>
-            </p>
 
-            <p className="text-sm text-gray-500">
-              {t("byCreatingAccount")}{" "}
-              <a className="cursor-pointer underline">
-                {" "}
-                {t("termsAndConditions")}
-              </a>
-            </p>
-            <p className="text-sm text-gray-500">
-              <Link className="cursor-pointer underline" to="/forgot-password">
-                {t("forgotPassword")}
-              </Link>{" "}
-            </p>
+            <div className="flex flex-col gap-2">
+              <p className="text-sm text-gray-500 ">
+                {t("alreadyHaveAccount")}{" "}
+                <a
+                  href="/login"
+                  className="cursor-pointer underline hover:text-gray-800"
+                >
+                  {t("login")}
+                </a>
+              </p>
+
+              <p className="text-sm text-gray-500">
+                {t("byCreatingAccount")}{" "}
+                <a className="cursor-pointer underline hover:text-gray-800">
+                  {" "}
+                  {t("termsAndConditions")}
+                </a>
+              </p>
+              <p className="text-sm text-gray-500">
+                <Link
+                  className="cursor-pointer underline hover:text-gray-800"
+                  to="/forgot-password"
+                >
+                  {t("forgotPassword")}
+                </Link>{" "}
+              </p>
+            </div>
           </div>
-          <Button disabled={loading} type="submit">
+          <Button disabled={loading} type="submit" className="mt-4">
             {loading ? (
               <IconLoader className="ml-2 animate-spin" />
             ) : (

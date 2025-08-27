@@ -58,7 +58,7 @@ export function Input({
           className="size-6 text-black hover:text-gray-500 cursor-pointer absolute right-4 top-2"
         />
       )}
-      {error && <p className="text-red-500 text-xs">{error}</p>}
+      {error && <p className="text-red-500 text-xs mt-px">{error}</p>}
     </div>
   );
 }

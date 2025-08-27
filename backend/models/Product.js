@@ -1,8 +1,14 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const ProductSchema = new mongoose.Schema(
   {
     id: {
+      type: String,
+    },
+    enMoreInfo: {
+      type: String,
+    },
+    roMoreInfo: {
       type: String,
     },
     moreInfo: {
@@ -70,11 +76,11 @@ const ProductSchema = new mongoose.Schema(
     },
     featuredBackgroundColor: {
       type: String,
-      default: '#fff',
+      default: "#fff",
     },
     language: {
       type: String,
-      default: 'en',
+      default: "en",
     },
     quantity: {
       type: Number,
@@ -82,7 +88,7 @@ const ProductSchema = new mongoose.Schema(
     },
     imageColor: {
       type: String,
-      default: 'white',
+      default: "white",
     },
   },
   {
@@ -90,4 +96,4 @@ const ProductSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model('Product', ProductSchema);
+export default mongoose.model("Product", ProductSchema);

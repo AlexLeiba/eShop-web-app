@@ -214,13 +214,19 @@ function ForgotPasswordPage() {
           )}
 
           <div className="flex gap-4">
-            <p className="text-sm text-gray-500">
-              <a href="/register" className="cursor-pointer underline">
+            <p className="text-lg text-gray-500">
+              <a
+                href="/register"
+                className="cursor-pointer underline hover:text-gray-800"
+              >
                 {t("register")}
               </a>
             </p>
-            <p className="text-sm text-gray-500">
-              <a href="/login" className="cursor-pointer underline">
+            <p className="text-lg text-gray-500">
+              <a
+                href="/login"
+                className="cursor-pointer underline hover:text-gray-800"
+              >
                 {t("login")}
               </a>
             </p>

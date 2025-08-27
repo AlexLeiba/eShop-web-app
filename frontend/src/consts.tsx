@@ -1,8 +1,8 @@
-import shirt from './assets/shirt1.webp';
-import jacket from './assets/jaket3.webp';
-import shoes from './assets/shoes-nike.webp';
+import shirt from "./assets/shirt1.webp";
+import jacket from "./assets/jaket3.webp";
+import shoes from "./assets/shoes-nike.webp";
 
-export const homeSliderColors = ['#eef692', '#d4b044', '#aeb4be'];
+export const homeSliderColors = ["#eef692", "#d4b044", "#aeb4be"];
 
 // categories
 export const categoriesData = {
@@ -10,63 +10,63 @@ export const categoriesData = {
     {
       id: 1,
       image: jacket,
-      title: 'Jakets',
-      description: ' Harry up , get discount on your next purchase',
-      buttonLink: '/products',
-      buttonTitle: 'Shop Now',
-      category: 'jakets',
+      title: "Jakets",
+      description: " Harry up , get discount on your next purchase",
+      buttonLink: "/products",
+      buttonTitle: "Shop Now",
+      category: "jakets",
     },
     {
       id: 2,
       image: shirt,
-      title: 'Shirts',
-      description: ' Harry up , get discount on your next purchase',
+      title: "Shirts",
+      description: " Harry up , get discount on your next purchase",
 
-      buttonLink: '/products',
-      buttonTitle: 'Shop Now',
-      category: 'shirts',
+      buttonLink: "/products",
+      buttonTitle: "Shop Now",
+      category: "shirts",
     },
     {
       id: 3,
       image: shoes,
-      title: 'Shoes',
-      description: ' Harry up , get discount on your next purchase',
+      title: "Shoes",
+      description: " Harry up , get discount on your next purchase",
 
-      buttonLink: '/products',
-      buttonTitle: 'Shop Now',
-      category: 'shoes',
+      buttonLink: "/products",
+      buttonTitle: "Shop Now",
+      category: "shoes",
     },
   ],
   ro: [
     {
       id: 1,
       image: jacket,
-      title: 'Jachete, Geci',
-      description: ' Harry up , get discount on your next purchase',
+      title: "Jachete, Geci",
+      description: " Harry up , get discount on your next purchase",
 
-      buttonLink: '/products',
-      buttonTitle: 'Cumpara acum',
-      category: 'jakets',
+      buttonLink: "/products",
+      buttonTitle: "Cumpara acum",
+      category: "jakets",
     },
     {
       id: 2,
       image: shirt,
-      title: 'Camase',
-      description: ' Harry up , get discount on your next purchase',
+      title: "Camase",
+      description: " Harry up , get discount on your next purchase",
 
-      buttonLink: '/products',
-      buttonTitle: 'Cumpara acum',
-      category: 'shirts',
+      buttonLink: "/products",
+      buttonTitle: "Cumpara acum",
+      category: "shirts",
     },
     {
       id: 3,
       image: shoes,
-      title: 'Pantofi eleganti, sportivi',
-      description: ' Harry up , get discount on your next purchase',
+      title: "Pantofi eleganti, sportivi",
+      description: " Harry up , get discount on your next purchase",
 
-      buttonLink: '/products',
-      buttonTitle: 'Cumpara acum',
-      category: 'shoes',
+      buttonLink: "/products",
+      buttonTitle: "Cumpara acum",
+      category: "shoes",
     },
   ],
 };
@@ -84,20 +84,22 @@ export type CategoriesType = {
 // products
 export const productsData = [
   {
-    _id: '',
-    title: '',
-    description: '',
+    _id: "",
+    title: "",
+    description: "",
     price: 1,
-    image: '',
-    categories: [''],
-    size: [''],
-    color: [''],
+    image: "",
+    categories: [""],
+    size: [""],
+    color: [""],
     isPublished: true,
     inStock: true,
-    createdAt: '',
-    updatedAt: '',
+    createdAt: "",
+    updatedAt: "",
     featured: false,
-    featuredBackgroundColor: '',
+    quantity: 1,
+    moreInfo: "",
+    featuredBackgroundColor: "",
     __v: 0,
   },
 ];
@@ -118,6 +120,7 @@ export type ProductsType = {
   featured: boolean;
   featuredBackgroundColor: string;
   quantity: number;
+  moreInfo: string;
   images: {
     colorName: string;
     image: string;
@@ -176,166 +179,166 @@ export type OrderType = {
 export const filterColors = {
   en: [
     {
-      value: 'allColors',
-      title: 'All Colors',
+      value: "allColors",
+      title: "All Colors",
     },
     {
-      value: 'white',
-      title: 'White',
+      value: "white",
+      title: "White",
     },
     {
-      value: 'black',
-      title: 'Black',
+      value: "black",
+      title: "Black",
     },
     {
-      value: 'red',
-      title: 'Red',
+      value: "red",
+      title: "Red",
     },
     {
-      value: 'blue',
-      title: 'Blue',
+      value: "blue",
+      title: "Blue",
     },
     {
-      value: 'green',
-      title: 'Green',
+      value: "green",
+      title: "Green",
     },
     {
-      value: 'purple',
-      title: 'Purple',
+      value: "purple",
+      title: "Purple",
     },
     {
-      value: 'yellow',
-      title: 'Yellow',
+      value: "yellow",
+      title: "Yellow",
     },
   ],
   ro: [
     {
-      value: 'allColors',
-      title: 'Toate Culorile',
+      value: "allColors",
+      title: "Toate Culorile",
     },
     {
-      value: 'white',
-      title: 'Alb',
+      value: "white",
+      title: "Alb",
     },
     {
-      value: 'black',
-      title: 'Black',
+      value: "black",
+      title: "Black",
     },
     {
-      value: 'red',
-      title: 'Red',
+      value: "red",
+      title: "Red",
     },
     {
-      value: 'blue',
-      title: 'Blue',
+      value: "blue",
+      title: "Blue",
     },
     {
-      value: 'green',
-      title: 'Green',
+      value: "green",
+      title: "Green",
     },
     {
-      value: 'purple',
-      title: 'Purple',
+      value: "purple",
+      title: "Purple",
     },
     {
-      value: 'yellow',
-      title: 'Yellow',
+      value: "yellow",
+      title: "Yellow",
     },
   ],
 };
 
 export const sortOptions = {
   en: [
-    { value: 'newest', title: 'Newest' },
-    { value: 'oldest', title: 'Oldest' },
+    { value: "newest", title: "Newest" },
+    { value: "oldest", title: "Oldest" },
   ],
   ro: [
-    { value: 'newest', title: 'Cel mai nou' },
-    { value: 'oldest', title: 'Cel mai vechi' },
+    { value: "newest", title: "Cel mai nou" },
+    { value: "oldest", title: "Cel mai vechi" },
   ],
 };
 
 export const filterSizes = {
   en: [
-    { value: 'allSizes', title: 'All Sizes' },
-    { value: 'xs', title: 'XS' },
-    { value: 's', title: 'S' },
-    { value: 'm', title: 'M' },
-    { value: 'l', title: 'L' },
-    { value: 'xl', title: 'XL' },
-    { value: 'xxl', title: 'XXL' },
+    { value: "allSizes", title: "All Sizes" },
+    { value: "xs", title: "XS" },
+    { value: "s", title: "S" },
+    { value: "m", title: "M" },
+    { value: "l", title: "L" },
+    { value: "xl", title: "XL" },
+    { value: "xxl", title: "XXL" },
   ],
   ro: [
-    { value: 'allSizes', title: 'Toate Marimile' },
-    { value: 'xs', title: 'XS' },
-    { value: 's', title: 'S' },
-    { value: 'm', title: 'M' },
-    { value: 'l', title: 'L' },
-    { value: 'xl', title: 'XL' },
-    { value: 'xxl', title: 'XXL' },
+    { value: "allSizes", title: "Toate Marimile" },
+    { value: "xs", title: "XS" },
+    { value: "s", title: "S" },
+    { value: "m", title: "M" },
+    { value: "l", title: "L" },
+    { value: "xl", title: "XL" },
+    { value: "xxl", title: "XXL" },
   ],
 };
 export const filterCategories = {
   //to implement
   en: [
-    { value: 'allCategories', title: 'All Categories' },
-    { value: 'jakets', title: 'Jakets' },
-    { value: 'shirts', title: 'Shirts' },
-    { value: 'shoes', title: 'Shoes' },
+    { value: "allCategories", title: "All Categories" },
+    { value: "jakets", title: "Jakets" },
+    { value: "shirts", title: "Shirts" },
+    { value: "shoes", title: "Shoes" },
   ],
   ro: [
-    { value: 'allCategories', title: 'Toate Categoriile' },
-    { value: 'jakets', title: 'Jachete' },
-    { value: 'shirts', title: 'Camase' },
-    { value: 'shoes', title: 'Pantofi' },
+    { value: "allCategories", title: "Toate Categoriile" },
+    { value: "jakets", title: "Jachete" },
+    { value: "shirts", title: "Camase" },
+    { value: "shoes", title: "Pantofi" },
   ],
 };
 
 // languages
 export const languages = [
   {
-    name: 'English',
-    slug: 'EN',
+    name: "English",
+    slug: "EN",
   },
   {
-    name: 'Romanian',
-    slug: 'RO',
+    name: "Romanian",
+    slug: "RO",
   },
 ];
 
 // table columns
 export const columns: { id: keyof OrderType; label: string }[] = [
   {
-    id: 'status',
-    label: 'Status',
+    id: "status",
+    label: "Status",
   },
   {
-    id: 'products',
-    label: 'Image',
+    id: "products",
+    label: "Image",
   },
   {
-    id: 'userEmail',
-    label: 'User Email',
+    id: "userEmail",
+    label: "User Email",
   },
   {
-    id: 'userName',
-    label: 'User Name',
+    id: "userName",
+    label: "User Name",
   },
   {
-    id: 'quantity',
-    label: 'Amount of Products',
+    id: "quantity",
+    label: "Amount of Products",
   },
   {
-    id: 'totalPrice',
-    label: 'Total Price',
+    id: "totalPrice",
+    label: "Total Price",
   },
   {
-    id: 'createdAt',
-    label: 'Created At',
+    id: "createdAt",
+    label: "Created At",
   },
 
   {
-    id: 'stripeId',
-    label: 'Payment ID',
+    id: "stripeId",
+    label: "Payment ID",
   },
 ];

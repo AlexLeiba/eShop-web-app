@@ -67,7 +67,7 @@ export function Products({ type, loading }: ProductsProps) {
               return <ProductsCard data={data} key={data._id} />;
             })
           ) : (
-            <p>{t("noProductsFound")}</p>
+            <p className="dark:text-white">{t("noProductsFound")}</p>
           )}
         </div>
       )}
