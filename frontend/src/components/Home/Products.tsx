@@ -3,10 +3,10 @@ import { ProductsCard } from "./ProductsCard";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { Button } from "../ui/Button";
 import { useSearchParams } from "react-router-dom";
-import { Loader } from "../ui/Loader";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
+import { ProductsSkeleton } from "./ProductsSkeleton";
 
 type ProductsProps = {
   type: "dashboard" | "products-list";
@@ -58,7 +58,9 @@ export function Products({ type, loading }: ProductsProps) {
       )}
       <Spacer size={2} />
 
-      <Loader loading={loading} className="h-[200px]">
+      {loading ? (
+        <ProductsSkeleton />
+      ) : (
         <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4  ">
           {productsData?.products && productsData.products.length > 0 ? (
             productsData.products?.map((data) => {
@@ -68,7 +70,7 @@ export function Products({ type, loading }: ProductsProps) {
             <p>{t("noProductsFound")}</p>
           )}
         </div>
-      </Loader>
+      )}
       <Spacer sm={8} md={8} lg={8} />
       {type === "products-list" && (
         <div className="flex justify-between items-center gap-4">

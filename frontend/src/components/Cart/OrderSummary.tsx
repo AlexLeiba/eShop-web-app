@@ -4,6 +4,7 @@ import { Spacer } from "../ui/spacer";
 import { loadStripe } from "@stripe/stripe-js";
 import { useTranslation } from "react-i18next";
 import { useSessionToken } from "../../hooks/useSesstionToken";
+import { IconChecklist } from "@tabler/icons-react";
 
 type Props = {
   total: number;
@@ -89,9 +90,12 @@ export function OrderSummary({
       <Button
         disabled={total === 0}
         onClick={handleMakePayment}
-        className="lg:w-[250px] "
+        className="lg:w-[250px] group"
       >
-        <p>{t("placeOrderButton")}</p>
+        <div className="flex gap-2 items-center">
+          <p>{t("placeOrderButton")}</p>
+          <IconChecklist className="group-hover:animate-bounce group-hover:text-green-500" />
+        </div>
       </Button>
     </div>
   );
