@@ -82,7 +82,7 @@ function ProductsList() {
             <h2 className="text-4xl font-bold dark:text-white">
               {t("title")}
               {selectedCategory && selectedCategory !== "all" && (
-                <span className="text-2xl text-gray-500">
+                <span className="text-2xl text-gray-500 dark:text-gray-400">
                   {"/" + selectedCategory || ""}
                 </span>
               )}

@@ -13,8 +13,8 @@ type ProductsProps = {
   loading: boolean;
 };
 export function Products({ type, loading }: ProductsProps) {
-  const productsData = useSelector((state: RootState) => state.products);
   const { t } = useTranslation("translation", { keyPrefix: "ProductsPage" });
+  const productsData = useSelector((state: RootState) => state.products);
   const [searchParams, setSearchParams] = useSearchParams();
   const limitPerPage = 12;
 
@@ -33,7 +33,6 @@ export function Products({ type, loading }: ProductsProps) {
       const nextPage = (Number(searchParams.get("page")) || 0) + 1;
       // NEXT PAGE
       if (productsData.productsCount > limitPerPage * (nextPage - 1)) {
-        // TODO: return all products counted from backend/ check on change page if : limitPerPage * PAGE < ALLProducts
         params.set("page", nextPage.toString());
         setSearchParams(params);
         window.scrollTo(0, 0);

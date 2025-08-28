@@ -100,12 +100,14 @@ export const productsData = [
     quantity: 1,
     moreInfo: "",
     featuredBackgroundColor: "",
+    ratings: [{ userId: "", rating: 0 }],
     __v: 0,
   },
 ];
 
 export type ProductsType = {
   _id: string;
+  ratings: { userId: string; rating: number }[];
   title: string;
   description: string;
   price: number;
@@ -130,6 +132,7 @@ export type ProductsType = {
 export type ProductsInCartType = {
   productId: string;
   _id: string;
+  ratings: { userId: string; rating: number }[];
   title: string;
   description: string;
   price: number;

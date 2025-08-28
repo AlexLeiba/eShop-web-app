@@ -27,7 +27,13 @@ import { fetchProduct } from "../store/products/apiCalls";
 import { setCart, setWishlist } from "../store/products/reducer";
 import { useSessionToken } from "../hooks/useSesstionToken";
 import DOMPurify from "dompurify";
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
+import { cn } from "../lib/utils";
+import { StarRate } from "../components/ui/starRate";
 function Product() {
+  const [open, setOpen] = React.useState(false);
   const { t } = useTranslation("translation", { keyPrefix: "ProductPage" });
   const dispatch = useDispatch();
   const selectedValues = useSelector((state: RootState) => state.filters);
@@ -132,33 +138,56 @@ function Product() {
 
       <Loader loading={loading} className="h-[616px]">
         <Container>
-          <div
-            tabIndex={0}
-            role="button"
-            onKeyDown={(e) => e.key === "Enter" && window.history.back()}
-            onClick={() => window.history.back()}
-            className="flex items-center   cursor-pointer shadow-md rounded-full p-2 w-fit hover:shadow-gray-400 transition-all group"
-            title="Go back"
-          >
-            <IconChevronLeft className="dark:text-white group-hover:-translate-x-2 transition-all duration-200" />
+          <div className="flex justify-between items-center">
+            <div
+              tabIndex={0}
+              role="button"
+              onKeyDown={(e) => e.key === "Enter" && window.history.back()}
+              onClick={() => window.history.back()}
+              className="flex items-center   cursor-pointer shadow-md rounded-full p-2 w-fit hover:shadow-gray-400 transition-all group"
+              title="Go back"
+            >
+              <IconChevronLeft className="dark:text-white group-hover:-translate-x-2 transition-all duration-200" />
+            </div>
+            <StarRate
+              defaultValue={productData.ratings}
+              sessionToken={sessionToken}
+              productId={productData._id}
+            />
           </div>
         </Container>
         <Spacer sm={12} md={24} lg={24} />
         <Container>
           <div className="grid lg:grid-cols-2 grid-cols-1 gap-8 ">
             {/* IMG */}
-            <div className="w-[480px] h-[288px]">
+            <div className={cn("w-[480px] h-[288px]")}>
               {productData.image && (
-                <img
-                  className="w-full h-full object-contain"
-                  loading="lazy"
-                  src={
-                    !selectedValues.color
-                      ? productData.image
-                      : showSelectedImageColor()
-                  }
-                  alt={productData.title}
-                />
+                <>
+                  <img
+                    onClick={() => setOpen(true)}
+                    className="w-full h-full object-contain cursor-zoom-in"
+                    loading="lazy"
+                    src={
+                      !selectedValues.color
+                        ? productData.image
+                        : showSelectedImageColor()
+                    }
+                    alt={productData.title}
+                  />
+                  <Lightbox
+                    index={productData.images.findIndex((item) =>
+                      selectedValues.color
+                        ? item.colorName === selectedValues.color
+                        : item.colorName === productData.color[0]
+                    )}
+                    open={open}
+                    close={() => setOpen(false)}
+                    slides={productData.images.slice().map((item) => ({
+                      src: item.image,
+                    }))}
+                    plugins={[Zoom]}
+                  />
+                </>
               )}
             </div>
 
@@ -216,7 +245,9 @@ function Product() {
               >
                 {isInWishlist ? (
                   <>
-                    <p className="text-black">{t("addedToWishlist")}</p>
+                    <p className="text-black dark:text-gray-300">
+                      {t("addedToWishlist")}
+                    </p>
                     <IconHeartFilled className="ml-2 text-red-500" />
                   </>
                 ) : (
@@ -229,12 +260,17 @@ function Product() {
               <Spacer size={6} />
             </div>
           </div>
-          <p className="font-medium text-xl dark:text-white">
-            Additional Information
-          </p>
 
-          <Spacer size={2} />
-          <SafeHTML html={productData.moreInfo} />
+          {productData.moreInfo && (
+            <>
+              <p className="font-medium text-xl dark:text-white">
+                Additional Information
+              </p>
+
+              <Spacer size={2} />
+              <SafeHTML html={productData.moreInfo} />
+            </>
+          )}
         </Container>
 
         <Spacer size={24} />

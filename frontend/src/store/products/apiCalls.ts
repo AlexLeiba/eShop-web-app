@@ -64,8 +64,8 @@ export async function fetchProducts({
 type FetchProductProps = {
   dispatch: React.Dispatch<Action>;
   productId: string;
-  language: string;
   sessionToken: string | null;
+  language: string;
 };
 
 export async function fetchProduct({
@@ -143,6 +143,42 @@ export async function fetchProduct({
         })
       );
     }
+
+    return {
+      data: responseProduct.data,
+      error: null,
+    };
+  } catch (error: any) {
+    return {
+      data: null,
+      error: error.response.data.error || "Something went wrong",
+    };
+  }
+}
+
+type RateProductProps = {
+  productId: string;
+  sessionToken: string | null;
+  rating: number;
+};
+export async function rateProduct({
+  productId,
+  sessionToken,
+  rating,
+}: RateProductProps): Promise<{
+  error: string | null;
+  data: ProductsType | null;
+}> {
+  try {
+    const { data: responseProduct } = await axiosInstance({
+      url: `/api/rate-product`,
+      method: "POST",
+      data: { rating, productId },
+      headers: {
+        "Content-Type": "application/json",
+        token: `Bearer ${sessionToken}`,
+      },
+    });
 
     return {
       data: responseProduct.data,

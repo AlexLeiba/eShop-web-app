@@ -5,6 +5,16 @@ const ProductSchema = new mongoose.Schema(
     id: {
       type: String,
     },
+    ratings: [
+      {
+        userId: {
+          type: String,
+        },
+        rating: {
+          type: Number,
+        },
+      },
+    ],
     enMoreInfo: {
       type: String,
     },

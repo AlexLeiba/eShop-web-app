@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { updateCart } from "../../store/cart/apiCalls";
 import { useTranslation } from "react-i18next";
 import { useSessionToken } from "../../hooks/useSesstionToken";
+import { CardRate } from "../Products/CardRate";
 
 type Props = {
   data: ProductsType;
@@ -58,6 +59,7 @@ export function ProductsCard({ data }: Props) {
       key={data._id}
       className="group relative  scale-100 hover:scale-101 shadow hover:shadow-2xl transition-all ease-in-out flex items-center gap-4 p-4 h-[300px] bg-white dark:bg-gray-400 rounded-lg  overflow-hidden flex-col justify-between "
     >
+      <CardRate rating={data.ratings} />
       <div className="transition-all lg:bg-transparent  lg:group-hover:bg-black/20 bg-black/20  absolute inset-0 h-full w-full flex justify-center items-center gap-2">
         <div className="lg:group-hover:flex lg:hidden md:flex flex transition-all  gap-2">
           <Button

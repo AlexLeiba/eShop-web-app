@@ -1,5 +1,8 @@
 import express from "express";
-import { verifyTokenAuthorizationAndAdmin } from "../config/verifyToken.js";
+import {
+  verifyTokenAuthorizationAndAdmin,
+  verifyTokenAuthorization,
+} from "../config/verifyToken.js";
 import Product from "../models/Product.js";
 import { v4 as uuidv4 } from "uuid";
 import { v2 as cloudinary } from "cloudinary";
@@ -169,6 +172,42 @@ router.get("/featured-products", async (req, res) => {
     });
 
     res.status(200).json({ data: responseWithLocalization });
+  } catch (error) {
+    res.status(500).json({ Error: error.message });
+  }
+});
+
+router.post("/rate-product", verifyTokenAuthorization, async (req, res) => {
+  const userId = req.user.id;
+  const productId = req.body.productId;
+  const rating = req.body.rating;
+
+  try {
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ error: "No product was found" });
+    }
+
+    let response = await Product.findOneAndUpdate(
+      { _id: productId, "ratings.userId": userId },
+      { $set: { "ratings.$.rating": rating } },
+      { new: true }
+    );
+
+    if (!response) {
+      // User hasn't rated yet → push new rating
+      response = await Product.findOneAndUpdate(
+        { _id: productId },
+        { $push: { ratings: { userId, rating } } },
+        { new: true }
+      );
+      if (!response) {
+        return res
+          .status(404)
+          .json({ error: "Something went wrong while adding a rate" });
+      }
+    }
+    res.status(200).json({ data: response });
   } catch (error) {
     res.status(500).json({ Error: error.message });
   }

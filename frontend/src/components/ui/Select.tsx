@@ -33,7 +33,7 @@ export function Select({ data, label, value, handleSelect }: Props) {
         id={label}
         value={value}
         onChange={(e) => handleSelect(e.target.value)}
-        className="cursor-pointer dark:text-black  h-10 text-black rounded-full py-2 px-8 focus:border-none focus:outline-none dark:bg-gray-300 dark:hover:bg-gray-400  bg-gray-200 transition-all z-10 hover:shadow-md"
+        className="cursor-pointer dark:text-black  h-10 text-black rounded-full py-2 px-8 focus:border-none  dark:bg-gray-300 dark:hover:bg-gray-400  bg-gray-200 transition-all z-10 hover:shadow-md   "
       >
         {data.map((item) => {
           return (

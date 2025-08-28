@@ -38,6 +38,7 @@ const initialState: {
       updatedAt: "",
       featured: false,
       featuredBackgroundColor: "",
+      ratings: [{ userId: "", rating: 0 }],
       quantity: 0,
       __v: 0,
     },
@@ -67,6 +68,9 @@ const productsSlice = createSlice({
     setWishlist: (state, action) => {
       state.product.isInWishlist = action.payload;
     },
+    setRating: (state, action) => {
+      state.product.productData.ratings = action.payload;
+    },
   },
 });
 
@@ -76,5 +80,6 @@ export const {
   setWishlist,
   setCart,
   getFeaturedProducts,
+  setRating,
 } = productsSlice.actions;
 export default productsSlice.reducer;
