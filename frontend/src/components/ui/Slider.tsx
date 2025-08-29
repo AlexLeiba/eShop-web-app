@@ -7,6 +7,7 @@ import { Container } from "../Grid/Container";
 import type { ProductsDataType } from "../../pages/ProductsList";
 import { useTranslation } from "react-i18next";
 import { IconLoader } from "@tabler/icons-react";
+import { Price } from "../Reusable/Price";
 
 type SliderProps = {
   data: ProductsDataType["data"];
@@ -102,6 +103,10 @@ export function Slider({ data }: SliderProps) {
                   <p className="text-xl line-clamp-3 max-w-[600px] pr-8">
                     {item.description}
                   </p>
+                  <Price
+                    price={item.price}
+                    discountPrice={item.discountPrice}
+                  />
                   <Link to={`/product/${item._id}`}>
                     <Button
                       className="lg:w-[200px] w-full "

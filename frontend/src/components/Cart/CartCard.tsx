@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { useSessionToken } from "../../hooks/useSesstionToken";
 import { Discount } from "../Products/Discount";
+import { Price } from "../Reusable/Price";
 
 type Props = {
   productData: CartItemsType;
@@ -88,16 +89,10 @@ export function CartCard({ productData, type }: Props) {
 
           <div>
             {/* PRICE */}
-            {productData.discountPrice ? (
-              <p className="text-3xl">
-                <span className="line-through text-gray-200 mr-2 text-sm">
-                  ${productData.price}
-                </span>
-                ${productData.discountPrice}
-              </p>
-            ) : (
-              <p className="text-3xl">${productData.price}</p>
-            )}
+            <Price
+              price={productData.price}
+              discountPrice={productData.discountPrice}
+            />
           </div>
         </div>
       </div>

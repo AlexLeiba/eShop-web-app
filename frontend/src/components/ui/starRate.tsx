@@ -22,11 +22,6 @@ export function StarRate({ defaultValue, sessionToken, productId }: Props) {
     useState<Props["defaultValue"]>(defaultValue);
   const [selectedStar, setSelectedStar] = useState(0);
   const [starState, setStarState] = useState(0);
-  console.log(
-    "🚀 ~ StarRate ~ defaultStarData:",
-    defaultStarData,
-    defaultStarData.length
-  );
 
   async function handleStarClick(index: number) {
     setSelectedStar(index);

@@ -38,8 +38,6 @@ function Home() {
       }, 2000);
 
       try {
-        setLoading(true);
-
         const response = await fetchProducts({
           dispatch,
           language: language?.toLowerCase() || "en",

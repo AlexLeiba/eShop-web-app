@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import { Spacer } from "../ui/spacer";
 import { useSessionToken } from "../../hooks/useSesstionToken";
 import { Discount } from "../Products/Discount";
+import { Price } from "../Reusable/Price";
 
 type Props = {
   data: ProductsType;
@@ -94,16 +95,7 @@ export function WishListCard({ data, type }: Props) {
 
           <div className="flex lg:flex-1 justify-end">
             {/* PRICE */}
-            {data.discountPrice ? (
-              <p className="text-3xl">
-                <span className="line-through text-gray-200 mr-2 text-sm">
-                  ${data.price}
-                </span>
-                ${data.discountPrice}
-              </p>
-            ) : (
-              <p className="text-3xl">${data.price}</p>
-            )}
+            <Price price={data.price} discountPrice={data.discountPrice} />
           </div>
         </div>
       </div>

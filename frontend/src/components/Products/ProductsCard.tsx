@@ -86,11 +86,13 @@ export function ProductsCard({ data }: Props) {
           />
         )}
         {data.discountPrice && (
-          <Discount discount={data.discountPrice} price={data.price} />
+          <div className="absolute top-10 left-0">
+            <Discount discount={data.discountPrice} price={data.price} />
+          </div>
         )}
 
         {/* STAR RATE */}
-        <CardRate rating={data.ratings.filter((data) => data.rating > 0)} />
+        <CardRate rating={data?.ratings?.filter((data) => data.rating > 0)} />
       </div>
 
       {/* THE BUTTONS MENU ON HOVER */}

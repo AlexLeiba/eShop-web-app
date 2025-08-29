@@ -32,6 +32,7 @@ import "yet-another-react-lightbox/styles.css";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import { cn } from "../lib/utils";
 import { StarRate } from "../components/ui/starRate";
+import { Price } from "../components/Reusable/Price";
 function Product() {
   const [open, setOpen] = React.useState(false);
   const { t } = useTranslation("translation", { keyPrefix: "ProductPage" });
@@ -150,7 +151,7 @@ function Product() {
               <IconChevronLeft className="dark:text-white group-hover:-translate-x-2 transition-all duration-200" />
             </div>
             <StarRate
-              defaultValue={productData.ratings.filter(
+              defaultValue={productData?.ratings?.filter(
                 (data) => data.rating > 0
               )}
               sessionToken={sessionToken}
@@ -201,7 +202,12 @@ function Product() {
               <p>{productData.description}</p>
 
               <Spacer size={4} />
-              <p className="text-3xl">${productData.price}</p>
+              {/* PRICE */}
+
+              <Price
+                price={productData.price}
+                discountPrice={productData.discountPrice}
+              />
               <Spacer size={12} />
 
               {/* COLORS */}
