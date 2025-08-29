@@ -102,7 +102,9 @@ function ForgotPasswordPage() {
           setResetPasswordStep(3);
         }
         if (responseLogin?.error) {
+          console.log("error");
           toast.error(responseLogin.error);
+          setFormDataErrors({ otp: responseLogin.error });
         }
       }
     }

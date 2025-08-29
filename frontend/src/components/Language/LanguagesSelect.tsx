@@ -54,7 +54,7 @@ export function LanguagesSelect() {
         title="Language"
         onClick={() => setOpen(!open)}
         className={cn(
-          open && "bg-gray-500",
+          open && "bg-gray-500 text-white",
           "hover:text-white  shadow-md relative rounded-full w-8 h-8 flex justify-center items-center dark:hover:bg-gray-600  hover:bg-gray-400 transition-all cursor-pointer languageButton"
         )}
       >
@@ -73,7 +73,7 @@ export function LanguagesSelect() {
                 }
                 onClick={() => handleLanguageChange(language.slug)}
                 key={language.slug}
-                className="hover:text-white  px-2 relative rounded-sm w-full h-8 flex items-center hover:bg-gray-400 dark:hover:bg-gray-600  transition-all cursor-pointer"
+                className="dark:text-white  px-2 relative rounded-sm w-full h-8 flex items-center hover:bg-gray-400 dark:hover:bg-gray-600  transition-all cursor-pointer"
               >
                 <p>{language.name}</p>
               </div>
