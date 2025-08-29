@@ -9,12 +9,14 @@ import { deleteFromCart } from "../../store/cart/apiCalls";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { useSessionToken } from "../../hooks/useSesstionToken";
+import { Discount } from "../Products/Discount";
 
 type Props = {
   productData: CartItemsType;
   type: "cart" | "wishList";
 };
 export function CartCard({ productData, type }: Props) {
+  console.log("🚀 ~ CartCard ~ productData:", productData);
   const { t } = useTranslation("translation", { keyPrefix: "CartPage" });
 
   const dispatch = useDispatch();
@@ -38,6 +40,12 @@ export function CartCard({ productData, type }: Props) {
   }
   return (
     <div className="flex gap-8  shadow rounded-md py-4 pl-4 pr-8 relative lg:flex-row md:flex-row  flex-col dark:bg-gray-800 dark:text-white">
+      {productData.discountPrice && (
+        <Discount
+          discount={productData.discountPrice}
+          price={productData.price}
+        />
+      )}
       <Link to={`/product/${productData._id}`}>
         <div>
           <img
@@ -79,7 +87,17 @@ export function CartCard({ productData, type }: Props) {
           </div>
 
           <div>
-            <p className="text-3xl line-clamp-1">${productData.price}</p>
+            {/* PRICE */}
+            {productData.discountPrice ? (
+              <p className="text-3xl">
+                <span className="line-through text-gray-200 mr-2 text-sm">
+                  ${productData.price}
+                </span>
+                ${productData.discountPrice}
+              </p>
+            ) : (
+              <p className="text-3xl">${productData.price}</p>
+            )}
           </div>
         </div>
       </div>

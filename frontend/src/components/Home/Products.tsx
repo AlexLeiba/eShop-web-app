@@ -1,12 +1,12 @@
 import { Spacer } from "../ui/spacer";
-import { ProductsCard } from "./ProductsCard";
+import { ProductsCard } from "../Products/ProductsCard";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { Button } from "../ui/Button";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
-import { ProductsSkeleton } from "./ProductsSkeleton";
+import { ProductsSkeleton } from "../Products/ProductsSkeleton";
 
 type ProductsProps = {
   type: "dashboard" | "products-list";

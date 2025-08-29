@@ -1,6 +1,6 @@
-import { IconCircleCheck, IconCircleX } from '@tabler/icons-react';
-import type { ProductType } from '../../lib/schemas';
-import Spacer from '../ui/Spacer';
+import { IconCircleCheck, IconCircleX } from "@tabler/icons-react";
+import type { ProductType } from "../../lib/schemas";
+import Spacer from "../ui/Spacer";
 
 type Props = {
   formData: ProductType;
@@ -10,8 +10,8 @@ export function PreviewProductDetails({ formData }: Props) {
     <div>
       <h3>Preview product details</h3>
       <Spacer />
-      <div className='product-details-wrapper'>
-        <div className='details'>
+      <div className="product-details-wrapper">
+        <div className="details">
           <h4>
             <b>Title:</b>
             {formData.enTitle}
@@ -20,18 +20,18 @@ export function PreviewProductDetails({ formData }: Props) {
             <b>Description:</b>
             {formData.enDescription}
           </p>
-          <p className='text-3xl'>
+          <p className="text-3xl">
             <b>Price: </b> ${formData.price}
           </p>
-          <div className='sizes-wrapper'>
-            <p className='text-3xl'>
+          <div className="sizes-wrapper">
+            <p className="text-3xl">
               <b>Sizes:</b>
             </p>
             {formData.size.map((item) => {
               return <p key={item}>{item}</p>;
             })}
           </div>
-          <div className='colors-wrapper'>
+          <div className="colors-wrapper">
             <p>
               <b>Colors:</b>
             </p>
@@ -39,7 +39,7 @@ export function PreviewProductDetails({ formData }: Props) {
               return (
                 <div
                   key={item + index}
-                  style={{ backgroundColor: item, border: '1px solid black' }}
+                  style={{ backgroundColor: item, border: "1px solid black" }}
                 ></div>
               );
             })}
@@ -50,12 +50,12 @@ export function PreviewProductDetails({ formData }: Props) {
             {formData.quantity}
           </p>
           <div>
-            <p className='flex-center-row-4'>
+            <p className="flex-center-row-4">
               <b>Published:</b>
               {formData.isPublished ? (
-                <IconCircleCheck color='green' />
+                <IconCircleCheck color="green" />
               ) : (
-                <IconCircleX color='red' />
+                <IconCircleX color="red" />
               )}
             </p>
           </div>
@@ -63,17 +63,17 @@ export function PreviewProductDetails({ formData }: Props) {
           <p>
             <b>In Stock:</b>
             {formData.inStock ? (
-              <span style={{ color: 'green' }}>Yes</span>
+              <span style={{ color: "green" }}>Yes</span>
             ) : (
-              <span style={{ color: 'red' }}>No</span>
+              <span style={{ color: "red" }}>No</span>
             )}
           </p>
           <p>
             <b>Featured:</b>
             {formData.featured ? (
-              <span style={{ color: 'green' }}>Yes</span>
+              <span style={{ color: "green" }}>Yes</span>
             ) : (
-              <span style={{ color: 'red' }}>No</span>
+              <span style={{ color: "red" }}>No</span>
             )}
           </p>
           {formData.featured && (
@@ -84,9 +84,9 @@ export function PreviewProductDetails({ formData }: Props) {
               <div
                 style={{
                   backgroundColor: formData.featuredBackgroundColor,
-                  width: '200px',
-                  height: '20px',
-                  border: '1px solid black',
+                  width: "200px",
+                  height: "20px",
+                  border: "1px solid black",
                 }}
               ></div>
             </div>
@@ -94,7 +94,7 @@ export function PreviewProductDetails({ formData }: Props) {
           {formData.moreInfo && (
             <p>
               <b>More info:</b>
-              {formData.moreInfo}
+              {formData.moreInfo.substring(0, 100) + "..................."}
             </p>
           )}
         </div>

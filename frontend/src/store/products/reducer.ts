@@ -22,6 +22,8 @@ const initialState: {
     isInCart: false,
     isInWishlist: false,
     productData: {
+      discountPrice: 0,
+      productId: "",
       moreInfo: "",
       title: "",
       description: "",

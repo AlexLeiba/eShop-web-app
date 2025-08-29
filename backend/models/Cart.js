@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const CartSchema = new mongoose.Schema(
   {
@@ -11,6 +11,9 @@ const CartSchema = new mongoose.Schema(
         productId: {
           type: String,
           required: true,
+        },
+        discountPrice: {
+          type: Number,
         },
         quantity: {
           type: Number,
@@ -47,7 +50,7 @@ const CartSchema = new mongoose.Schema(
         },
         language: {
           type: String,
-          default: 'en',
+          default: "en",
         },
       },
     ],
@@ -55,4 +58,4 @@ const CartSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model('Cart', CartSchema);
+export default mongoose.model("Cart", CartSchema);

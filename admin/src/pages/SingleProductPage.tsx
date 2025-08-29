@@ -9,7 +9,6 @@ import { EditProductSchema, type ProductType } from "../lib/schemas";
 import { CATEGORIES, COLORS, SIZES } from "../lib/consts";
 import toast from "react-hot-toast";
 import { PreviewProductDetails } from "../components/SingleProductPage/PreviewProductDetails";
-import { ProductPerformanceChart } from "../components/SingleProductPage/ProductPerformanceChart";
 import { apiFactory } from "../lib/apiFactory";
 import { useSelector } from "react-redux";
 import type { RootState } from "../store/config";
@@ -177,11 +176,11 @@ function SingleProductPage() {
         <h1>Product</h1>
         <Spacer size={24} />
 
-        <div className="grid-container-2-equal">
+        <div>
           {/* SALES PERFORMANCE CHART */}
-          <WidgetCard>
+          {/* <WidgetCard>
             <ProductPerformanceChart />
-          </WidgetCard>
+          </WidgetCard> */}
 
           {/* PREVIEW PRODUCT DETAILS */}
           <WidgetCard>
@@ -239,6 +238,14 @@ function SingleProductPage() {
               onChange={(v) => handleChangeFormData("price", v)}
               type={"number"}
             />
+            <Input
+              label="Discount Price"
+              placeholder="Enter the discount price"
+              error={formDataErrors.discountPrice}
+              value={(formData.discountPrice as string) || ""}
+              onChange={(v) => handleChangeFormData("discountPrice", v)}
+              type={"number"}
+            />
 
             <Input
               label="Quantity"
@@ -249,6 +256,7 @@ function SingleProductPage() {
               type={"number"}
             />
 
+            <div></div>
             {/* SINGLE IMAGE COVER */}
             <div className="select-single-image-container">
               <div className="flex-column-gap-12">

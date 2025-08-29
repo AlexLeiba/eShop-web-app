@@ -7,95 +7,107 @@ export const LoginSchema = z.object({
 
 export type LoginType = z.infer<typeof LoginSchema>;
 
-export const EditProductSchema = z.object({
-  roTitle: z.string().min(2, "roTitle must be at least 2 characters long"),
-  enTitle: z.string().min(2, "enTitle must be at least 2 characters long"),
+export const EditProductSchema = z
+  .object({
+    roTitle: z.string().min(2, "roTitle must be at least 2 characters long"),
+    enTitle: z.string().min(2, "enTitle must be at least 2 characters long"),
 
-  roDescription: z
-    .string()
-    .min(2, "Ro Description must be at least 2 characters long"),
-  enDescription: z
-    .string()
-    .min(2, "En Description must be at least 2 characters long"),
+    roDescription: z
+      .string()
+      .min(2, "Ro Description must be at least 2 characters long"),
+    enDescription: z
+      .string()
+      .min(2, "En Description must be at least 2 characters long"),
 
-  price: z.coerce.string().min(1, "Price must be at least 1 characters long"),
+    price: z.coerce.string().min(1, "Price must be at least 1 characters long"),
+    discountPrice: z.coerce.string().optional(),
 
-  image: z.string().min(2, "Image is required"),
+    image: z.string().min(2, "Image is required"),
 
-  categories: z.array(z.string()).min(1, "Category is required"),
+    categories: z.array(z.string()).min(1, "Category is required"),
 
-  size: z.array(z.string()).min(1, "Required at least 1 size"),
-  color: z.array(z.string()).min(1, "Required at least 1 color"),
+    size: z.array(z.string()).min(1, "Required at least 1 size"),
+    color: z.array(z.string()).min(1, "Required at least 1 color"),
 
-  images: z
-    .array(
-      z.object({
-        colorName: z.string().min(2, "Color required"),
-        image: z.string().min(2, "Required at least 1 image"),
-      })
-    )
-    .min(1, "Required at least 1 image"),
-  imageColor: z.string().min(2, "Image color required"),
-  isPublished: z.boolean(),
+    images: z
+      .array(
+        z.object({
+          colorName: z.string().min(2, "Color required"),
+          image: z.string().min(2, "Required at least 1 image"),
+        })
+      )
+      .min(1, "Required at least 1 image"),
+    imageColor: z.string().min(2, "Image color required"),
+    isPublished: z.boolean(),
 
-  inStock: z.boolean().optional(),
-  featured: z.boolean().optional(),
-  featuredBackgroundColor: z.string().optional(),
-  language: z.string().optional(),
-  quantity: z.coerce.string().optional(),
-  moreInfo: z.string().optional(),
+    inStock: z.boolean().optional(),
+    featured: z.boolean().optional(),
+    featuredBackgroundColor: z.string().optional(),
+    language: z.string().optional(),
+    quantity: z.coerce.string().optional(),
+    moreInfo: z.string().optional(),
 
-  enMoreInfo: z.string().optional(),
-  roMoreInfo: z.string().optional(),
+    enMoreInfo: z.string().optional(),
+    roMoreInfo: z.string().optional(),
 
-  title: z.string().optional(),
-  description: z.string().optional(),
-});
+    title: z.string().optional(),
+    description: z.string().optional(),
+  })
+  .refine((data) => data.discountPrice && data.price >= data.discountPrice, {
+    message: "Discount price must be less than price",
+    path: ["discountPrice"],
+  });
 
-export const CreateProductSchema = z.object({
-  roTitle: z.string().min(2, "roTitle must be at least 2 characters long"),
-  enTitle: z.string().min(2, "enTitle must be at least 2 characters long"),
+export const CreateProductSchema = z
+  .object({
+    roTitle: z.string().min(2, "roTitle must be at least 2 characters long"),
+    enTitle: z.string().min(2, "enTitle must be at least 2 characters long"),
 
-  roDescription: z
-    .string()
-    .min(2, "Ro Description must be at least 2 characters long"),
-  enDescription: z
-    .string()
-    .min(2, "En Description must be at least 2 characters long"),
+    roDescription: z
+      .string()
+      .min(2, "Ro Description must be at least 2 characters long"),
+    enDescription: z
+      .string()
+      .min(2, "En Description must be at least 2 characters long"),
 
-  price: z.coerce.string().min(1, "Price is required"),
-  image: z.string().min(2, "Image is required"),
-  categories: z
-    .array(z.string())
-    .min(1, "Categories is required")
-    .default(["jakets"]),
+    price: z.coerce.string().min(1, "Price is required"),
+    discountPrice: z.coerce.string().optional(),
+    image: z.string().min(2, "Image is required"),
+    categories: z
+      .array(z.string())
+      .min(1, "Categories is required")
+      .default(["jakets"]),
 
-  size: z.array(z.string()).min(1, "Size is required"),
-  color: z.array(z.string()).optional(),
+    size: z.array(z.string()).min(1, "Size is required"),
+    color: z.array(z.string()).optional(),
 
-  images: z
-    .array(
-      z.object({
-        colorName: z.string().min(2, "Color is required"),
-        image: z.string().min(2, "Image is required"),
-        imageId: z.string().optional(),
-      })
-    )
-    .min(1, "Image is required"),
-  imageColor: z.string().min(2, "Image color required").default("white"),
+    images: z
+      .array(
+        z.object({
+          colorName: z.string().min(2, "Color is required"),
+          image: z.string().min(2, "Image is required"),
+          imageId: z.string().optional(),
+        })
+      )
+      .min(1, "Image is required"),
+    imageColor: z.string().min(2, "Image color required").default("white"),
 
-  isPublished: z.boolean().default(false),
+    isPublished: z.boolean().default(false),
 
-  inStock: z.boolean().optional().default(true),
-  featured: z.boolean().optional().default(false),
-  featuredBackgroundColor: z.string().optional().default("#ffffff"),
-  language: z.string().optional(),
-  quantity: z.string().optional().default("1"),
-  moreInfo: z.string().optional(),
+    inStock: z.boolean().optional().default(true),
+    featured: z.boolean().optional().default(false),
+    featuredBackgroundColor: z.string().optional().default("#ffffff"),
+    language: z.string().optional(),
+    quantity: z.string().optional().default("1"),
+    moreInfo: z.string().optional(),
 
-  title: z.string().optional(),
-  description: z.string().optional(),
-});
+    title: z.string().optional(),
+    description: z.string().optional(),
+  })
+  .refine((data) => data.discountPrice && data.price >= data.discountPrice, {
+    message: "Discount price must be less than price",
+    path: ["discountPrice"],
+  });
 
 export type ProductType = z.infer<typeof EditProductSchema>;
 

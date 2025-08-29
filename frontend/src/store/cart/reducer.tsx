@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
-import type { ProductsType } from '../../consts';
+import { createSlice } from "@reduxjs/toolkit";
+import type { ProductsType } from "../../consts";
 
 export type CartType = {
   quantity: number;
@@ -8,6 +8,7 @@ export type CartType = {
 };
 export type CartItemsType = {
   _id: string;
+  discountPrice: number;
   title: string;
   price: number;
   quantity: number;
@@ -24,7 +25,7 @@ const initialState: CartType = {
 };
 
 export const cartSlice = createSlice({
-  name: 'cart',
+  name: "cart",
   initialState,
   reducers: {
     getCartData: (state, action) => {
@@ -38,11 +39,12 @@ export const cartSlice = createSlice({
       action.payload.products?.forEach((item: ProductsType) => {
         if (item.quantity === 1) {
           quantityAndTotalPrice.quantity += 1;
-          quantityAndTotalPrice.total += item.price;
+          quantityAndTotalPrice.total += item.discountPrice || item.price;
         }
         if (item.quantity > 1) {
           quantityAndTotalPrice.quantity += item.quantity;
-          quantityAndTotalPrice.total += item.price * item.quantity;
+          quantityAndTotalPrice.total +=
+            (item.discountPrice || item.price) * item.quantity;
         }
       });
 
@@ -60,11 +62,12 @@ export const cartSlice = createSlice({
       action.payload.products?.forEach((item: ProductsType) => {
         if (item.quantity === 1) {
           quantityAndTotalPrice.quantity += 1;
-          quantityAndTotalPrice.total += item.price;
+          quantityAndTotalPrice.total += item.discountPrice || item.price;
         }
         if (item.quantity > 1) {
           quantityAndTotalPrice.quantity += item.quantity;
-          quantityAndTotalPrice.total += item.price * item.quantity;
+          quantityAndTotalPrice.total +=
+            (item.discountPrice || item.price) * item.quantity; //TODO: ADD THIS: item.price * item.quantity;
         }
       });
 
@@ -82,11 +85,12 @@ export const cartSlice = createSlice({
       action.payload[0].products?.forEach((item: ProductsType) => {
         if (item.quantity === 1) {
           quantityAndTotalPrice.quantity += 1;
-          quantityAndTotalPrice.total += item.price;
+          quantityAndTotalPrice.total += item.discountPrice || item.price;
         }
         if (item.quantity > 1) {
           quantityAndTotalPrice.quantity += item.quantity;
-          quantityAndTotalPrice.total += item.price * item.quantity;
+          quantityAndTotalPrice.total +=
+            (item.discountPrice || item.price) * item.quantity;
         }
       });
 
@@ -104,11 +108,12 @@ export const cartSlice = createSlice({
       action.payload.products?.forEach((item: ProductsType) => {
         if (item.quantity === 1) {
           quantityAndTotalPrice.quantity += 1;
-          quantityAndTotalPrice.total += item.price;
+          quantityAndTotalPrice.total += item.discountPrice || item.price;
         }
         if (item.quantity > 1) {
           quantityAndTotalPrice.quantity += item.quantity;
-          quantityAndTotalPrice.total += item.price * item.quantity;
+          quantityAndTotalPrice.total +=
+            (item.discountPrice || item.price) * item.quantity;
         }
       });
 

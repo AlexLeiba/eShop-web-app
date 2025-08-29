@@ -53,7 +53,7 @@ router.put(
         _id: productId + "_" + req.user.id,
       });
 
-      newProductInWishList.save();
+      await newProductInWishList.save();
 
       const allWishlistProducts = await WishList.find({
         userId: req.user.id,

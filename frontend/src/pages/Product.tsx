@@ -150,7 +150,9 @@ function Product() {
               <IconChevronLeft className="dark:text-white group-hover:-translate-x-2 transition-all duration-200" />
             </div>
             <StarRate
-              defaultValue={productData.ratings}
+              defaultValue={productData.ratings.filter(
+                (data) => data.rating > 0
+              )}
               sessionToken={sessionToken}
               productId={productData._id}
             />

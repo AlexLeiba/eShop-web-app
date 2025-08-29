@@ -5,6 +5,9 @@ const ProductSchema = new mongoose.Schema(
     id: {
       type: String,
     },
+    discountPrice: {
+      type: Number,
+    },
     ratings: [
       {
         userId: {

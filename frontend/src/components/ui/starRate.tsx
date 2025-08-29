@@ -22,6 +22,11 @@ export function StarRate({ defaultValue, sessionToken, productId }: Props) {
     useState<Props["defaultValue"]>(defaultValue);
   const [selectedStar, setSelectedStar] = useState(0);
   const [starState, setStarState] = useState(0);
+  console.log(
+    "🚀 ~ StarRate ~ defaultStarData:",
+    defaultStarData,
+    defaultStarData.length
+  );
 
   async function handleStarClick(index: number) {
     setSelectedStar(index);
@@ -33,16 +38,29 @@ export function StarRate({ defaultValue, sessionToken, productId }: Props) {
     });
 
     if (response?.error) {
-      toast.error(response.error);
+      return toast.error(response.error);
     }
 
-    setDefaultStarData((prev) => {
-      return prev?.map((data) =>
-        data.userId === userId
-          ? { ...data, rating: index }
-          : { userId: userId, rating: index }
-      );
-    });
+    const hasUserVotedBefore = defaultStarData.find(
+      (data) => data.userId === userId
+    );
+
+    if (hasUserVotedBefore) {
+      setDefaultStarData((prev) => {
+        return prev?.map((data) => {
+          if (hasUserVotedBefore && data.userId === userId) {
+            return { ...data, rating: index };
+          }
+          return data;
+        });
+      });
+    }
+
+    if (!hasUserVotedBefore) {
+      setDefaultStarData((prev) => {
+        return [...(prev || []), { userId, rating: index }];
+      });
+    }
   }
   async function handleClearRate() {
     setSelectedStar(0);
@@ -58,9 +76,7 @@ export function StarRate({ defaultValue, sessionToken, productId }: Props) {
     }
 
     setDefaultStarData((prev) => {
-      return prev?.map((data) =>
-        data.userId === userId ? { ...data, rating: 0 } : data
-      );
+      return prev?.filter((data) => data.userId !== userId);
     });
   }
 

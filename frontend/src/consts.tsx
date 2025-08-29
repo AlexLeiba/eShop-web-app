@@ -85,6 +85,7 @@ export type CategoriesType = {
 export const productsData = [
   {
     _id: "",
+    discountPrice: 0,
     title: "",
     description: "",
     price: 1,
@@ -107,6 +108,8 @@ export const productsData = [
 
 export type ProductsType = {
   _id: string;
+  discountPrice: number;
+  productId: string;
   ratings: { userId: string; rating: number }[];
   title: string;
   description: string;
@@ -132,6 +135,7 @@ export type ProductsType = {
 export type ProductsInCartType = {
   productId: string;
   _id: string;
+  discountPrice: number;
   ratings: { userId: string; rating: number }[];
   title: string;
   description: string;

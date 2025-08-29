@@ -9,6 +9,7 @@ import { deleteFromWishlist } from "../../store/wishList/apiCalls";
 import { useTranslation } from "react-i18next";
 import { Spacer } from "../ui/spacer";
 import { useSessionToken } from "../../hooks/useSesstionToken";
+import { Discount } from "../Products/Discount";
 
 type Props = {
   data: ProductsType;
@@ -57,6 +58,9 @@ export function WishListCard({ data, type }: Props) {
   }
   return (
     <div className="flex gap-8  shadow rounded-md py-4 pl-4 pr-8 relative  lg:flex-row md:flex-row  flex-col dark:bg-gray-800">
+      {data.discountPrice && (
+        <Discount discount={data.discountPrice} price={data.price} />
+      )}
       <Link to={`/product/${data._id}`}>
         <div>
           <img
@@ -89,7 +93,17 @@ export function WishListCard({ data, type }: Props) {
           </div>
 
           <div className="flex lg:flex-1 justify-end">
-            <p className="text-3xl  ">${data.price}</p>
+            {/* PRICE */}
+            {data.discountPrice ? (
+              <p className="text-3xl">
+                <span className="line-through text-gray-200 mr-2 text-sm">
+                  ${data.price}
+                </span>
+                ${data.discountPrice}
+              </p>
+            ) : (
+              <p className="text-3xl">${data.price}</p>
+            )}
           </div>
         </div>
       </div>
