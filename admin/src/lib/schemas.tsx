@@ -53,7 +53,7 @@ export const EditProductSchema = z
     title: z.string().optional(),
     description: z.string().optional(),
   })
-  .refine((data) => data.discountPrice && data.price >= data.discountPrice, {
+  .refine((data) => data.price >= (data?.discountPrice || 0), {
     message: "Discount price must be less than price",
     path: ["discountPrice"],
   });
@@ -104,7 +104,7 @@ export const CreateProductSchema = z
     title: z.string().optional(),
     description: z.string().optional(),
   })
-  .refine((data) => data.discountPrice && data.price >= data.discountPrice, {
+  .refine((data) => data.price >= (data?.discountPrice || 0), {
     message: "Discount price must be less than price",
     path: ["discountPrice"],
   });
