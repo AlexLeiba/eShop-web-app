@@ -23,3 +23,34 @@ select {
   font: inherit;
   color: inherit;
 }
+
+/* ADDITIONAL INFO ON PRODUCT */
+.html-content a {
+  text-decoration: underline;
+  color: var(--primary-400);
+}
+
+.html-content ul {
+  list-style-type: disc; /* Ensure bullets appear */
+  margin-left: 40px !important; /* Add indentation */
+}
+
+.html-content ol {
+  list-style-type: decimal; /* Ensure numbers appear */
+  margin-left: 40px !important;
+}
+
+.html-content li {
+  margin-bottom: 5px; /* Optional: Add spacing */
+}
+
+/* HTML content */
+.html-content h1 {
+  @apply text-4xl;
+}
+.html-content h2 {
+  @apply text-3xl;
+}
+.html-content h3 {
+  @apply text-2xl;
+}

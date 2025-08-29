@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Container } from "../components/Grid/Container";
 import { Newsletter } from "../components/Home/Newsletter";
 import AddAmount from "../components/Products/AddAmount";
@@ -11,7 +11,9 @@ import { useLocation } from "react-router-dom";
 import { SizeSelector } from "../components/Products/SizeSelector";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  IconChevronDown,
   IconChevronLeft,
+  IconChevronUp,
   IconHeart,
   IconHeartFilled,
   IconShoppingCart,
@@ -163,7 +165,7 @@ function Product() {
         <Container>
           <div className="grid lg:grid-cols-2 grid-cols-1 gap-8 ">
             {/* IMG */}
-            <div className={cn("w-[480px] h-[288px]")}>
+            <div className={cn("w-FULL h-[288px]")}>
               {productData.image && (
                 <>
                   <img
@@ -272,7 +274,7 @@ function Product() {
           {productData.moreInfo && (
             <>
               <p className="font-medium text-xl dark:text-white">
-                Additional Information
+                {t("moreInfo")}
               </p>
 
               <Spacer size={2} />
@@ -296,11 +298,39 @@ function Product() {
 export default Product;
 
 function SafeHTML({ html }: { html: string }) {
-  const cleanHTML = DOMPurify.sanitize(html);
+  const [showMore, setShowMore] = useState(false);
+
+  const cleanHTML = DOMPurify.sanitize(html).substring(
+    0,
+    showMore ? html.length : 50
+  );
   return (
-    <div
-      className="dark:text-white"
-      dangerouslySetInnerHTML={{ __html: cleanHTML }}
-    />
+    <div className="relative">
+      <div
+        className="dark:text-gray-300 html-content"
+        dangerouslySetInnerHTML={{ __html: cleanHTML }}
+      />
+
+      {!showMore && (
+        <div className="h-14 w-full  top-0 left-0 bg-gradient-to-t from-gray-900 via-gray-900 to-transparent z-30 absolute"></div>
+      )}
+      <Button
+        variant="ghost"
+        onClick={() => setShowMore(!showMore)}
+        className="dark:text-white mt-6"
+      >
+        {showMore ? (
+          <>
+            Show less
+            <IconChevronUp />
+          </>
+        ) : (
+          <>
+            Show more
+            <IconChevronDown />
+          </>
+        )}
+      </Button>
+    </div>
   );
 }

@@ -11,6 +11,8 @@ const buttonVariants = cva(
           "bg-black text-white dark:disabled:text-gray-500 disabled:bg-gray-600 ",
         secondary:
           "bg-white text-black dark:bg-gray-800 dark:text-white dark:disabled:bg-gray-800 dark:disabled:text-gray-600 disabled:bg-gray-300 disabled:text-white",
+        ghost:
+          "bg-white text-black dark:bg-gray-900 dark:text-white dark:disabled:bg-gray-800 dark:disabled:text-gray-600 disabled:bg-gray-300 disabled:text-white",
       },
       size: {
         large: "text-2xl h-14 ",
@@ -23,7 +25,7 @@ const buttonVariants = cva(
 
 type Props = {
   children: React.ReactNode;
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "ghost";
   size?: "large" | "medium" | "small";
   className?: string;
   type?: "button" | "submit" | "reset";

@@ -23,7 +23,6 @@ type Props = {
 };
 
 export function ProductsCard({ data }: Props) {
-  console.log("🚀 ~ ProductsCard ~ data:", data);
   const { t } = useTranslation("translation", { keyPrefix: "ProductsPage" });
   const dispatch = useDispatch();
   const sessionToken = useSessionToken();
