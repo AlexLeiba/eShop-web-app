@@ -61,11 +61,17 @@ router.get("/products", async (req, res) => {
 
     const responseWithLocalization = filteredProducts.map((item) => {
       return {
-        ...item._doc,
+        _id: item._id,
+        discountPrice: item.discountPrice,
+        price: item.price,
+        image: item.image,
+        ratings: item.ratings,
         title: queryLanguage === "ro" ? item.roTitle : item.enTitle,
         description:
           queryLanguage === "ro" ? item.roDescription : item.enDescription,
-        moreInfo: queryLanguage === "ro" ? item.roMoreInfo : item.enMoreInfo,
+        color: item.color,
+        size: item.size,
+        categories: item.categories,
       };
     });
 
@@ -97,11 +103,9 @@ router.get("/search-products", async (req, res) => {
 
     const responseWithLocalization = response.map((item) => {
       return {
-        ...item._doc,
+        _id: item._id,
         title: queryLanguage === "ro" ? item.roTitle : item.enTitle,
-        description:
-          queryLanguage === "ro" ? item.roDescription : item.enDescription,
-        moreInfo: queryLanguage === "ro" ? item.roMoreInfo : item.enMoreInfo,
+        image: item.image,
       };
     });
 
@@ -163,11 +167,14 @@ router.get("/featured-products", async (req, res) => {
 
     const responseWithLocalization = response.map((item) => {
       return {
-        ...item._doc,
+        _id: item._id,
         title: queryLanguage === "ro" ? item.roTitle : item.enTitle,
         description:
           queryLanguage === "ro" ? item.roDescription : item.enDescription,
-        moreInfo: queryLanguage === "ro" ? item.roMoreInfo : item.enMoreInfo,
+        image: item.image,
+        featuredBackgroundColor: item.featuredBackgroundColor,
+        price: item.price,
+        discountPrice: item.discountPrice,
       };
     });
 

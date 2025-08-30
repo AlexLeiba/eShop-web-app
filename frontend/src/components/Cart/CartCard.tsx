@@ -11,13 +11,13 @@ import { useTranslation } from "react-i18next";
 import { useSessionToken } from "../../hooks/useSesstionToken";
 import { Discount } from "../Products/Discount";
 import { Price } from "../Reusable/Price";
+import { imageOptimisation } from "../../lib/utils";
 
 type Props = {
   productData: CartItemsType;
   type: "cart" | "wishList";
 };
 export function CartCard({ productData, type }: Props) {
-  console.log("🚀 ~ CartCard ~ productData:", productData);
   const { t } = useTranslation("translation", { keyPrefix: "CartPage" });
 
   const dispatch = useDispatch();
@@ -49,11 +49,14 @@ export function CartCard({ productData, type }: Props) {
       )}
       <Link to={`/product/${productData._id}`}>
         <div>
-          <img
-            className="h-[160px] min-w-[300px] object-contain"
-            src={productData.image}
-            alt={productData.title}
-          />
+          {productData.image && (
+            <img
+              loading="lazy"
+              className="h-[160px] min-w-[300px] object-contain"
+              src={imageOptimisation(productData.image)}
+              alt={productData.title}
+            />
+          )}
         </div>
       </Link>
 
@@ -81,7 +84,7 @@ export function CartCard({ productData, type }: Props) {
               type="cartPage"
             />
             {type === "wishList" && (
-              <Button>
+              <Button title="Add to cart">
                 Add to cart <IconShoppingCart className="ml-2" />
               </Button>
             )}

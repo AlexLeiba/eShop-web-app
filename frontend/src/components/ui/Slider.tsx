@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import SlideButton from "./SlideButton";
 import { Button } from "./Button";
 import { Link } from "react-router-dom";
-import { cn } from "../../lib/utils";
+import { cn, imageOptimisation } from "../../lib/utils";
 import { Container } from "../Grid/Container";
 import type { ProductsDataType } from "../../pages/ProductsList";
 import { useTranslation } from "react-i18next";
@@ -89,12 +89,14 @@ export function Slider({ data }: SliderProps) {
             >
               <div className="grid lg:grid-cols-2  md:grid-cols-1 items-center gap-8">
                 <div className="flex justify-end">
-                  <img
-                    loading="lazy"
-                    className="w-[600px] lg:h-[400px] h-[250px] object-contain"
-                    src={item.image}
-                    alt={item.title}
-                  />
+                  {item.image && (
+                    <img
+                      loading="lazy"
+                      className="w-[600px] lg:h-[400px] h-[250px] object-contain"
+                      src={imageOptimisation(item.image, "w_600")}
+                      alt={item.title}
+                    />
+                  )}
                 </div>
                 <div className="flex gap-4 flex-col">
                   <h1 className="lg:text-5xl md:text-5xl text-3xl font-bold line-clamp-1">

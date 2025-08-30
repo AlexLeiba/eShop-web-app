@@ -97,6 +97,7 @@ function SearchSelector() {
                   className="hover:text-white gap-4  px-2 relative rounded-sm w-full h-12 flex items-center hover:bg-gray-400 transition-all cursor-pointer"
                 >
                   <img
+                    loading="lazy"
                     src={item.image}
                     alt={item.title}
                     className="w-10 h-10 object-contain"

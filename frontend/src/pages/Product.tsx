@@ -32,7 +32,7 @@ import DOMPurify from "dompurify";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
-import { cn } from "../lib/utils";
+import { cn, imageOptimisation } from "../lib/utils";
 import { StarRate } from "../components/ui/starRate";
 import { Price } from "../components/Reusable/Price";
 function Product() {
@@ -174,8 +174,8 @@ function Product() {
                     loading="lazy"
                     src={
                       !selectedValues.color
-                        ? productData.image
-                        : showSelectedImageColor()
+                        ? imageOptimisation(productData.image)
+                        : imageOptimisation(showSelectedImageColor() || "")
                     }
                     alt={productData.title}
                   />
@@ -188,7 +188,7 @@ function Product() {
                     open={open}
                     close={() => setOpen(false)}
                     slides={productData.images.slice().map((item) => ({
-                      src: item.image,
+                      src: imageOptimisation(item.image),
                     }))}
                     plugins={[Zoom]}
                   />

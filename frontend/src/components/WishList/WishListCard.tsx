@@ -11,6 +11,7 @@ import { Spacer } from "../ui/spacer";
 import { useSessionToken } from "../../hooks/useSesstionToken";
 import { Discount } from "../Products/Discount";
 import { Price } from "../Reusable/Price";
+import { imageOptimisation } from "../../lib/utils";
 
 type Props = {
   data: ProductsType;
@@ -64,11 +65,14 @@ export function WishListCard({ data, type }: Props) {
       )}
       <Link to={`/product/${data._id}`}>
         <div>
-          <img
-            className="h-[160px] min-w-[300px] object-contain"
-            src={data.image}
-            alt={data.title}
-          />
+          {data.image && (
+            <img
+              loading="lazy"
+              className="h-[160px] min-w-[300px] object-contain"
+              src={imageOptimisation(data.image)}
+              alt={data.title}
+            />
+          )}
         </div>
       </Link>
 

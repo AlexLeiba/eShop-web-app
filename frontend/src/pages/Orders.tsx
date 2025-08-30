@@ -19,6 +19,7 @@ import { Loader } from "../components/ui/Loader";
 import { Layout } from "../components/Layout/Layout";
 import { useSessionToken } from "../hooks/useSesstionToken";
 import { axiosPrivateInstance } from "../lib/axiosInstance";
+import { imageOptimisation } from "../lib/utils";
 
 export type OrdersDataType = {
   data: OrderType[];
@@ -121,11 +122,16 @@ function Orders() {
               } else if (column.id === "products") {
                 return (
                   <TableCell key={column.id} style={{ minWidth: 100 }}>
-                    <img
-                      className="w-14  object-contain"
-                      src={row[column.id][0].image as string}
-                      alt="product"
-                    />
+                    {row[column.id][0].image && (
+                      <img
+                        loading="lazy"
+                        className="w-14  object-contain"
+                        src={imageOptimisation(
+                          row[column.id][0].image as string
+                        )}
+                        alt="product"
+                      />
+                    )}
                   </TableCell>
                 );
               } else {

@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 import { useSessionToken } from "../../hooks/useSesstionToken";
 import { CardRate } from "./CardRate";
 import type { RootState } from "../../store/store";
-import { cn } from "../../lib/utils";
+import { cn, imageOptimisation } from "../../lib/utils";
 import { Discount } from "./Discount";
 
 type Props = {
@@ -71,6 +71,7 @@ export function ProductsCard({ data }: Props) {
 
     return false;
   }
+
   return (
     <div
       key={data._id}
@@ -95,9 +96,13 @@ export function ProductsCard({ data }: Props) {
       </div>
 
       {/* THE BUTTONS MENU ON HOVER */}
-      <div className="transition-all lg:bg-transparent  lg:group-hover:bg-black/20 bg-black/20  absolute inset-0 h-full w-full flex justify-center items-center gap-2">
-        <div className="lg:group-hover:flex lg:hidden md:flex flex transition-all  gap-2">
+      <div
+        tabIndex={0}
+        className="transition-all lg:bg-transparent  focus-within:bg-black/20  lg:group-hover:bg-black/20 bg-black/20  absolute inset-0 h-full w-full flex justify-center items-center gap-2"
+      >
+        <div className="lg:group-hover:flex lg:group-focus-within:flex lg:hidden md:flex flex transition-all  gap-2">
           <Button
+            title="Add to cart"
             disabled={!sessionToken}
             onClick={() => handleAddToCart(data)}
             className="w-[40px] p-1 bg-black text-white flex items-center justify-center scale-100 hover:scale-110 transition-all "
@@ -106,6 +111,7 @@ export function ProductsCard({ data }: Props) {
           </Button>
 
           <Button
+            title="Add to wishlist"
             disabled={!sessionToken}
             onClick={() => handleAddToWishList(data)}
             className="w-[40px] p-1 bg-black text-white flex items-center justify-center scale-100  hover:scale-110 transition-all "
@@ -113,7 +119,7 @@ export function ProductsCard({ data }: Props) {
             <IconHeart className={cn(isProductFavorite() && "text-red-600")} />
           </Button>
 
-          <Link to={`/product/${data._id}`}>
+          <Link to={`/product/${data._id}`} title="View Product">
             <Button className="w-[40px] p-1 bg-black text-white flex items-center justify-center scale-100  hover:scale-110 transition-all ">
               <IconEye />
             </Button>
@@ -123,12 +129,14 @@ export function ProductsCard({ data }: Props) {
 
       {/* COVER IMAGE */}
       <div className="h-[200px]">
-        <img
-          loading="lazy"
-          className="w-full h-[200px] object-contain"
-          src={data.image}
-          alt={data.title}
-        />
+        {data.image && (
+          <img
+            loading="lazy"
+            className="w-full h-[200px] object-contain"
+            src={imageOptimisation(data.image, "w_400")}
+            alt={data.title}
+          />
+        )}
       </div>
 
       {/* TITLE */}
