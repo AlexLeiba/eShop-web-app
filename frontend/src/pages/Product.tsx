@@ -265,6 +265,7 @@ function Product() {
                 </Button>
                 <Spacer size={6} />
                 <Button
+                  id="moreInfo"
                   disabled={isInWishlist || !sessionToken}
                   variant="secondary"
                   onClick={handleAddToWishList}
@@ -289,7 +290,7 @@ function Product() {
 
             {productData.moreInfo && (
               <>
-                <p className="font-medium text-xl dark:text-white">
+                <p className="font-bold text-xl dark:text-white">
                   {t("moreInfo")}
                 </p>
 
@@ -324,22 +325,36 @@ function SafeHTML({ html }: { html: string }) {
 
   const cleanHTML = DOMPurify.sanitize(html).substring(
     0,
-    showMore ? html.length : 50
+    showMore ? html.length : 80
   );
+
+  function handleShowMore() {
+    setShowMore((prev) => {
+      if (prev) {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+        return false;
+      } else {
+        return true;
+      }
+    });
+  }
   return (
     <div className="relative">
       <div
-        className="dark:text-gray-300 html-content ml-2"
+        className="dark:text-gray-300 html-content ml-4  min-h-[50px]"
         dangerouslySetInnerHTML={{ __html: cleanHTML }}
       />
 
       {!showMore && (
-        <div className="h-14 w-full  top-0 left-0 bg-gradient-to-t from-white via-white dark:from-gray-900 dark:via-gray-900 to-transparent z-30 absolute"></div>
+        <div className="h-20 w-full  top-0 left-0 bg-gradient-to-t from-white via-white dark:from-gray-900 dark:via-gray-900 to-transparent z-30 absolute"></div>
       )}
       <Button
         variant="ghost"
-        onClick={() => setShowMore(!showMore)}
-        className="dark:text-white mt-6 group"
+        onClick={handleShowMore}
+        className="dark:text-white mt-10  group"
       >
         {showMore ? (
           <>
