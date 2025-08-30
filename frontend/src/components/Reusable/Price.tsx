@@ -7,7 +7,7 @@ export function Price({ price, discountPrice }: Props) {
     <>
       {discountPrice ? (
         <p className="text-3xl">
-          <span className="line-through text-gray-200 mr-2 text-xl">
+          <span className="line-through text-gray-500 dark:text-gray-200 mr-2 text-xl">
             ${price}
           </span>
           ${discountPrice}

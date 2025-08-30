@@ -150,11 +150,11 @@ function ForgotPasswordPage() {
     document.title = "Forgot Password | eShop App";
     const metaDesc = document.querySelector("meta[name='description']");
     if (metaDesc) {
-      metaDesc.setAttribute("content", "Shoping app");
+      metaDesc.setAttribute("content", "Shopping app");
     } else {
       const newMeta = document.createElement("meta");
       newMeta.name = "description";
-      newMeta.content = "Shoping app";
+      newMeta.content = "Shopping app";
       document.head.appendChild(newMeta);
     }
   }, []);

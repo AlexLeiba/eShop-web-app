@@ -20,7 +20,7 @@ export function Loader({ children, loading, className }: Props) {
     <>
       {loading ? (
         <div className={cn("flex justify-center items-center ", className)}>
-          <IconLoader className="animate-spin" />
+          <IconLoader className="animate-spin dark:text-white" />
         </div>
       ) : (
         children

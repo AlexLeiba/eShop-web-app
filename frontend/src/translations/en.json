@@ -138,6 +138,8 @@
     "color": "Color",
     "size": "Size",
     "moreInfo": "Additional informations",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "toasts": {
       "selectSizeAndColor": "Select Size and Color",
       "selectSize": "Select Size",

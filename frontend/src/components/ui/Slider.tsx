@@ -105,17 +105,18 @@ export function Slider({ data }: SliderProps) {
                   <p className="text-xl line-clamp-3 max-w-[600px] pr-8">
                     {item.description}
                   </p>
-                  <Price
-                    price={item.price}
-                    discountPrice={item.discountPrice}
-                  />
+
                   <Link to={`/product/${item._id}`}>
                     <Button
-                      className="lg:w-[200px] w-full "
+                      className="flex gap-3 items-center "
                       size="large"
                       variant="primary"
                     >
                       <p className="text-2xl">{t("shopNowButton")}</p>
+                      <Price
+                        price={item.price}
+                        discountPrice={item.discountPrice}
+                      />
                     </Button>
                   </Link>
                 </div>

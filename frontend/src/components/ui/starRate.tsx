@@ -26,7 +26,6 @@ export function StarRate({ defaultValue, sessionToken, productId }: Props) {
   async function handleStarClick(index: number) {
     setSelectedStar(index);
     const response = await rateProduct({
-      // dispatch,
       productId,
       sessionToken,
       rating: index,
@@ -102,14 +101,14 @@ export function StarRate({ defaultValue, sessionToken, productId }: Props) {
     );
   }
   return (
-    <div className="flex items-start gap-2 flex-col group">
+    <div className="flex items-start gap-2 flex-col group" tabIndex={0}>
       {sessionToken && (
         <div className="flex items-center gap-2 ">
-          <div className=" items-center justify-end w-full gap-2  group-hover:flex hidden">
+          <div className=" items-center justify-end w-full gap-2 group-focus-within:flex  group-hover:flex hidden">
             {selectedStar > 0 && (
               <>
                 <div className="flex  size-6 gap-1 p-2 bg-gray-200 rounded-full  justify-center items-center">
-                  <p className="text-xl dark:text-black">{selectedStar}</p>
+                  <p className="text-sm dark:text-black">{selectedStar}</p>
                 </div>
 
                 <IconX

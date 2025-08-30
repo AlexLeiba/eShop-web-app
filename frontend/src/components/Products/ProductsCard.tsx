@@ -148,7 +148,7 @@ export function ProductsCard({ data }: Props) {
         {/* PRICE */}
         {data.discountPrice ? (
           <p>
-            <span className="line-through text-gray-200 mr-2 text-sm">
+            <span className="line-through text-gray-500 dark:text-gray-200 mr-2 text-sm">
               ${data.price}
             </span>
             ${data.discountPrice}

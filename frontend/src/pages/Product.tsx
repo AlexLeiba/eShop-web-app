@@ -35,6 +35,7 @@ import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import { cn, imageOptimisation } from "../lib/utils";
 import { StarRate } from "../components/ui/starRate";
 import { Price } from "../components/Reusable/Price";
+import ScrollToTopButton from "../components/Reusable/ScrollToTopButton";
 function Product() {
   const [open, setOpen] = React.useState(false);
   const { t } = useTranslation("translation", { keyPrefix: "ProductPage" });
@@ -67,14 +68,14 @@ function Product() {
       }
       setLoading(false);
 
-      document.title = `${response?.data?.title || "Product"} | Shoping app`;
+      document.title = `${response?.data?.title || "Product"} | Shopping app`;
       const metaDesc = document.querySelector("meta[name='description']");
       if (metaDesc) {
-        metaDesc.setAttribute("content", "Shoping app");
+        metaDesc.setAttribute("content", "Shopping app");
       } else {
         const newMeta = document.createElement("meta");
         newMeta.name = "description";
-        newMeta.content = "Shoping app";
+        newMeta.content = "Shopping app";
         document.head.appendChild(newMeta);
       }
     }
@@ -303,10 +304,14 @@ function Product() {
         <Spacer sm={16} md={24} lg={24} />
 
         {/* Newsletter */}
-        <Container fluid className="bg-gray-100 dark:bg-gray-800 text-white">
+        <Container
+          fluid
+          className="bg-gray-100 dark:bg-gray-800 dark:text-white"
+        >
           <Newsletter />
         </Container>
       </Layout>
+      <ScrollToTopButton />
     </>
   );
 }
@@ -314,6 +319,7 @@ function Product() {
 export default Product;
 
 function SafeHTML({ html }: { html: string }) {
+  const { t } = useTranslation("translation", { keyPrefix: "ProductPage" });
   const [showMore, setShowMore] = useState(false);
 
   const cleanHTML = DOMPurify.sanitize(html).substring(
@@ -323,27 +329,27 @@ function SafeHTML({ html }: { html: string }) {
   return (
     <div className="relative">
       <div
-        className="dark:text-gray-300 html-content"
+        className="dark:text-gray-300 html-content ml-2"
         dangerouslySetInnerHTML={{ __html: cleanHTML }}
       />
 
       {!showMore && (
-        <div className="h-14 w-full  top-0 left-0 bg-gradient-to-t from-gray-900 via-gray-900 to-transparent z-30 absolute"></div>
+        <div className="h-14 w-full  top-0 left-0 bg-gradient-to-t from-white via-white dark:from-gray-900 dark:via-gray-900 to-transparent z-30 absolute"></div>
       )}
       <Button
         variant="ghost"
         onClick={() => setShowMore(!showMore)}
-        className="dark:text-white mt-6"
+        className="dark:text-white mt-6 group"
       >
         {showMore ? (
           <>
-            Show less
-            <IconChevronUp />
+            {t("showLess")}
+            <IconChevronUp className="group-hover:-translate-y-2 duration-300" />
           </>
         ) : (
           <>
-            Show more
-            <IconChevronDown />
+            {t("showMore")}
+            <IconChevronDown className="group-hover:translate-y-2 duration-300" />
           </>
         )}
       </Button>

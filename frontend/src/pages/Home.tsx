@@ -35,7 +35,7 @@ function Home() {
           });
         }
         timerStarted = true;
-      }, 2000);
+      }, 4000);
 
       try {
         const response = await fetchProducts({
@@ -60,11 +60,11 @@ function Home() {
     document.title = "Home | eShop App";
     const metaDesc = document.querySelector("meta[name='description']");
     if (metaDesc) {
-      metaDesc.setAttribute("content", "Shoping app");
+      metaDesc.setAttribute("content", "Shopping app");
     } else {
       const newMeta = document.createElement("meta");
       newMeta.name = "description";
-      newMeta.content = "Shoping app";
+      newMeta.content = "Shopping app";
       document.head.appendChild(newMeta);
     }
   }, [pathname, dispatch, t]);
@@ -96,10 +96,10 @@ function Home() {
                 to={"/products?sort=newest&page=1"}
                 title={t("ProductsSection.allProducts")}
               >
-                <p className="text-2xl font-bold  text-white">
+                <p className="text-2xl font-bold  dark:text-white">
                   {t("ProductsSection.allProducts")}
                 </p>
-                <div className="w-full h-[1px] bg-white group-hover:w-0 transition-all ease-in-out"></div>
+                <div className="w-full h-[1px] bg-gray-800 dark:bg-white group-hover:w-0 transition-all ease-in-out"></div>
               </Link>
             </div>
             <Products loading={loading} type="dashboard" />

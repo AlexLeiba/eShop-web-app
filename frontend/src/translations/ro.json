@@ -137,6 +137,8 @@
     "color": "Culoarea",
     "size": "Marimea",
     "moreInfo": "Mai multe informații",
+    "showMore": "Arata mai mult",
+    "showLess": "Arata mai putin",
     "toasts": {
       "selectSizeAndColor": "Selecteaza marimea si culoarea",
       "selectSize": "Selecteaza marimea",
