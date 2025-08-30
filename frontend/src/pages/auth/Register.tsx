@@ -81,6 +81,17 @@ function Register() {
 
   useEffect(() => {
     setFormData(initialState);
+
+    document.title = "Registration | eShop App";
+    const metaDesc = document.querySelector("meta[name='description']");
+    if (metaDesc) {
+      metaDesc.setAttribute("content", "Shoping app");
+    } else {
+      const newMeta = document.createElement("meta");
+      newMeta.name = "description";
+      newMeta.content = "Shoping app";
+      document.head.appendChild(newMeta);
+    }
   }, []);
 
   return (
