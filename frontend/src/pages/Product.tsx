@@ -67,7 +67,7 @@ function Product() {
       }
       setLoading(false);
 
-      document.title = `${response.data?.title || "Product"} | Shoping app`;
+      document.title = `${response?.data?.title || "Product"} | Shoping app`;
       const metaDesc = document.querySelector("meta[name='description']");
       if (metaDesc) {
         metaDesc.setAttribute("content", "Shoping app");
