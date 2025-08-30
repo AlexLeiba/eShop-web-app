@@ -61,6 +61,17 @@ function Orders() {
       }
     }
     fetchData();
+
+    document.title = "Orders | eShop App";
+    const metaDesc = document.querySelector("meta[name='description']");
+    if (metaDesc) {
+      metaDesc.setAttribute("content", "Shoping app");
+    } else {
+      const newMeta = document.createElement("meta");
+      newMeta.name = "description";
+      newMeta.content = "Shoping app";
+      document.head.appendChild(newMeta);
+    }
   }, [searchParams, sessionToken]);
 
   function rowsData() {

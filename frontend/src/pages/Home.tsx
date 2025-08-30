@@ -56,53 +56,66 @@ function Home() {
     }
 
     fetchData();
+
+    document.title = "Home | eShop App";
+    const metaDesc = document.querySelector("meta[name='description']");
+    if (metaDesc) {
+      metaDesc.setAttribute("content", "Shoping app");
+    } else {
+      const newMeta = document.createElement("meta");
+      newMeta.name = "description";
+      newMeta.content = "Shoping app";
+      document.head.appendChild(newMeta);
+    }
   }, [pathname, dispatch, t]);
   return (
-    <Layout>
-      <Announcement title="lorem20 is coming soon dsdsadsa sdadsa dsadsad" />
-      <div className="flex flex-grow-1 flex-col">
-        {/* FEATURED PRODUCTS HERO SLIDER */}
-        <Container fluid>
-          <Slider data={featuredProductsData.data} />
-        </Container>
-        <Spacer sm={16} md={24} lg={24} />
+    <>
+      <Layout>
+        <Announcement title="lorem20 is coming soon dsdsadsa sdadsa dsadsad" />
+        <div className="flex flex-grow-1 flex-col">
+          {/* FEATURED PRODUCTS HERO SLIDER */}
+          <Container fluid>
+            <Slider data={featuredProductsData.data} />
+          </Container>
+          <Spacer sm={16} md={24} lg={24} />
 
-        {/* CATEGORIES */}
-        <Container>
-          <Categories />
-        </Container>
-        <Spacer sm={16} md={24} lg={24} />
+          {/* CATEGORIES */}
+          <Container>
+            <Categories />
+          </Container>
+          <Spacer sm={16} md={24} lg={24} />
 
-        {/* PRODUCTS */}
-        <Container>
-          <div className="flex justify-between items-center">
-            <h2 className="dark:text-white text-4xl font-bold">
-              {t("ProductsSection.title")}
-            </h2>
-            <Link
-              className="group"
-              to={"/products?sort=newest&page=1"}
-              title={t("ProductsSection.allProducts")}
-            >
-              <p className="text-2xl font-bold  text-white">
-                {t("ProductsSection.allProducts")}
-              </p>
-              <div className="w-full h-[1px] bg-white group-hover:w-0 transition-all ease-in-out"></div>
-            </Link>
-          </div>
-          <Products loading={loading} type="dashboard" />
-        </Container>
+          {/* PRODUCTS */}
+          <Container>
+            <div className="flex justify-between items-center">
+              <h2 className="dark:text-white text-4xl font-bold">
+                {t("ProductsSection.title")}
+              </h2>
+              <Link
+                className="group"
+                to={"/products?sort=newest&page=1"}
+                title={t("ProductsSection.allProducts")}
+              >
+                <p className="text-2xl font-bold  text-white">
+                  {t("ProductsSection.allProducts")}
+                </p>
+                <div className="w-full h-[1px] bg-white group-hover:w-0 transition-all ease-in-out"></div>
+              </Link>
+            </div>
+            <Products loading={loading} type="dashboard" />
+          </Container>
 
-        {/* NEWSLETTER */}
-        <Spacer sm={16} md={24} lg={24} />
-        <Container
-          fluid
-          className="bg-gray-100 dark:bg-gray-800 dark:text-white "
-        >
-          <Newsletter />
-        </Container>
-      </div>
-    </Layout>
+          {/* NEWSLETTER */}
+          <Spacer sm={16} md={24} lg={24} />
+          <Container
+            fluid
+            className="bg-gray-100 dark:bg-gray-800 dark:text-white "
+          >
+            <Newsletter />
+          </Container>
+        </div>
+      </Layout>
+    </>
   );
 }
 
