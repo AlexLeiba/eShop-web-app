@@ -349,12 +349,12 @@ function SafeHTML({ html }: { html: string }) {
       />
 
       {!showMore && (
-        <div className="h-20 w-full  top-0 left-0 bg-gradient-to-t from-white via-white dark:from-gray-900 dark:via-gray-900 to-transparent z-30 absolute"></div>
+        <div className="h-14 w-full  top-0 left-0 bg-gradient-to-t from-white via-white dark:from-gray-900 dark:via-gray-900 to-transparent z-30 absolute"></div>
       )}
       <Button
         variant="ghost"
         onClick={handleShowMore}
-        className="dark:text-white mt-10  group"
+        className="dark:text-white mt-4  group"
       >
         {showMore ? (
           <>
