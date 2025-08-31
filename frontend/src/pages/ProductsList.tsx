@@ -100,8 +100,6 @@ function ProductsList() {
             </h2>
             <Spacer sm={8} md={8} lg={8} />
             {/* Selected category */}
-
-            {/* <h2 className="text-2xl text-gray-500 font-semibold"></h2> */}
           </div>
           <Spacer size={8} />
 

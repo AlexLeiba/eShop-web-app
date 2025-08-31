@@ -63,7 +63,7 @@ export function WishListCard({ data, type }: Props) {
       {data.discountPrice && (
         <Discount discount={data.discountPrice} price={data.price} />
       )}
-      <Link to={`/product/${data._id}`}>
+      <Link to={`/product/${data._id.split("_")[0]}`}>
         <div>
           {data.image && (
             <img

@@ -35,6 +35,7 @@ router.put(
   verifyTokenAuthorization,
   async (req, res) => {
     const productId = req.params.productId;
+
     try {
       const isProductExistsInWishList = await WishList.findOne({
         userId: req.user.id,

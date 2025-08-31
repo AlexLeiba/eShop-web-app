@@ -18,6 +18,25 @@ const ProductSchema = new mongoose.Schema(
         },
       },
     ],
+    reviews: [
+      {
+        userId: {
+          type: String,
+        },
+        review: {
+          type: String,
+        },
+        userName: {
+          type: String,
+        },
+        rating: {
+          type: Number,
+        },
+        createdAt: {
+          type: Number,
+        },
+      },
+    ],
     enMoreInfo: {
       type: String,
     },

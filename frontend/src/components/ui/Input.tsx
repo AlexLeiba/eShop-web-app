@@ -10,6 +10,7 @@ type Props = {
   type?: string;
   disabled?: boolean;
   name?: string;
+  textareaType?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSend?: () => void;
 };
@@ -34,11 +35,12 @@ export function Input({
   value,
   error = "",
   type = "text",
+  textareaType = false,
   onChange,
   handleSend,
 
   ...props
-}: Props & React.HTMLAttributes<HTMLInputElement>) {
+}: Props & React.HTMLAttributes<HTMLInputElement | HTMLTextAreaElement>) {
   const [seePassword, setSeePassword] = useState(false);
   function handleSeePassword() {
     setSeePassword(!seePassword);
@@ -46,18 +48,35 @@ export function Input({
   return (
     <div className="w-full relative">
       {label && <label htmlFor={type}>{label}</label>}
-      <input
-        {...props}
-        className={cn(
-          handleSend || type === "password" ? "pr-10" : "pr-4",
-          error && " ring-[1px] ring-red-500",
-          "shadow focus-within:shadow-2xl  w-full bg-white dark:bg-gray-400 focus:text-white focus:placeholder:text-white text-black rounded-full py-2 pl-4  focus:border-none focus:outline-none focus:bg-gray-400 transition-all"
-        )}
-        type={type === "password" ? (seePassword ? "text" : "password") : type}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-      />
+
+      {!textareaType ? (
+        <input
+          {...props}
+          className={cn(
+            handleSend || type === "password" ? "pr-10" : "pr-4",
+            error && " ring-[1px] ring-red-500",
+            "shadow focus-within:shadow-2xl  w-full bg-white dark:bg-gray-400 focus:text-white focus:placeholder:text-white text-black rounded-full py-2 pl-4  focus:border-none focus:outline-none focus:bg-gray-400 transition-all"
+          )}
+          type={
+            type === "password" ? (seePassword ? "text" : "password") : type
+          }
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+        />
+      ) : (
+        <textarea
+          {...props}
+          className={cn(
+            handleSend || type === "password" ? "pr-10" : "pr-4",
+            error && " ring-[1px] ring-red-500",
+            "shadow focus-within:shadow-2xl  w-full bg-white dark:bg-gray-400 focus:text-white focus:placeholder:text-white text-black rounded-md py-2 pl-4  focus:border-none focus:outline-none focus:bg-gray-400 transition-all"
+          )}
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+        />
+      )}
       {type === "password" &&
         (!seePassword ? (
           <IconEye

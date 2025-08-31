@@ -56,7 +56,10 @@ function Home() {
     }
 
     fetchData();
+  }, [pathname, dispatch, t]);
 
+  // Metadata
+  useEffect(() => {
     document.title = "Home | eShop App";
     const metaDesc = document.querySelector("meta[name='description']");
     if (metaDesc) {
@@ -67,7 +70,7 @@ function Home() {
       newMeta.content = "Shopping app";
       document.head.appendChild(newMeta);
     }
-  }, [pathname, dispatch, t]);
+  }, []);
   return (
     <>
       <Layout>

@@ -30,20 +30,19 @@ export async function fetchProducts({
       throw new Error(featuredProductsResponse.data.error);
     }
 
-    if (productsResponse?.data?.data) {
-      dispatch(
-        getProducts({
-          data: productsResponse?.data?.data,
-          count: productsResponse?.data?.count,
-        })
-      );
-    }
-
     if (featuredProductsResponse?.data?.data) {
       dispatch(
         getFeaturedProducts({
           data: featuredProductsResponse?.data?.data,
           count: featuredProductsResponse?.data?.data.length,
+        })
+      );
+    }
+    if (productsResponse?.data?.data) {
+      dispatch(
+        getProducts({
+          data: productsResponse?.data?.data,
+          count: productsResponse?.data?.count,
         })
       );
     }
@@ -173,6 +172,46 @@ export async function rateProduct({
       url: `/api/rate-product`,
       method: "POST",
       data: { rating, productId },
+      headers: {
+        "Content-Type": "application/json",
+        token: `Bearer ${sessionToken}`,
+      },
+    });
+
+    return {
+      data: responseProduct.data,
+      error: null,
+    };
+  } catch (error: any) {
+    return {
+      data: null,
+      error: error.response.data.error || "Something went wrong",
+    };
+  }
+}
+
+type ReviewProductProps = {
+  productId: string;
+  sessionToken: string | null;
+  review: string;
+  rating: number;
+  userName: string;
+};
+export async function reviewProduct({
+  productId,
+  sessionToken,
+  review,
+  rating,
+  userName,
+}: ReviewProductProps): Promise<{
+  error: string | null;
+  data: ProductsType | null;
+}> {
+  try {
+    const { data: responseProduct } = await axiosInstance({
+      url: `/api/add-product-review`,
+      method: "POST",
+      data: { review, productId, rating, userName },
       headers: {
         "Content-Type": "application/json",
         token: `Bearer ${sessionToken}`,

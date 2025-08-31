@@ -1,10 +1,21 @@
 "use client";
 import { IconStarFilled, IconX } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
-import { rateProduct } from "../../store/products/apiCalls";
+import { rateProduct, reviewProduct } from "../../store/products/apiCalls";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import type { RootState } from "../../store/store";
+import { Button } from "./Button";
+import {
+  Modal,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalProvider,
+  ModalTrigger,
+} from "./Modal";
+import { Input } from "./Input";
+import { Spacer } from "./spacer";
 
 const stars = new Array(5).fill(0);
 
@@ -72,6 +83,20 @@ export function StarRate({ defaultValue, sessionToken, productId }: Props) {
     setDefaultStarData((prev) => {
       return prev?.filter((data) => data.userId !== userId);
     });
+  }
+  async function handleReview() {
+    const response = await reviewProduct({
+      // dispatch,
+      productId,
+      sessionToken,
+      review: "yayaya333",
+      rating: 5,
+      userName: "John Doe",
+    });
+
+    if (response?.error) {
+      return toast.error(response.error);
+    }
   }
 
   useEffect(() => {
@@ -152,13 +177,51 @@ export function StarRate({ defaultValue, sessionToken, productId }: Props) {
         </div>
       )}
       <div className="flex items-center  gap-3 justify-end w-full">
-        {!sessionToken && <IconStarFilled color="#efce11" />}
-        <div className="flex items-end h-full gap-1">
-          <p className="text-xl dark:text-white">{showAverageRating()}</p>
-          <p className="text-lg dark:text-gray-300">/</p>
-          <p className="text-lg dark:text-gray-300">5</p>
+        <div>
+          <ModalProvider
+            title={"Add Review"}
+            description={""}
+            onConfirm={handleReview}
+          >
+            <ModalTrigger>
+              <Button
+                variant="link"
+                className="transition-all"
+                title="Add Review"
+              >
+                <p>+ Review</p>
+              </Button>
+            </ModalTrigger>
+            <Modal classNameCustome="w-[500px]">
+              <ModalHeader>
+                <p className="font-semibold text-xl">Add Review</p>
+                <Spacer size={4} />
+              </ModalHeader>
+              <ModalContent>
+                <Input
+                  textareaType
+                  label=""
+                  value=""
+                  onChange={() => {}}
+                  placeholder={"Type your review here..."}
+                  error="ss"
+                />
+                <Spacer size={10} />
+                {/* <AddReviewForm productId={productId} /> */}
+              </ModalContent>
+              <ModalFooter />
+            </Modal>
+          </ModalProvider>
         </div>
-        <p className="text-xs dark:text-gray-300">( {showNrOfVotes()} )</p>
+        <div className="flex flex-col justify-center items-center">
+          {!sessionToken && <IconStarFilled color="#efce11" />}
+          <div className="flex items-end h-full gap-1">
+            <p className="text-xl dark:text-white">{showAverageRating()}</p>
+            <p className="text-lg dark:text-gray-300">/</p>
+            <p className="text-lg dark:text-gray-300">5</p>
+          </div>
+          <p className="text-xs dark:text-gray-300">( {showNrOfVotes()} )</p>
+        </div>
       </div>
     </div>
   );

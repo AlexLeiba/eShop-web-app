@@ -3,16 +3,17 @@ import React from "react";
 import { cn } from "../../lib/utils";
 
 const buttonVariants = cva(
-  "w-full disabled:pointer-events-none transition-all font-bold rounded-full py-2 px-4 text-md hover:opacity-80 cursor-pointer hover:shadow-gray-400 shadow flex items-center justify-center disabled:text-white disabled:hover:shadow-none disabled:shadow-none disabled:hover:opacity-100",
+  "w-full disabled:pointer-events-none transition-all font-bold rounded-full py-2 px-4 text-md cursor-pointer  shadow flex items-center justify-center disabled:text-white disabled:hover:shadow-none disabled:shadow-none disabled:hover:opacity-100",
   {
     variants: {
       variant: {
         primary:
-          "bg-black text-white dark:disabled:text-gray-500 disabled:bg-gray-600 ",
+          "bg-black text-white dark:disabled:text-gray-500 disabled:bg-gray-600  hover:opacity-80 hover:shadow-gray-400",
         secondary:
-          "bg-white text-black dark:bg-gray-800 dark:text-white dark:disabled:bg-gray-800 dark:disabled:text-gray-600 disabled:bg-gray-300 disabled:text-white",
+          "bg-white text-black dark:bg-gray-800 dark:text-white dark:disabled:bg-gray-800 dark:disabled:text-gray-600 disabled:bg-gray-300 disabled:text-white  hover:opacity-80 hover:shadow-gray-400",
         ghost:
-          "bg-white text-black dark:bg-gray-900 dark:text-white dark:disabled:bg-gray-800 dark:disabled:text-gray-600 disabled:bg-gray-300 disabled:text-white",
+          "bg-white text-black dark:bg-gray-900 dark:text-white dark:disabled:bg-gray-800 dark:disabled:text-gray-600 disabled:bg-gray-300 disabled:text-white  hover:opacity-80 hover:shadow-gray-400",
+        link: "bg-transparent text-black dark:bg-gray-900 dark:text-white dark:disabled:bg-gray-800 dark:disabled:text-gray-600 disabled:bg-gray-300 disabled:text-white py-0 px-2 text-sm transition-all",
       },
       size: {
         large: "text-2xl h-14 ",
@@ -25,7 +26,7 @@ const buttonVariants = cva(
 
 type Props = {
   children: React.ReactNode;
-  variant?: "primary" | "secondary" | "ghost";
+  variant?: "primary" | "secondary" | "ghost" | "link";
   size?: "large" | "medium" | "small";
   className?: string;
   type?: "button" | "submit" | "reset";

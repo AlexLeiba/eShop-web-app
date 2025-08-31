@@ -70,14 +70,21 @@ export function Modal({
   return (
     <>
       <div
+        onClick={() => setIsModalOpen(false)}
         className={`${
           isModalOpen ? "block" : "hidden"
-        } fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 `}
+        } fixed inset-0 bg-black/50 backdrop-blur-sm  z-50 `}
+      ></div>
+      {/* Content */}
+      <div
+        className={cn(
+          isModalOpen ? "flex" : "hidden",
+          " items-center justify-center absolute top-0 left-0 w-full h-full"
+        )}
       >
-        {/* Content */}
         <div
           className={cn(
-            `dark:text-black min-w-[100px] min-h-[100px] mx-[10%] dark:bg-gray-200 bg-white z-50 rounded-md shadow-lg px-8 pt-10 pb-8 flex flex-col relative ${classNameCustome}`
+            ` dark:text-black min-w-[100px] min-h-[100px] mx-[10%] dark:bg-gray-200 bg-white z-50 rounded-md shadow-lg px-8 pt-10 pb-8 flex flex-col relative ${classNameCustome}`
           )}
         >
           <IconX
