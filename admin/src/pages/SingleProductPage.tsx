@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Layout } from "../components/Layout/Layout";
 import { GridContainer } from "../components/Grid/GridContainer";
 import Spacer from "../components/ui/Spacer";
@@ -30,6 +30,9 @@ function SingleProductPage() {
 
   const userData = useSelector((state: RootState) => state.user.userData);
   const sessionToken = userData?.token || "";
+
+  const uploadImageRef = useRef<HTMLInputElement>(null);
+  const uploadMultipleImageRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = React.useState<ProductType>(initialFormData);
   const [formDataErrors, setFormDataErrors] = React.useState<{
@@ -173,7 +176,12 @@ function SingleProductPage() {
   return (
     <Layout>
       <GridContainer fluid>
-        <h1>Product</h1>
+        <div className="flex-between-center">
+          <h1>Product</h1>
+          <div>
+            <Button onClick={handleSubmit}>Save</Button>
+          </div>
+        </div>
         <Spacer size={24} />
 
         <div>
@@ -195,6 +203,35 @@ function SingleProductPage() {
           <Spacer size={24} />
 
           <div className="grid-container-2-equal">
+            <div className="flex-center-row-8">
+              <label htmlFor="isPublished">
+                <b>Published</b>
+              </label>
+              <input
+                checked={formData.isPublished}
+                type="checkbox"
+                id="isPublished"
+                onChange={(e) =>
+                  handleChangeFormData("isPublished", e.target.checked)
+                }
+              />
+              <p className="text-error">{formDataErrors.isPublished}</p>
+            </div>
+
+            <div className="flex-center-row-8">
+              <label htmlFor="inStock">
+                <b>In Stock</b>
+              </label>
+              <input
+                checked={formData.inStock}
+                type="checkbox"
+                id="inStock"
+                onChange={(e) =>
+                  handleChangeFormData("inStock", e.target.checked)
+                }
+              />
+              <p className="text-error">{formDataErrors.inStock}</p>
+            </div>
             <Input
               label="En Title"
               placeholder="Enter en title"
@@ -263,61 +300,53 @@ function SingleProductPage() {
                 <label htmlFor="image">
                   <b>Cover Image</b>
                 </label>
-                <input type="file" id="image" onChange={handleImageChange} />
+                <input
+                  ref={uploadImageRef}
+                  type="file"
+                  id="image"
+                  onChange={handleImageChange}
+                />
+                <Button
+                  buttonVariant="green"
+                  onClick={() => uploadImageRef.current?.click()}
+                >
+                  Upload Image
+                </Button>
                 <p className="text-error">{formDataErrors.image}</p>
               </div>
 
-              {formData.image && (
-                <div className="flex-column-gap-12">
-                  <p>
-                    <b>Preview image</b>
-                  </p>
-                  <Spacer size={8} />
-                  {formData.image && (
-                    <>
-                      <IconX
-                        cursor={"pointer"}
-                        onClick={handleDeleteCoverImage}
-                      />
-                      <img
-                        src={formData.image}
-                        alt={"cover-image"}
-                        style={{
-                          width: 200,
-                          height: 150,
-                          objectFit: "contain",
-                        }}
-                      />
-                    </>
-                  )}
-                  <Spacer />
-                </div>
-              )}
+              {/* Preview image cover */}
+              <div>
+                <p>
+                  <b>Preview Cover Image</b>
+                </p>
+                <Spacer />
+                {formData.image && (
+                  <div className="preview-image-cover-card">
+                    <Spacer size={8} />
+                    {formData.image && (
+                      <>
+                        <IconX
+                          className="clear-cover-image-icon"
+                          cursor={"pointer"}
+                          onClick={handleDeleteCoverImage}
+                        />
+                        <img src={formData.image} alt={"cover-image"} />
+                      </>
+                    )}
+                    <Spacer />
+                  </div>
+                )}
+              </div>
             </div>
-            {/* <Spacer /> */}
 
             {/*MULTIPLE IMAGES WITH COLORS */}
             <div className="select-mltiple-images-container">
               <div>
                 <div>
-                  <div>
-                    <label htmlFor="image">
-                      <b>Product Images</b>
-                    </label>
-                    <Spacer size={8} />
-                    <input
-                      type="file"
-                      id="images"
-                      onChange={handleMultipleImageChange}
-                    />
-                    <p className="text-error">{formDataErrors.images}</p>
-                  </div>
-                </div>
-
-                <div>
                   <Spacer size={8} />
                   <p>
-                    <b>Image color</b>
+                    <b>Select image color</b>
                   </p>
                   <Spacer size={8} />
                   <select
@@ -343,37 +372,56 @@ function SingleProductPage() {
                   </select>
                   <p className="text-error"> {formDataErrors.imageColor}</p>
                 </div>
+                <Spacer size={12} />
+                <div>
+                  <div>
+                    <label htmlFor="image">
+                      <b>Upload color Images</b>
+                    </label>
+                    <Spacer size={8} />
+                    <input
+                      ref={uploadMultipleImageRef}
+                      type="file"
+                      id="images"
+                      onChange={handleMultipleImageChange}
+                    />
+                    <Button
+                      buttonVariant="green"
+                      onClick={() => uploadMultipleImageRef.current?.click()}
+                    >
+                      Upload Image
+                    </Button>
+                    <p className="text-error">{formDataErrors.images}</p>
+                  </div>
+                </div>
               </div>
               {formData.images && (
-                <div className="flex-column-gap-12">
+                <div>
                   <p>
-                    <b>Preview images</b>
+                    <b>Preview Color Images</b>
                   </p>
-                  {formData.images.map((item) => {
-                    return (
-                      <div
-                        key={item.colorName + item.image}
-                        className="flex-center-row-4"
-                      >
-                        <IconX
-                          cursor={"pointer"}
-                          onClick={() => handleDeleteProductImage(item.image)}
-                        />
-                        {item.image && (
-                          <img
-                            src={item.image}
-                            alt={"cover-image"}
-                            style={{
-                              width: 100,
-                              height: 100,
-                              objectFit: "contain",
-                            }}
+                  <Spacer size={8} />
+                  <div className="container-multiple-images">
+                    {formData.images.map((item) => {
+                      return (
+                        <div
+                          key={item.colorName + item.image}
+                          className="multiple-images-card"
+                        >
+                          <IconX
+                            className="clear-cover-image-icon"
+                            cursor={"pointer"}
+                            onClick={() => handleDeleteProductImage(item.image)}
                           />
-                        )}
-                        <p>{item.colorName}</p>
-                      </div>
-                    );
-                  })}
+                          {item.image && (
+                            <img src={item.image} alt={"cover-image"} />
+                          )}
+                          <Spacer />
+                          <p>{item.colorName}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               )}
             </div>
@@ -435,35 +483,6 @@ function SingleProductPage() {
             </div>
 
             <div className="flex-column-gap-12">
-              <div className="flex-center-row-8">
-                <label htmlFor="isPublished">
-                  <b>Published</b>
-                </label>
-                <input
-                  checked={formData.isPublished}
-                  type="checkbox"
-                  id="isPublished"
-                  onChange={(e) =>
-                    handleChangeFormData("isPublished", e.target.checked)
-                  }
-                />
-                <p className="text-error">{formDataErrors.isPublished}</p>
-              </div>
-
-              <div className="flex-center-row-8">
-                <label htmlFor="inStock">
-                  <b>In Stock</b>
-                </label>
-                <input
-                  checked={formData.inStock}
-                  type="checkbox"
-                  id="inStock"
-                  onChange={(e) =>
-                    handleChangeFormData("inStock", e.target.checked)
-                  }
-                />
-                <p className="text-error">{formDataErrors.inStock}</p>
-              </div>
               <Spacer size={12} />
               <div className="flex-center-row-8">
                 <label htmlFor="featured">

@@ -1,26 +1,27 @@
-import React from 'react';
-import { DataGrid, type GridColDef, type GridRowId } from '@mui/x-data-grid';
-import { Layout } from '../components/Layout/Layout';
-import { GridContainer } from '../components/Grid/GridContainer';
-import Spacer from '../components/ui/Spacer';
-import { Box } from '@mui/material';
-import type { UserType } from '../lib/types';
-import { IconEdit, IconTrash } from '@tabler/icons-react';
-import { Link } from 'react-router-dom';
-import { apiFactory } from '../lib/apiFactory';
-import { useSelector } from 'react-redux';
-import type { RootState } from '../store/config';
-import toast from 'react-hot-toast';
+import React from "react";
+import { DataGrid, type GridColDef, type GridRowId } from "@mui/x-data-grid";
+import { Layout } from "../components/Layout/Layout";
+import { GridContainer } from "../components/Grid/GridContainer";
+import Spacer from "../components/ui/Spacer";
+import { Box } from "@mui/material";
+import type { UserType } from "../lib/types";
+import { IconEdit, IconTrash } from "@tabler/icons-react";
+import { Link, useNavigate } from "react-router-dom";
+import { apiFactory } from "../lib/apiFactory";
+import { useSelector } from "react-redux";
+import type { RootState } from "../store/config";
+import toast from "react-hot-toast";
 
 function UsersPage() {
+  const navigate = useNavigate();
   const userData = useSelector((state: RootState) => state.user.userData);
-  const sessionToken = userData?.token || '';
+  const sessionToken = userData?.token || "";
 
   const [selectedRows, setSelectedRows] = React.useState<GridRowId[]>([]);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(20);
 
   const [page, setPage] = React.useState(0);
-  const paginationModel = { page: 0, pageSize: 10 };
+  const paginationModel = { page: 0, pageSize: 20 };
 
   const [usersData, setUsersData] = React.useState<UserType[]>([]);
 
@@ -34,27 +35,30 @@ function UsersPage() {
   }
 
   React.useEffect(() => {
+    if (!userData?.data.isUberAdmin) {
+      navigate("/");
+    }
     fetchData();
   }, []);
 
-  async function handleDelete(rowId: string) {
-    try {
-      const response = await apiFactory().deleteUser({
-        userId: rowId,
-        token: sessionToken,
-      });
-      if (response.error) {
-        toast.error(response.error);
-        return;
-      }
-      toast.success('User was deleted successfully');
-      fetchData();
-    } catch (error: any) {
-      toast.error(error.message);
-    } finally {
-      toast.dismiss('deletingToastId');
-    }
-  }
+  // async function handleDelete(rowId: string) {
+  //   try {
+  //     const response = await apiFactory().deleteUser({
+  //       userId: rowId,
+  //       token: sessionToken,
+  //     });
+  //     if (response.error) {
+  //       toast.error(response.error);
+  //       return;
+  //     }
+  //     toast.success("User was deleted successfully");
+  //     fetchData();
+  //   } catch (error: any) {
+  //     toast.error(error.message);
+  //   } finally {
+  //     toast.dismiss("deletingToastId");
+  //   }
+  // }
 
   async function handleMultipleDelete() {
     const rowsToDelete: string[] = [];
@@ -70,8 +74,8 @@ function UsersPage() {
     });
 
     try {
-      toast.loading('Deleting...', {
-        id: 'deletingToastId',
+      toast.loading("Deleting...", {
+        id: "deletingToastId",
       });
       const response = await apiFactory().deleteMultipleUsers({
         userIds: rowsToDelete as string[],
@@ -81,20 +85,20 @@ function UsersPage() {
         toast.error(response.error);
         return;
       }
-      toast.success('Users were deleted successfully');
+      toast.success("Users were deleted successfully");
       fetchData();
     } catch (error: any) {
       toast.error(error.message);
     } finally {
-      toast.dismiss('deletingToastId');
+      toast.dismiss("deletingToastId");
     }
   }
 
   const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 70 },
+    { field: "id", headerName: "ID", width: 70 },
     {
-      field: 'userName',
-      headerName: 'Username',
+      field: "userName",
+      headerName: "Username",
       width: 130,
       renderCell: (params) => {
         return (
@@ -102,8 +106,8 @@ function UsersPage() {
             style={
               userData?.data._id === params.row._id
                 ? {
-                    fontWeight: 'bold',
-                    color: 'green',
+                    fontWeight: "bold",
+                    color: "green",
                   }
                 : {}
             }
@@ -114,20 +118,20 @@ function UsersPage() {
       },
     },
     {
-      field: 'name',
-      headerName: 'Full name',
+      field: "name",
+      headerName: "Full name",
       width: 150,
-      valueGetter: (_, row) => `${row.name || ''} ${row.lastName || ''}`,
+      valueGetter: (_, row) => `${row.name || ""} ${row.lastName || ""}`,
     },
     {
-      field: 'email',
-      headerName: 'Email',
-      type: 'string',
+      field: "email",
+      headerName: "Email",
+      type: "string",
       width: 200,
     },
     {
-      field: 'isAdmin',
-      headerName: 'Role',
+      field: "isAdmin",
+      headerName: "Role",
       // description: 'This column has a value getter and is not sortable.',
       sortable: false,
       width: 90,
@@ -137,49 +141,49 @@ function UsersPage() {
       renderCell: (params) => {
         if (params.row.isUberAdmin) {
           return (
-            <p style={{ color: '#1376e1', fontWeight: 'bold' }}>UberAdmin</p>
+            <p style={{ color: "#1376e1", fontWeight: "bold" }}>UberAdmin</p>
           );
         }
         if (params.row.isAdmin) {
-          return <p style={{ color: '#74cd48' }}>Admin</p>;
+          return <p style={{ color: "#74cd48" }}>Admin</p>;
         }
-        return <p style={{ color: '#d2ae1a' }}>User</p>;
+        return <p style={{ color: "#d2ae1a" }}>User</p>;
       },
     },
     {
-      field: 'createdAt',
-      headerName: 'Joined At',
+      field: "createdAt",
+      headerName: "Joined At",
       width: 100,
       valueGetter: (_, row) =>
-        new Date(row.createdAt).toLocaleDateString('en-US', {
-          year: '2-digit',
-          month: 'short',
-          day: 'numeric',
+        new Date(row.createdAt).toLocaleDateString("en-US", {
+          year: "2-digit",
+          month: "short",
+          day: "numeric",
         }),
       sortable: false,
     },
     {
-      field: 'action',
-      headerName: 'Action',
+      field: "action",
+      headerName: "Action",
       width: 100,
       renderCell: (params) => {
         return (
-          <div className='flex-center-center-12'>
+          <div className="flex-center-center-12">
             <Link
-              to={'/user/' + params.row._id}
-              className='flex-center-center-12'
+              to={"/user/" + params.row._id}
+              className="flex-center-center-12"
             >
-              <IconEdit size={20} cursor={'pointer'} />
+              <IconEdit size={20} cursor={"pointer"} />
             </Link>
 
-            <IconTrash
+            {/* <IconTrash
               size={20}
-              color={params.row.isAdmin ? '#000000' : '#ff0000'}
-              cursor={params.row.isAdmin ? 'not-allowed' : 'pointer'}
+              color={params.row.isAdmin ? "#000000" : "#ff0000"}
+              cursor={params.row.isAdmin ? "not-allowed" : "pointer"}
               onClick={() => {
                 params.row.isAdmin ? () => {} : handleDelete(params.row._id);
               }}
-            />
+            /> */}
           </div>
         );
       },
@@ -191,16 +195,16 @@ function UsersPage() {
       <GridContainer fluid>
         <h1>Users</h1>
         <Spacer size={24} />
-        <div className='add-new-product-wrapper'>
+        <div className="add-new-product-wrapper">
           {selectedRows.length > 0 ? (
             <>
-              <div className='flex-center-row-4'>
+              <div className="flex-center-row-4">
                 <p>
                   Delete all selected rows except Admin: {selectedRows.length}
                 </p>
                 <IconTrash
-                  color='#ff0000'
-                  cursor={'pointer'}
+                  color="#ff0000"
+                  cursor={"pointer"}
                   onClick={handleMultipleDelete}
                 />
               </div>
@@ -210,10 +214,9 @@ function UsersPage() {
           )}
         </div>
 
-        <Box sx={{ height: 650, width: '100%' }}>
+        <Box sx={{ height: 650, width: "100%" }}>
           <DataGrid
             onRowSelectionModelChange={(e: { ids: Set<GridRowId> }) => {
-              console.log('first', e);
               const selectedRowIds = Array.from(e.ids).map((id) => id);
               setSelectedRows(selectedRowIds);
             }}

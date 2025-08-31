@@ -1,9 +1,10 @@
-import React from 'react';
-import './Button.scss';
+import React from "react";
+import "./Button.scss";
 
 type Props = {
   children?: React.ReactNode;
   widthSize?: number;
+  buttonVariant?: "gray" | "green";
 };
 export function Button({
   children,
@@ -13,8 +14,8 @@ export function Button({
   return (
     <button
       {...props}
-      style={{ width: widthSize || '100%' }}
-      className='button'
+      style={{ width: widthSize || "100%" }}
+      className={`button ${props.buttonVariant || ""}`}
     >
       {children}
     </button>

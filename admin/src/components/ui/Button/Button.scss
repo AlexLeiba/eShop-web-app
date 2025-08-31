@@ -14,3 +14,13 @@
     opacity: 0.5;
   }
 }
+.gray {
+  @extend .button;
+
+  background-color: #909090;
+}
+.green {
+  @extend .button;
+
+  background-color: #0a8041;
+}

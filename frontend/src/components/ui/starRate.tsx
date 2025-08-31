@@ -1,21 +1,10 @@
 "use client";
 import { IconStarFilled, IconX } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
-import { rateProduct, reviewProduct } from "../../store/products/apiCalls";
+import { rateProduct } from "../../store/products/apiCalls";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import type { RootState } from "../../store/store";
-import { Button } from "./Button";
-import {
-  Modal,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalProvider,
-  ModalTrigger,
-} from "./Modal";
-import { Input } from "./Input";
-import { Spacer } from "./spacer";
 
 const stars = new Array(5).fill(0);
 
@@ -84,20 +73,20 @@ export function StarRate({ defaultValue, sessionToken, productId }: Props) {
       return prev?.filter((data) => data.userId !== userId);
     });
   }
-  async function handleReview() {
-    const response = await reviewProduct({
-      // dispatch,
-      productId,
-      sessionToken,
-      review: "yayaya333",
-      rating: 5,
-      userName: "John Doe",
-    });
-
-    if (response?.error) {
-      return toast.error(response.error);
-    }
-  }
+  //   async function handleReview() {
+  //     const response = await reviewProduct({
+  //       // dispatch,
+  //       productId,
+  //       sessionToken,
+  //       review: "Review message",
+  //       rating: 5,
+  //       userName: "John Doe",
+  //     });
+  //
+  //     if (response?.error) {
+  //       return toast.error(response.error);
+  //     }
+  //   }
 
   useEffect(() => {
     // filter by id rating
@@ -178,7 +167,7 @@ export function StarRate({ defaultValue, sessionToken, productId }: Props) {
       )}
       <div className="flex items-center  gap-3 justify-end w-full">
         <div>
-          <ModalProvider
+          {/* <ModalProvider
             title={"Add Review"}
             description={""}
             onConfirm={handleReview}
@@ -207,11 +196,11 @@ export function StarRate({ defaultValue, sessionToken, productId }: Props) {
                   error="ss"
                 />
                 <Spacer size={10} />
-                {/* <AddReviewForm productId={productId} /> */}
+              
               </ModalContent>
               <ModalFooter />
             </Modal>
-          </ModalProvider>
+          </ModalProvider> */}
         </div>
         <div className="flex flex-col justify-center items-center">
           {!sessionToken && <IconStarFilled color="#efce11" />}

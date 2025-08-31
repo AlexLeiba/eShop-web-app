@@ -1,29 +1,33 @@
-import { Layout } from '../components/Layout/Layout';
-import { GridContainer } from '../components/Grid/GridContainer';
-import Spacer from '../components/ui/Spacer';
-import { WidgetCard } from '../components/ui/WidgetCard';
-import { Input } from '../components/ui/Input/Input';
-import { Button } from '../components/ui/Button/Button';
-import React from 'react';
-import { CreateProductSchema, type ProductType } from '../lib/schemas';
-import { CATEGORIES, COLORS, SIZES } from '../lib/consts';
-import '../components/SingleProductPage/SingleProductPage.scss';
-import toast from 'react-hot-toast';
-import { apiFactory } from '../lib/apiFactory';
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import type { RootState } from '../store/config';
+import { Layout } from "../components/Layout/Layout";
+import { GridContainer } from "../components/Grid/GridContainer";
+import Spacer from "../components/ui/Spacer";
+import { WidgetCard } from "../components/ui/WidgetCard";
+import { Input } from "../components/ui/Input/Input";
+import { Button } from "../components/ui/Button/Button";
+import React, { useRef } from "react";
+import { CreateProductSchema, type ProductType } from "../lib/schemas";
+import { CATEGORIES, COLORS, SIZES } from "../lib/consts";
+import toast from "react-hot-toast";
+import { apiFactory } from "../lib/apiFactory";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import type { RootState } from "../store/config";
 import {
   initialErrorsObject,
   initialFormData,
-} from '../components/NewProductPage/initialData';
-import { IconX } from '@tabler/icons-react';
+} from "../components/NewProductPage/initialData";
+import { IconX } from "@tabler/icons-react";
+import "../components/SingleProductPage/SingleProductPage.scss";
+import ReactQuill from "react-quill-new";
 
 function NewProductPage() {
   const navigate = useNavigate();
   const userData = useSelector((state: RootState) => state.user.userData);
 
-  const sessionToken = userData?.token || '';
+  const sessionToken = userData?.token || "";
+
+  const uploadImageRef = useRef<HTMLInputElement>(null);
+  const uploadMultipleImageRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = React.useState<ProductType>(initialFormData);
 
   const [formDataErrors, setFormDataErrors] = React.useState<{
@@ -61,7 +65,7 @@ function NewProductPage() {
     setFormData((prev) => {
       return {
         ...prev,
-        image: '',
+        image: "",
       };
     });
   }
@@ -88,7 +92,7 @@ function NewProductPage() {
               {
                 colorName: formData.imageColor,
                 image: reader.result as string,
-                imageId: '',
+                imageId: "",
               },
             ],
           };
@@ -120,8 +124,8 @@ function NewProductPage() {
       // TODO: send data to backend
 
       try {
-        toast.loading('Saving...', {
-          id: 'savingToastId',
+        toast.loading("Saving...", {
+          id: "savingToastId",
         });
 
         const response = await apiFactory().newProduct(bodyData, sessionToken);
@@ -130,13 +134,13 @@ function NewProductPage() {
           return;
         }
         if (response.data) {
-          toast.success('Product was created successfully');
-          navigate('/products');
+          toast.success("Product was created successfully");
+          navigate("/products");
         }
       } catch (error: any) {
         toast.error(error.message);
       } finally {
-        toast.dismiss('savingToastId');
+        toast.dismiss("savingToastId");
       }
     }
   }
@@ -151,129 +155,133 @@ function NewProductPage() {
           <h3>Product details</h3>
           <Spacer size={24} />
 
-          <div className='grid-container-2-equal'>
+          <div className="grid-container-2-equal">
             <Input
-              label='En Title'
-              placeholder='Enter en title'
+              label="En Title"
+              placeholder="Enter en title"
               error={formDataErrors.enTitle}
               value={formData.enTitle}
-              onChange={(v) => handleChangeFormData('enTitle', v)}
-              type={'text'}
+              onChange={(v) => handleChangeFormData("enTitle", v)}
+              type={"text"}
             />
             <Input
-              label='Ro Title'
-              placeholder='Enter ro title'
+              label="Ro Title"
+              placeholder="Enter ro title"
               error={formDataErrors.roTitle}
               value={formData.roTitle}
-              onChange={(v) => handleChangeFormData('roTitle', v)}
-              type={'text'}
+              onChange={(v) => handleChangeFormData("roTitle", v)}
+              type={"text"}
             />
             <Input
-              label='En Description'
-              placeholder='Enter en description'
+              label="En Description"
+              placeholder="Enter en description"
               error={formDataErrors.enDescription}
               value={formData.enDescription}
-              onChange={(v) => handleChangeFormData('enDescription', v)}
-              type={'textarea'}
+              onChange={(v) => handleChangeFormData("enDescription", v)}
+              type={"textarea"}
             />
             <Input
-              label='Ro Description'
-              placeholder='Enter ro description'
+              label="Ro Description"
+              placeholder="Enter ro description"
               error={formDataErrors.roDescription}
               value={formData.roDescription}
-              onChange={(v) => handleChangeFormData('roDescription', v)}
-              type={'textarea'}
+              onChange={(v) => handleChangeFormData("roDescription", v)}
+              type={"textarea"}
             />
           </div>
           <Spacer />
-          <div className='grid-container-2-equal'>
+          <div className="grid-container-2-equal">
             <Input
-              label='Price'
-              placeholder='Enter product price'
+              label="Price"
+              placeholder="Enter product price"
               error={formDataErrors.price}
               value={formData.price}
-              onChange={(v) => handleChangeFormData('price', v)}
-              type={'number'}
+              onChange={(v) => handleChangeFormData("price", v)}
+              type={"number"}
             />
 
             <Input
-              label='Quantity'
-              placeholder='Enter product quantity'
-              error={formDataErrors.quantity}
-              value={formData?.quantity as string}
-              onChange={(v) => handleChangeFormData('quantity', v)}
-              type={'number'}
+              label="Discount Price"
+              placeholder="Enter the discount price"
+              error={formDataErrors.discountPrice}
+              value={(formData.discountPrice as string) || ""}
+              onChange={(v) => handleChangeFormData("discountPrice", v)}
+              type={"number"}
             />
 
+            <Input
+              label="Quantity"
+              placeholder="Enter product quantity"
+              error={formDataErrors.quantity}
+              value={formData?.quantity as string}
+              onChange={(v) => handleChangeFormData("quantity", v)}
+              type={"number"}
+            />
+
+            <div></div>
+
             {/* SINGLE IMAGE COVER */}
-            <div className='select-single-image-container'>
-              <div className='flex-column-gap-12'>
-                <label htmlFor='image'>
+            <div className="select-single-image-container">
+              <div className="flex-column-gap-12">
+                <label htmlFor="image">
                   <b>Cover Image</b>
                 </label>
-                <input type='file' id='image' onChange={handleImageChange} />
-                <p className='text-error'>{formDataErrors.image}</p>
+                <input
+                  ref={uploadImageRef}
+                  type="file"
+                  id="image"
+                  onChange={handleImageChange}
+                />
+                <Button
+                  buttonVariant="green"
+                  onClick={() => uploadImageRef.current?.click()}
+                >
+                  Upload Image
+                </Button>
+                <p className="text-error">{formDataErrors.image}</p>
               </div>
 
               {formData.image && (
-                <div className='flex-column-gap-12'>
+                <div className="flex-column-gap-12">
                   <p>
-                    <b>Preview cover images</b>{' '}
+                    <b>Preview Cover Image</b>
                   </p>
-                  <Spacer size={8} />
-                  {formData.image && (
-                    <>
-                      <IconX
-                        cursor={'pointer'}
-                        onClick={handleDeleteCoverImage}
-                      />
-                      <img
-                        src={formData.image}
-                        alt={'cover-image'}
-                        style={{
-                          width: 200,
-                          height: 150,
-                          objectFit: 'contain',
-                        }}
-                      />
-                    </>
-                  )}
+                  <div className="preview-image-cover-card">
+                    <Spacer size={8} />
+                    {formData.image && (
+                      <>
+                        <IconX
+                          className="clear-cover-image-icon"
+                          cursor={"pointer"}
+                          onClick={handleDeleteCoverImage}
+                        />
+                        <img src={formData.image} alt={"cover-image"} />
+                      </>
+                    )}
+                  </div>
                   <Spacer />
                 </div>
               )}
             </div>
 
             {/* MULTIPLE IMAGES WITH COLORS */}
-            <div className='select-mltiple-images-container'>
+            <div className="select-mltiple-images-container">
               <div>
                 <div>
-                  <div>
-                    <label htmlFor='image'>
-                      <b>Product Images</b>
-                    </label>
-                    <Spacer size={8} />
-                    <input
-                      type='file'
-                      id='images'
-                      onChange={handleMultipleImageChange}
-                    />
-                    <p className='text-error'>{formDataErrors.images}</p>
-                  </div>
-                </div>
-
-                <div>
                   <Spacer size={8} />
-                  <p>Image color</p>
+                  <p>
+                    <b>Select image color</b>
+                  </p>
                   <Spacer size={8} />
                   <select
-                    className='select'
+                    className="select"
                     onChange={(e) => {
                       const selecteOptionsArray = Array.from(
                         e.target.selectedOptions
                       ).map((option) => option.value);
 
                       handleChangeFormData(
-                        'imageColor',
+                        "imageColor",
                         selecteOptionsArray[0]
                       );
                     }}
@@ -286,60 +294,77 @@ function NewProductPage() {
                       );
                     })}
                   </select>
-                  <p className='text-error'> {formDataErrors.imageColor}</p>
+                  <p className="text-error"> {formDataErrors.imageColor}</p>
+                </div>
+                <Spacer size={12} />
+                <div>
+                  <div>
+                    <label htmlFor="image">
+                      <b>Upload color Images</b>
+                    </label>
+                    <Spacer size={8} />
+                    <input
+                      ref={uploadMultipleImageRef}
+                      type="file"
+                      id="images"
+                      onChange={handleMultipleImageChange}
+                    />
+                    <Button
+                      buttonVariant="green"
+                      onClick={() => uploadMultipleImageRef.current?.click()}
+                    >
+                      Upload Image
+                    </Button>
+                    <p className="text-error">{formDataErrors.images}</p>
+                  </div>
                 </div>
               </div>
-              {formData.images && (
-                <div className='flex-column-gap-12'>
+              {formData.images.length > 0 && (
+                <div>
                   <p>
-                    <b>Preview images</b>{' '}
+                    <b>Preview Color Images</b>
                   </p>
                   <Spacer size={8} />
-                  {formData.images.map((item) => {
-                    return (
-                      <div
-                        key={item.colorName + item.image}
-                        className='flex-center-row-4'
-                      >
-                        {item.image && (
-                          <>
-                            <IconX
-                              cursor={'pointer'}
-                              onClick={() =>
-                                handleDeleteProductImage(item.image)
-                              }
-                            />
-                            <img
-                              src={item.image}
-                              alt={'cover-image'}
-                              style={{
-                                width: 100,
-                                height: 100,
-                                objectFit: 'contain',
-                              }}
-                            />
-                          </>
-                        )}
-                        <p>{item.colorName}</p>
-                      </div>
-                    );
-                  })}
+                  <div className="container-multiple-images">
+                    {formData.images.map((item) => {
+                      return (
+                        <div
+                          key={item.colorName + item.image}
+                          className="multiple-images-card"
+                        >
+                          {item.image && (
+                            <>
+                              <IconX
+                                className="clear-cover-image-icon"
+                                cursor={"pointer"}
+                                onClick={() =>
+                                  handleDeleteProductImage(item.image)
+                                }
+                              />
+                              <img src={item.image} alt={"cover-image"} />
+                            </>
+                          )}
+                          <p>{item.colorName}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               )}
             </div>
           </div>
           <Spacer />
 
-          <div className='grid-container-2-equal'>
-            <div className='flex-column-gap-12'>
-              <div className='flex-column'>
+          <div className="grid-container-2-equal">
+            <div className="flex-column-gap-12">
+              <div className="flex-column">
                 <p>Category</p>
                 <Spacer size={8} />
                 <select
                   value={formData.categories[0]}
-                  className='select'
+                  className="select"
                   onChange={(e) =>
-                    handleChangeFormData('categories', [e.target.value])
+                    handleChangeFormData("categories", [e.target.value])
                   }
                 >
                   {CATEGORIES.map((item) => {
@@ -350,7 +375,7 @@ function NewProductPage() {
                     );
                   })}
                 </select>
-                <p className='text-error'>{formDataErrors.categories}</p>
+                <p className="text-error">{formDataErrors.categories}</p>
               </div>
 
               <div>
@@ -360,12 +385,12 @@ function NewProductPage() {
                 <select
                   value={formData.size.map((item) => item)}
                   multiple
-                  className='select'
+                  className="select"
                   onChange={(e) => {
                     const selectedOptionsArray = Array.from(
                       e.target.selectedOptions
                     ).map((option) => option.value);
-                    handleChangeFormData('size', selectedOptionsArray);
+                    handleChangeFormData("size", selectedOptionsArray);
                   }}
                 >
                   {SIZES.map((item) => {
@@ -376,7 +401,7 @@ function NewProductPage() {
                     );
                   })}
                 </select>
-                <p className='text-error'> {formDataErrors.size}</p>
+                <p className="text-error"> {formDataErrors.size}</p>
               </div>
 
               {/* <div className='flex-column'>
@@ -407,76 +432,96 @@ function NewProductPage() {
               </div> */}
             </div>
 
-            <div className='flex-column-gap-12'>
-              <div className='flex-center-row-8'>
-                <label htmlFor='isPublished'>Published</label>
+            <div className="flex-column-gap-12">
+              <div className="flex-center-row-8">
+                <label htmlFor="isPublished">Published</label>
                 <input
                   checked={formData.isPublished}
-                  type='checkbox'
-                  id='isPublished'
+                  type="checkbox"
+                  id="isPublished"
                   onChange={(e) =>
-                    handleChangeFormData('isPublished', e.target.checked)
+                    handleChangeFormData("isPublished", e.target.checked)
                   }
                 />
-                <p className='text-error'>{formDataErrors.isPublished}</p>
+                <p className="text-error">{formDataErrors.isPublished}</p>
               </div>
 
-              <div className='flex-center-row-8'>
-                <label htmlFor='inStock'>In Stock</label>
+              <div className="flex-center-row-8">
+                <label htmlFor="inStock">In Stock</label>
                 <input
                   checked={formData.inStock}
-                  type='checkbox'
-                  id='inStock'
+                  type="checkbox"
+                  id="inStock"
                   onChange={(e) =>
-                    handleChangeFormData('inStock', e.target.checked)
+                    handleChangeFormData("inStock", e.target.checked)
                   }
                 />
-                <p className='text-error'>{formDataErrors.inStock}</p>
+                <p className="text-error">{formDataErrors.inStock}</p>
               </div>
               <Spacer size={12} />
-              <div className='flex-center-row-8'>
-                <label htmlFor='featured'>Featured</label>
+              <div className="flex-center-row-8">
+                <label htmlFor="featured">Featured</label>
                 <input
                   checked={formData.featured}
-                  type='checkbox'
-                  id='featured'
+                  type="checkbox"
+                  id="featured"
                   onChange={(e) =>
-                    handleChangeFormData('featured', e.target.checked)
+                    handleChangeFormData("featured", e.target.checked)
                   }
                 />
-                <p className='text-error'>{formDataErrors.featured}</p>
+                <p className="text-error">{formDataErrors.featured}</p>
               </div>
 
-              <div className='flex-column'>
-                <label htmlFor='featuredBackgroundColor'>
+              <div className="flex-column">
+                <label htmlFor="featuredBackgroundColor">
                   Featured Background Color
                 </label>
                 <Spacer size={8} />
                 <input
                   value={formData.featuredBackgroundColor}
-                  type='color'
-                  id='featuredBackgroundColor'
+                  type="color"
+                  id="featuredBackgroundColor"
                   onChange={(e) =>
                     handleChangeFormData(
-                      'featuredBackgroundColor',
+                      "featuredBackgroundColor",
                       e.target.value
                     )
                   }
                 />
-                <p className='text-error'>
+                <p className="text-error">
                   {formDataErrors.featuredBackgroundColor}
                 </p>
               </div>
             </div>
-
-            <Input
-              label='More info'
-              placeholder='Enter product info'
-              error={formDataErrors.moreInfo}
-              value={formData?.moreInfo as string}
-              onChange={(v) => handleChangeFormData('moreInfo', v)}
-              type={'textarea'}
-            />
+          </div>
+          <div className="quill-container">
+            <div>
+              <label htmlFor="featuredBackgroundColor">
+                <b> EN Additional info</b>
+              </label>
+              <Spacer size={8} />
+              <ReactQuill
+                className="text-editor"
+                value={formData?.enMoreInfo as string}
+                onChange={(v) => handleChangeFormData("enMoreInfo", v)}
+                // onKeyDown={(e) => handleKeyDown(e)}
+                theme="snow"
+                placeholder="Write your article here..."
+              />
+            </div>
+            <div>
+              <label htmlFor="featuredBackgroundColor">
+                <b>RO Additional info </b>
+              </label>
+              <Spacer size={8} />
+              <ReactQuill
+                value={formData?.roMoreInfo as string}
+                onChange={(v) => handleChangeFormData("roMoreInfo", v)}
+                // onKeyDown={(e) => handleKeyDown(e)}
+                theme="snow"
+                placeholder="Write your article here..."
+              />
+            </div>
           </div>
           <Spacer />
           <Button onClick={handleSubmit}>Save</Button>

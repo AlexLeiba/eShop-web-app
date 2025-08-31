@@ -1,10 +1,10 @@
-import React from 'react';
-import { DataGrid, type GridColDef, type GridRowId } from '@mui/x-data-grid';
-import { Layout } from '../components/Layout/Layout';
-import { GridContainer } from '../components/Grid/GridContainer';
-import Spacer from '../components/ui/Spacer';
-import { Box } from '@mui/material';
-import type { ProductsType } from '../lib/types';
+import React from "react";
+import { DataGrid, type GridColDef, type GridRowId } from "@mui/x-data-grid";
+import { Layout } from "../components/Layout/Layout";
+import { GridContainer } from "../components/Grid/GridContainer";
+import Spacer from "../components/ui/Spacer";
+import { Box } from "@mui/material";
+import type { ProductsType } from "../lib/types";
 import {
   IconCheck,
   IconCircleCheck,
@@ -12,26 +12,26 @@ import {
   IconEdit,
   IconTrash,
   IconX,
-} from '@tabler/icons-react';
-import { Link } from 'react-router-dom';
-import { Button } from '../components/ui/Button/Button';
-import toast from 'react-hot-toast';
-import { apiFactory } from '../lib/apiFactory';
-import { useSelector } from 'react-redux';
-import type { RootState } from '../store/config';
-import '../components/ProductsPage/ProductsPage.scss';
+} from "@tabler/icons-react";
+import { Link } from "react-router-dom";
+import { Button } from "../components/ui/Button/Button";
+import toast from "react-hot-toast";
+import { apiFactory } from "../lib/apiFactory";
+import { useSelector } from "react-redux";
+import type { RootState } from "../store/config";
+import "../components/ProductsPage/ProductsPage.scss";
 
 function ProductsPage() {
   const userData = useSelector((state: RootState) => state.user.userData);
-  const sessionToken = userData?.token || '';
+  const sessionToken = userData?.token || "";
 
   const [productsData, setProductsData] = React.useState<ProductsType[]>([]);
 
   const [selectedRows, setSelectedRows] = React.useState<GridRowId[]>([]);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(20);
 
   const [page, setPage] = React.useState(0);
-  const paginationModel = { page: 0, pageSize: 10 };
+  const paginationModel = { page: 0, pageSize: 20 };
 
   async function fetchData() {
     const response = await apiFactory().getProducts(sessionToken);
@@ -45,34 +45,34 @@ function ProductsPage() {
     fetchData();
   }, []);
 
-  async function handleDelete(rowId: string) {
-    try {
-      toast.loading('Deleting...', {
-        id: 'deletingToastId',
-      });
-
-      const response = await apiFactory().deleteProduct({
-        productId: rowId,
-        token: sessionToken,
-      });
-
-      if (response.error) {
-        toast.error(response.error);
-        return;
-      }
-
-      toast.success('Product was deleted successfully');
-      fetchData();
-    } catch (error: any) {
-      toast.error(error.message);
-    } finally {
-      toast.dismiss('deletingToastId');
-    }
-  }
+  //   async function handleDelete(rowId: string) {
+  //     try {
+  //       toast.loading("Deleting...", {
+  //         id: "deletingToastId",
+  //       });
+  //
+  //       const response = await apiFactory().deleteProduct({
+  //         productId: rowId,
+  //         token: sessionToken,
+  //       });
+  //
+  //       if (response.error) {
+  //         toast.error(response.error);
+  //         return;
+  //       }
+  //
+  //       toast.success("Product was deleted successfully");
+  //       fetchData();
+  //     } catch (error: any) {
+  //       toast.error(error.message);
+  //     } finally {
+  //       toast.dismiss("deletingToastId");
+  //     }
+  //   }
   async function handleMultipleDelete() {
     try {
-      toast.loading('Deleting...', {
-        id: 'deletingToastId',
+      toast.loading("Deleting...", {
+        id: "deletingToastId",
       });
 
       const response = await apiFactory().deleteMultipleProducts({
@@ -85,119 +85,119 @@ function ProductsPage() {
         return;
       }
 
-      toast.success('Products were deleted successfully');
+      toast.success("Products were deleted successfully");
 
       fetchData();
     } catch (error: any) {
       toast.error(error.message);
     } finally {
-      toast.dismiss('deletingToastId');
+      toast.dismiss("deletingToastId");
     }
   }
 
   const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 70 },
+    { field: "id", headerName: "ID", width: 70 },
     {
-      field: 'image',
-      headerName: 'Image',
+      field: "image",
+      headerName: "Image",
       width: 130,
       renderCell: (params) => {
         return (
-          <div className='flex-center-center-12'>
+          <div className="flex-center-center-12">
             <img
-              style={{ width: 60, height: 40, objectFit: 'contain' }}
+              style={{ width: 60, height: 40, objectFit: "contain" }}
               src={params.row.image}
-              alt=''
+              alt=""
             />
           </div>
         );
       },
     },
     {
-      field: 'title',
-      headerName: 'Title',
+      field: "title",
+      headerName: "Title",
       width: 150,
     },
     {
-      field: 'categories',
-      headerName: 'Category',
+      field: "categories",
+      headerName: "Category",
       width: 130,
       valueGetter: (_, row) => row.categories[0],
     },
     {
-      field: 'isPublished',
-      headerName: 'Published',
+      field: "isPublished",
+      headerName: "Published",
       width: 100,
       valueGetter: (_, row) => {
-        return row.isPublished ? 'Yes' : 'No';
+        return row.isPublished ? "Yes" : "No";
       },
       renderCell: (params) => {
         return (
-          <div className='flex-center-center-12'>
+          <div className="flex-center-center-12">
             {params.row.isPublished ? (
-              <IconCircleCheck color='green' />
+              <IconCircleCheck color="green" />
             ) : (
-              <IconCircleX color='red' />
+              <IconCircleX color="red" />
             )}
           </div>
         );
       },
     },
     {
-      field: 'featured',
-      headerName: 'Featured',
+      field: "featured",
+      headerName: "Featured",
       width: 80,
       renderCell: (params) => {
         return (
-          <div className='flex-center-center-12'>
+          <div className="flex-center-center-12">
             {params.row.featured ? (
-              <IconCheck color='green' />
+              <IconCheck color="green" />
             ) : (
-              <IconX color='red' />
+              <IconX color="red" />
             )}
           </div>
         );
       },
     },
     {
-      field: 'createdAt',
-      headerName: 'Created At',
+      field: "createdAt",
+      headerName: "Created At",
       width: 100,
       valueGetter: (_, row) =>
-        new Date(row.createdAt).toLocaleDateString('en-US', {
-          year: '2-digit',
-          month: 'short',
-          day: 'numeric',
+        new Date(row.createdAt).toLocaleDateString("en-US", {
+          year: "2-digit",
+          month: "short",
+          day: "numeric",
         }),
       sortable: false,
     },
     {
-      field: 'price',
-      headerName: 'Price',
+      field: "price",
+      headerName: "Price",
       width: 60,
     },
     {
-      field: 'action',
-      headerName: 'Action',
+      field: "action",
+      headerName: "Action",
       width: 100,
       renderCell: (params) => {
         return (
-          <div className='flex-center-center-12'>
+          <div className="flex-center-center-12">
             <>
               <Link
-                to={'/product/' + params.row._id}
-                className='flex-center-center-12'
+                to={"/product/" + params.row._id}
+                className="flex-center-center-12"
               >
-                <IconEdit size={20} cursor={'pointer'} />
+                <IconEdit size={20} cursor={"pointer"} />
               </Link>
             </>
             <>
-              <IconTrash
+              {/* <IconTrash
                 size={20}
-                color='#ff0000'
-                cursor={'pointer'}
+                color="#ff0000"
+                cursor={"pointer"}
                 onClick={() => handleDelete(params.row._id)}
-              />
+              /> */}
             </>
           </div>
         );
@@ -211,14 +211,14 @@ function ProductsPage() {
         <h1>Products</h1>
         <Spacer size={24} />
 
-        <div className='add-new-product-wrapper'>
+        <div className="add-new-product-wrapper">
           {selectedRows.length > 0 ? (
             <>
-              <div className='flex-center-row-4'>
+              <div className="flex-center-row-4">
                 <p>Delete all selected rows: {selectedRows.length}</p>
                 <IconTrash
-                  color='#ff0000'
-                  cursor={'pointer'}
+                  color="#ff0000"
+                  cursor={"pointer"}
                   onClick={handleMultipleDelete}
                 />
               </div>
@@ -226,11 +226,11 @@ function ProductsPage() {
           ) : (
             <div></div>
           )}
-          <Link to={'/new-product'}>
+          <Link to={"/new-product"}>
             <Button widthSize={200}>Add new product</Button>
           </Link>
         </div>
-        <Box sx={{ height: 650, width: '100%' }}>
+        <Box sx={{ height: 650, width: "100%" }}>
           <DataGrid
             onRowSelectionModelChange={(e: { ids: Set<GridRowId> }) => {
               const selectedRowIds = Array.from(e.ids).map((id) => id);

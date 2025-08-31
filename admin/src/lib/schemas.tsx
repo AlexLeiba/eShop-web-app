@@ -53,9 +53,21 @@ export const EditProductSchema = z
     title: z.string().optional(),
     description: z.string().optional(),
   })
-  .refine((data) => data.price >= (data?.discountPrice || 0), {
-    message: "Discount price must be less than price",
-    path: ["discountPrice"],
+  .refine(
+    (data) => {
+      if (data.discountPrice) {
+        return Number(data.discountPrice) < Number(data.price);
+      }
+      return true;
+    },
+    {
+      message: "Discount price must be less than price",
+      path: ["discountPrice"],
+    }
+  )
+  .refine((data) => Number(data.price) > 0, {
+    message: "Price must be greater than 0",
+    path: ["price"],
   });
 
 export const CreateProductSchema = z
@@ -104,9 +116,21 @@ export const CreateProductSchema = z
     title: z.string().optional(),
     description: z.string().optional(),
   })
-  .refine((data) => data.price >= (data?.discountPrice || 0), {
-    message: "Discount price must be less than price",
-    path: ["discountPrice"],
+  .refine(
+    (data) => {
+      if (data.discountPrice) {
+        return Number(data.discountPrice) < Number(data.price);
+      }
+      return true;
+    },
+    {
+      message: "Discount price must be less than price",
+      path: ["discountPrice"],
+    }
+  )
+  .refine((data) => Number(data.price) > 0, {
+    message: "Price must be greater than 0",
+    path: ["price"],
   });
 
 export type ProductType = z.infer<typeof EditProductSchema>;
