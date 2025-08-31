@@ -24,6 +24,10 @@ export function OrderSummary({
   const sessionToken = useSessionToken();
 
   async function handleMakePayment() {
+    const cartProductsData = cartProducts.map((product) => ({
+      ...product,
+      price: product.discountPrice || product.price,
+    }));
     const language = localStorage.getItem("language");
     const headers = {
       "Content-Type": "application/json",
@@ -42,7 +46,7 @@ export function OrderSummary({
         {
           method: "POST",
           headers,
-          body: JSON.stringify(cartProducts),
+          body: JSON.stringify(cartProductsData),
         }
       );
 

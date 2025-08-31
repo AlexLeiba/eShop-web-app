@@ -55,7 +55,7 @@ export function WishListCard({ data, type }: Props) {
       toast.error(response.error);
     }
     if (response?.data) {
-      toast.success(t("toast.productAddedToWishlist"));
+      toast.success(t("toast.productAddedToCart"));
     }
   }
   return (
