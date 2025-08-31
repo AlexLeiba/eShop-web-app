@@ -171,10 +171,16 @@ function Cart() {
                         {t("emptyCart")}
                       </h2>
                       <Spacer size={4} />
-                      <Link to="/products?sort=newest&page=1">
-                        <Button className="w-[250px]" variant="secondary">
-                          <IconChevronLeft className="ml-2" />
-                          {t("continueShoppingButton")}
+                      <Link to="/products?sort=newest&page=1" className="group">
+                        <Button
+                          title="Continue Shopping"
+                          className="lg:w-[250px] w-[100px] flex justify-center items-center"
+                          variant="secondary"
+                        >
+                          <IconChevronLeft className="lg:ml-2 group-hover:-translate-x-3 transition-all duration-300" />
+                          <p className="lg:block hidden">
+                            {t("continueShoppingButton")}
+                          </p>
                         </Button>
                       </Link>
                     </div>

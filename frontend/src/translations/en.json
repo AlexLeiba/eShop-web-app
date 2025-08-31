@@ -177,7 +177,7 @@
     "continueShoppingButton": "Continue Shopping",
     "addToCartButton": "Add to Cart",
     "clearListButton": "Clear list",
-    "wishlistEmpty": "Your wish list is empty",
+    "wishlistEmpty": "Your wishlist is empty",
     "toast": {
       "clearedList": "Wishlist was cleared successfully",
       "productRemoved": "Product was removed",

@@ -160,10 +160,18 @@ function Wishlist() {
                       <h2 className="text-2xl font-bold">
                         {t("wishlistEmpty")}
                       </h2>
+
                       <Link to="/products?sort=newest&page=1">
-                        <Spacer size={4} />
-                        <Button className="w-[250px]" variant="secondary">
-                          {t("continueShoppingButton")}
+                        <Button
+                          title="Continue Shopping"
+                          className="lg:w-[250px] w-[100px] flex justify-center items-center group"
+                          variant="secondary"
+                        >
+                          <IconChevronLeft className="lg:ml-2 group-hover:-translate-x-3 transition-all duration-300" />
+
+                          <p className="lg:block hidden">
+                            {t("continueShoppingButton")}
+                          </p>
                         </Button>
                       </Link>
                     </div>
