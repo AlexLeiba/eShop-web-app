@@ -1,23 +1,22 @@
-import express from 'express';
-import User from '../models/User.js';
-import dotenv from 'dotenv';
-import CryptoJS from 'crypto-js';
-import jwt from 'jsonwebtoken';
-import { v4 as uuidv4 } from 'uuid';
-import nodemailer from 'nodemailer';
-import { verifyTokenAuthorization } from '../config/verifyToken.js';
+import express from "express";
+import User from "../models/User.js";
+import dotenv from "dotenv";
+import CryptoJS from "crypto-js";
+import jwt from "jsonwebtoken";
+import { v4 as uuidv4 } from "uuid";
+import nodemailer from "nodemailer";
 dotenv.config();
 
 const router = express.Router();
 
-router.post('/register', async (req, res) => {
+router.post("/register", async (req, res) => {
   //takes path,request handler
   const alreadyExists = await User.find({
     email: req.body.email,
   });
 
   if (alreadyExists.length > 0) {
-    return res.status(400).json({ data: null, error: 'User already exists' });
+    return res.status(400).json({ data: null, error: "User already exists" });
   }
 
   // encrypt password here ( hash passwords) and save in DB
@@ -42,14 +41,14 @@ router.post('/register', async (req, res) => {
   }
 });
 
-router.post('/login', async (req, res) => {
+router.post("/login", async (req, res) => {
   try {
     const loggedUser = await User.findOne({
       email: req.body.email,
     });
 
     if (!loggedUser) {
-      return res.status(401).json({ error: 'User not found' });
+      return res.status(401).json({ error: "User not found" });
     }
 
     // decrypt password and compare with the one user introduced
@@ -61,13 +60,9 @@ router.post('/login', async (req, res) => {
     const decryptedPasswordFromDB = decryptedPassword.toString(
       CryptoJS.enc.Utf8
     );
-    console.log(
-      '🚀 ~ decryptedPasswordFromDB: \n\n\n',
-      decryptedPasswordFromDB
-    );
 
     if (decryptedPasswordFromDB !== req.body.password) {
-      return res.status(401).json({ error: 'Password is incorrect' });
+      return res.status(401).json({ error: "Password is incorrect" });
     }
 
     // Access Token for client
@@ -80,7 +75,7 @@ router.post('/login', async (req, res) => {
         userName: loggedUser.userName,
       },
       process.env.JWT_TOKEN_SECRET_KEY,
-      { expiresIn: '7d' }
+      { expiresIn: "7d" }
     );
 
     // Refresh Token for server | will be used when access token expires in order to refresh it .
@@ -94,7 +89,7 @@ router.post('/login', async (req, res) => {
         userName: loggedUser.userName,
       },
       process.env.JWT_REFRESH_SECRET_KEY,
-      { expiresIn: '30d' }
+      { expiresIn: "30d" }
     );
 
     const updatedUserData = await User.findOneAndUpdate(
@@ -126,24 +121,24 @@ router.post('/login', async (req, res) => {
       },
     });
   } catch (error) {
-    console.log('🚀 ~ error:', error);
+    console.log("🚀 ~ error:", error);
     res.status(500).json(error);
   }
 });
 
 // LOGOUT
-router.post('/logout', async (req, res) => {
+router.post("/logout", async (req, res) => {
   const userEmail = req.body.email;
 
   try {
     if (!userEmail) {
-      return res.status(401).json({ error: 'Unauthorized' });
+      return res.status(401).json({ error: "Unauthorized" });
     }
 
     const currentUser = await User.findOne({ email: userEmail });
 
     if (!currentUser) {
-      return res.status(401).json({ error: 'User not found' });
+      return res.status(401).json({ error: "User not found" });
     }
 
     // DELETE refresh token from database
@@ -157,15 +152,15 @@ router.post('/logout', async (req, res) => {
     //   sameSite: 'none',
     //   maxAge: 120 * 10000, // 120 seconds TODO to change after testing
     // });
-    res.status(200).json({ message: 'Logged out successfully' });
+    res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
-    console.log('🚀 ~ error:', error);
+    console.log("🚀 ~ error:", error);
     res.status(500).json(error);
   }
 });
 
 // ADMIN LOGIN
-router.post('/admin/login', async (req, res) => {
+router.post("/admin/login", async (req, res) => {
   try {
     const loggedUser = await User.findOne({
       email: req.body.email,
@@ -174,7 +169,7 @@ router.post('/admin/login', async (req, res) => {
     });
 
     if (!loggedUser) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ error: "Invalid credentials" });
     }
 
     // decrypt password and compare with the one user introduced
@@ -188,7 +183,7 @@ router.post('/admin/login', async (req, res) => {
     );
 
     if (decryptedPasswordFromDB !== req.body.password) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ error: "Invalid credentials" });
     }
 
     // verify jwt and send token
@@ -201,7 +196,7 @@ router.post('/admin/login', async (req, res) => {
         isUberAdmin: loggedUser.isUberAdmin,
       },
       process.env.JWT_TOKEN_SECRET_KEY,
-      { expiresIn: '7d' }
+      { expiresIn: "7d" }
     );
 
     const { password, ...others } = loggedUser._doc;
@@ -213,21 +208,21 @@ router.post('/admin/login', async (req, res) => {
       },
     });
   } catch (error) {
-    console.log('🚀 ~ error:', error);
+    console.log("🚀 ~ error:", error);
     res.status(500).json(error);
   }
 });
 
 // SEND OTP CODE TO USER EMAIL
 const otpCode = Math.floor(100000 + Math.random() * 900000);
-router.post('/forgot-password', async (req, res) => {
+router.post("/forgot-password", async (req, res) => {
   const userEmail = req.body.email;
 
   try {
     const userExists = await User.findOne({ email: userEmail });
 
     if (!userExists) {
-      return res.status(400).json({ error: 'User not found' });
+      return res.status(400).json({ error: "User not found" });
     }
 
     const userUpdated = await User.findOneAndUpdate(
@@ -255,7 +250,7 @@ router.post('/forgot-password', async (req, res) => {
     const textBody = `Hello ${userUpdated.userName}, <br> You recently requested to reset your password. To reset your password, introduce the following code in your app <br> <b>Code: ${userUpdated.forgotPasswordCode}</b> <br> If you did not request a password reset, please ignore this email. <br> Thank you for using our service. <br> <b>The eShop Team </b>`;
 
     const transporter = nodemailer.createTransport({
-      host: 'smtp-relay.brevo.com',
+      host: "smtp-relay.brevo.com",
       port: 587,
       auth: {
         user: process.env.SMTP_USER, //admin gmail
@@ -266,31 +261,31 @@ router.post('/forgot-password', async (req, res) => {
     await transporter.sendMail({
       from: process.env.SENDER_EMAIL, //admin gmail
       to: userEmail, //
-      subject: 'eShop - Reset password code',
+      subject: "eShop - Reset password code",
       html: emailBody,
       text: textBody,
     });
 
     res
       .status(200)
-      .json({ error: null, data: { message: 'Email sent successfully' } });
+      .json({ error: null, data: { message: "Email sent successfully" } });
   } catch (error) {
     res.status(500).json({ error: error.message, data: null });
   }
 });
 
 // CHECK OTP AFTER USER ENTERED THE CODE
-router.post('/check-otp', async (req, res) => {
+router.post("/check-otp", async (req, res) => {
   const userEmail = req.body.email;
   const otp = req.body.otp;
 
   try {
     const userExists = await User.findOne({ email: userEmail });
     if (!userExists) {
-      return res.status(400).json({ error: 'User not found' });
+      return res.status(400).json({ error: "User not found" });
     }
     if (userExists.forgotPasswordCode !== otp) {
-      return res.status(400).json({ error: 'Invalid code' });
+      return res.status(400).json({ error: "Invalid code" });
     }
     const userData = await User.findOneAndUpdate(
       { email: userEmail },
@@ -301,25 +296,25 @@ router.post('/check-otp', async (req, res) => {
     userData.save();
     res
       .status(200)
-      .json({ error: null, data: 'The code was introduced correctly' });
+      .json({ error: null, data: "The code was introduced correctly" });
   } catch (error) {
     res.status(500).json({ error: error.message, data: null });
   }
 });
 
 // RESET PASSWORD AFTER THE OTP WAS INTRODUCED CORRECTLY
-router.post('/reset-password', async (req, res) => {
+router.post("/reset-password", async (req, res) => {
   const userEmail = req.body.email;
   const password = req.body.password;
 
   try {
     const userExists = await User.findOne({ email: userEmail });
     if (!userExists) {
-      return res.status(400).json({ error: 'User not found' });
+      return res.status(400).json({ error: "User not found" });
     }
 
     if (!userExists.otpVerified && !userExists.forgotPasswordCode) {
-      return res.status(400).json({ error: 'Otp is not verified' });
+      return res.status(400).json({ error: "Otp is not verified" });
     }
 
     const encryptedPassword = CryptoJS.AES.encrypt(
@@ -337,7 +332,7 @@ router.post('/reset-password', async (req, res) => {
 
     res
       .status(200)
-      .json({ error: null, data: 'Password was resetted successfully' });
+      .json({ error: null, data: "Password was resetted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message, data: null });
   }

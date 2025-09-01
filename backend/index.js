@@ -49,7 +49,7 @@ const corsOptions = {
   // withCredentials: true,
 };
 
-app.use(cors(corsOptions)); // enable specified cors options
+app.use(cors(corsOptions)); // enable specified cors options/ ALLOWS resources to be shared with other domains (cloudinary images, stripe etc)
 
 // SET HEADERS
 app.use((_, res, next) => {
@@ -65,8 +65,8 @@ app.use((_, res, next) => {
     "Strict-Transport-Security",
     "max-age=63072000; includeSubDomains; preload" //Enables HTTP Strict Transport Security (HSTS) headers
   );
-  res.setHeader("Cross-Origin-Opener-Policy", "same-origin"); //
-  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("Cross-Origin-Opener-Policy", "same-origin"); //Enables the Cross-Origin Opener Policy (COOP) headers
+  res.setHeader("X-Frame-Options", "DENY"); // Prevents clickjacking
 
   next();
 });
@@ -77,7 +77,7 @@ app.get("/", (req, res) => {
 });
 
 // ROUTES
-app.use("/api", authRoutes);
+app.use("/api", authRoutes); //request handler
 app.use("/api", userRoutes);
 app.use("/api", productRoutes);
 app.use("/api", cartRoutes);
