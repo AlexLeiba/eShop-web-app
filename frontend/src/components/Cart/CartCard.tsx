@@ -40,7 +40,7 @@ export function CartCard({ productData, type }: Props) {
     }
   }
   return (
-    <div className="flex gap-8  shadow rounded-md py-4 pl-4 pr-8 relative lg:flex-row md:flex-row  flex-col dark:bg-gray-800 dark:text-white">
+    <div className="flex gap-8 items-center  shadow rounded-md py-4 pl-4 pr-8 relative lg:flex-row md:flex-row  flex-col dark:bg-gray-800 dark:text-white">
       {productData.discountPrice && (
         <Discount
           discount={productData.discountPrice}

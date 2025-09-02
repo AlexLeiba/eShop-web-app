@@ -59,7 +59,7 @@ export function WishListCard({ data, type }: Props) {
     }
   }
   return (
-    <div className="flex gap-8  shadow rounded-md py-4 pl-4 pr-8 relative  lg:flex-row md:flex-row  flex-col dark:bg-gray-800">
+    <div className="flex gap-8 items-center shadow rounded-md py-4 pl-4 pr-8 relative  lg:flex-row md:flex-row  flex-col dark:bg-gray-800">
       {data.discountPrice && (
         <Discount discount={data.discountPrice} price={data.price} />
       )}
