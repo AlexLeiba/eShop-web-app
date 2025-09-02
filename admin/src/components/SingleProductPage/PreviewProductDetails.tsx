@@ -47,13 +47,11 @@ export function PreviewProductDetails({ formData }: Props) {
             })}
           </div>
 
-          <p>
-            <h4>Quantity:</h4>
-            {formData.quantity}
-          </p>
+          <h4>Quantity:</h4>
+          <p>{formData.quantity}</p>
           <div>
+            <h4>Published:</h4>
             <p className="flex-center-row-4">
-              <h4>Published:</h4>
               {formData.isPublished ? (
                 <IconCircleCheck color="green" />
               ) : (
@@ -70,8 +68,8 @@ export function PreviewProductDetails({ formData }: Props) {
               <span style={{ color: "red" }}>No</span>
             )}
           </h4>
+          <h4>Featured:</h4>
           <p>
-            <h4>Featured:</h4>
             {formData.featured ? (
               <span style={{ color: "green" }}>Yes</span>
             ) : (
