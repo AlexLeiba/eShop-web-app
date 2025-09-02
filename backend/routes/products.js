@@ -162,7 +162,7 @@ router.get("/featured-products", async (req, res) => {
       featured: true,
       // language: queryLanguage,
     })
-      .limit(5)
+      .limit(3)
       .sort({ createdAt: -1 });
 
     if (!response) {

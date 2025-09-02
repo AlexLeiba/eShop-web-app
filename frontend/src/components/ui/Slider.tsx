@@ -6,8 +6,8 @@ import { cn, imageOptimisation } from "../../lib/utils";
 import { Container } from "../Grid/Container";
 import type { ProductsDataType } from "../../pages/ProductsList";
 import { useTranslation } from "react-i18next";
-import { IconLoader } from "@tabler/icons-react";
 import { Price } from "../Reusable/Price";
+import { SkeletonSlider } from "../Home/SkeletonSlider";
 
 type SliderProps = {
   data: ProductsDataType["data"];
@@ -28,12 +28,12 @@ export function Slider({ data }: SliderProps) {
   function handleSlide(direction: "prev" | "next") {
     if (direction === "prev") {
       setSlide((prev) => {
-        if (prev === 0) return data?.slice(0, 3).length - 1;
+        if (prev === 0) return data?.slice(0, 3).length - 1; //if the prev slide was on 0 product redirect to last
         return prev - 1;
       });
     } else {
       setSlide((prev) => {
-        if (data?.slice(0, 3).length - 1 === prev) return 0;
+        if (data?.slice(0, 3).length - 1 === prev) return 0; //if slide is on 3 product redirect to first
 
         return prev + 1;
       });
@@ -125,16 +125,8 @@ export function Slider({ data }: SliderProps) {
           );
         })
       ) : (
-        <div
-          style={{
-            minWidth: "100vw",
-          }}
-          className={cn(
-            "pt-[56px] overflow-hidden h-[700px] text-black bg-gray-400 animate-pulse flex items-center justify-center"
-          )}
-        >
-          <IconLoader className="animate-spin text-white" />
-        </div>
+        // Skeleton
+        <SkeletonSlider />
       )}
     </div>
   );

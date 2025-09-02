@@ -1,4 +1,4 @@
-import React, { type SetStateAction } from "react";
+import React, { useMemo, type SetStateAction } from "react";
 import { Select } from "../ui/Select";
 import { useSearchParams } from "react-router-dom";
 
@@ -47,7 +47,7 @@ function Filter({ type, label, data }: Props) {
     }
   }
 
-  function handleTypeOfFilter() {
+  function handleTypeOfFilterData() {
     switch (type) {
       case "color":
         return data[lang];
@@ -64,12 +64,17 @@ function Filter({ type, label, data }: Props) {
         return [];
     }
   }
+
+  const filterTypeData = useMemo(() => {
+    return handleTypeOfFilterData();
+  }, [data, lang]);
+
   return (
     <Select
       value={searchParams.get(type) || ""}
       handleSelect={setSelected} //TODO : to use redux for any useState passign as props ( to avoid re-renders)
       label={label}
-      data={handleTypeOfFilter()}
+      data={filterTypeData}
     />
   );
 }

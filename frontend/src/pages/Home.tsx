@@ -35,7 +35,7 @@ function Home() {
           });
         }
         timerStarted = true;
-      }, 4000);
+      }, 5000);
 
       try {
         const response = await fetchProducts({
@@ -74,7 +74,7 @@ function Home() {
   return (
     <>
       <Layout>
-        <Announcement title="lorem20 is coming soon dsdsadsa sdadsa dsadsad" />
+        <Announcement title="An announcement goes here" />
         <div className="flex flex-grow-1 flex-col">
           {/* FEATURED PRODUCTS HERO SLIDER */}
           <Container fluid>
