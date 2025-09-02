@@ -43,6 +43,7 @@ function Filter({ type, label, data }: Props) {
       }
 
       params.set(type, selected.toString().toLowerCase() as string);
+      params.set("page", "1");
       setSearchParams(params);
     }
   }
