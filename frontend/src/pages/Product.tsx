@@ -36,11 +36,14 @@ import { cn, imageOptimisation } from "../lib/utils";
 import { StarRate } from "../components/ui/starRate";
 import { Price } from "../components/Reusable/Price";
 import ScrollToTopButton from "../components/Reusable/ScrollToTopButton";
+
 function Product() {
   const [open, setOpen] = React.useState(false);
   const { t } = useTranslation("translation", { keyPrefix: "ProductPage" });
   const dispatch = useDispatch();
+
   const selectedValues = useSelector((state: RootState) => state.filters);
+  
   const { productData, isInCart, isInWishlist } = useSelector(
     (state: RootState) => state.products.product
   );
@@ -84,7 +87,6 @@ function Product() {
   }, []);
 
   async function handleAddToCart() {
-    console.log("first", productData._id);
     if (
       (!selectedValues.size || selectedValues.size === "Selectsize") &&
       !selectedValues.color

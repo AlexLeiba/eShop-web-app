@@ -158,10 +158,10 @@ export function MyAccountDropdown({
           {dropdownUserData.map((dropdownUserData) => {
             return (
               <div key={dropdownUserData.name}>
-                <p className=" wrap-break-word ">
+                <p className=" wrap-break-word dark:text-gray-300">
                   <b>{dropdownUserData.name}</b>
                   {dropdownUserData.value && (
-                    <span className="ml-2 dark:text-gray-200">
+                    <span className="ml-2 dark:text-white">
                       {dropdownUserData.value}
                     </span>
                   )}
