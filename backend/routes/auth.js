@@ -260,7 +260,6 @@ router.post("/forgot-password", async (req, res) => {
         pass: process.env.SMTP_PASSWORD, // admin password
       },
     });
-    console.log("🚀 ~ transporter:", transporter);
 
     const sentEmail = await transporter.sendMail({
       from: process.env.SENDER_EMAIL, //admin gmail
@@ -269,7 +268,7 @@ router.post("/forgot-password", async (req, res) => {
       html: emailBody,
       text: textBody,
     });
-    console.log("🚀 ~ sentEmail:", sentEmail);
+    console.log("🚀 ~ sentEmail: \n\n\n", sentEmail);
 
     if (!sentEmail) {
       return res.status(400).json({
