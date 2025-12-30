@@ -47,6 +47,7 @@ function SearchSelector() {
       }
     }
 
+    // debounce
     const timeoutId = setTimeout(() => {
       fetchData();
     }, 2000);
@@ -68,7 +69,7 @@ function SearchSelector() {
         }
       }
     });
-  }, [searchValue, productsData]);
+  }, [searchValue, productsData, dispatch]);
 
   return (
     <div className="relative w-full" ref={containerRef} title="Search Products">

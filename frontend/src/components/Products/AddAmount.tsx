@@ -52,6 +52,7 @@ function AddAmount({ type, productId, productData }: Props) {
   return (
     <div className="flex gap-2 items-center">
       <IconMinus
+        title="add more"
         role="button"
         tabIndex={0}
         onKeyDown={(e) => e.key === "Enter" && handleAmount("minus")}
@@ -62,6 +63,7 @@ function AddAmount({ type, productId, productData }: Props) {
         {productData?.quantity}
       </p>
       <IconPlus
+        title="add less"
         role="button"
         tabIndex={0}
         onKeyDown={(e) => e.key === "Enter" && handleAmount("plus")}

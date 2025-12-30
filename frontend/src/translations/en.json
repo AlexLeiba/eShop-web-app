@@ -181,7 +181,8 @@
     "toast": {
       "clearedList": "Wishlist was cleared successfully",
       "productRemoved": "Product was removed",
-      "productAddedToWishlist": "Product was added to wishlist"
+      "productAddedToWishlist": "Product was added to wishlist",
+      "productAddedToCart": "Product added to cart"
     },
     "modal": {
       "title": "Are you sure you want to clear your wishlist?",

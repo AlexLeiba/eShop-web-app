@@ -22,6 +22,16 @@ type Props = {
   data: ProductsType;
 };
 
+/*************  ✨ Windsurf Command ⭐  *************/
+/**
+ * A card component for products, displays product image, title, price, and rating.
+ * It also includes a button to add the product to cart and wishlist.
+ * When the user hovers over the card, a menu with buttons to add to cart and wishlist appears.
+ * The component is responsive and will adapt to different screen sizes.
+ * @param {ProductsType} data - The product data to be displayed.
+ * @returns {JSX.Element} - The product card component.
+ */
+/*******  447c4b9b-ef55-48f4-abe3-b665ad90a34e  *******/
 export function ProductsCard({ data }: Props) {
   const { t } = useTranslation("translation", { keyPrefix: "ProductsPage" });
   const dispatch = useDispatch();

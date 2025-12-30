@@ -78,7 +78,7 @@ function Wishlist() {
       newMeta.content = "Shopping app";
       document.head.appendChild(newMeta);
     }
-  }, []);
+  }, [dispatch, sessionToken]);
   return (
     <Layout>
       <Announcement
@@ -150,9 +150,11 @@ function Wishlist() {
                 <div className="flex gap-8 flex-col">
                   {wishListData?.map((item) => {
                     return (
-                      <div key={item._id}>
-                        <WishListCard type="wishList" data={item} />
-                      </div>
+                      <WishListCard
+                        type="wishList"
+                        data={item}
+                        key={item._id}
+                      />
                     );
                   })}
                   {wishListData.length === 0 && (

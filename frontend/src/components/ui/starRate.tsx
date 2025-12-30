@@ -73,20 +73,6 @@ export function StarRate({ defaultValue, sessionToken, productId }: Props) {
       return prev?.filter((data) => data.userId !== userId);
     });
   }
-  //   async function handleReview() {
-  //     const response = await reviewProduct({
-  //       // dispatch,
-  //       productId,
-  //       sessionToken,
-  //       review: "Review message",
-  //       rating: 5,
-  //       userName: "John Doe",
-  //     });
-  //
-  //     if (response?.error) {
-  //       return toast.error(response.error);
-  //     }
-  //   }
 
   useEffect(() => {
     // filter by id rating
@@ -95,7 +81,7 @@ export function StarRate({ defaultValue, sessionToken, productId }: Props) {
         defaultValue?.find((data) => data.userId === userId)?.rating || 0
       );
     }
-  }, [defaultValue]);
+  }, [defaultValue, userId]);
 
   function showAverageRating() {
     return (
@@ -166,42 +152,6 @@ export function StarRate({ defaultValue, sessionToken, productId }: Props) {
         </div>
       )}
       <div className="flex items-center  gap-3 justify-end w-full">
-        <div>
-          {/* <ModalProvider
-            title={"Add Review"}
-            description={""}
-            onConfirm={handleReview}
-          >
-            <ModalTrigger>
-              <Button
-                variant="link"
-                className="transition-all"
-                title="Add Review"
-              >
-                <p>+ Review</p>
-              </Button>
-            </ModalTrigger>
-            <Modal classNameCustome="w-[500px]">
-              <ModalHeader>
-                <p className="font-semibold text-xl">Add Review</p>
-                <Spacer size={4} />
-              </ModalHeader>
-              <ModalContent>
-                <Input
-                  textareaType
-                  label=""
-                  value=""
-                  onChange={() => {}}
-                  placeholder={"Type your review here..."}
-                  error="ss"
-                />
-                <Spacer size={10} />
-              
-              </ModalContent>
-              <ModalFooter />
-            </Modal>
-          </ModalProvider> */}
-        </div>
         <div className="flex flex-col justify-center items-center">
           {!sessionToken && <IconStarFilled color="#efce11" />}
           <div className="flex items-end h-full gap-1">

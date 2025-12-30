@@ -180,7 +180,8 @@
     "toast": {
       "clearedList": "Lista de favorite a fost stearsa cu succes",
       "productRemoved": "Produsul a fost sters",
-      "productAddedToWishlist": "Produsul a fost adaugat in cosul de cumparaturi"
+      "productAddedToWishlist": "Produsul a fost adaugat in cosul de cumparaturi",
+      "productAddedToCart": "Produsul a fost adaugat in cosul de cumparaturi"
     },
     "modal": {
       "title": "Esti sigur ca vrei sa stergi lista de favorite?",

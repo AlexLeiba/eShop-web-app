@@ -73,9 +73,7 @@ export function Navbar() {
       }
     }
     sessionToken && fetchData();
-
-    // window.document.body.classList.add("dark");
-  }, []);
+  }, [dispatch, sessionToken, stateCartQuantity, withListQuantity]);
   return (
     <div className="w-full h-14 bg-gray-300 flex items-center fixed top-0 z-50   dark:bg-gray-800 ">
       <Container className="w-full h-full flex items-center justify-center">

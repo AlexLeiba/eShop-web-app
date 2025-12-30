@@ -44,7 +44,7 @@ export function Footer() {
     {
       name: t("contact.linkedin"),
       icon: <IconBrandLinkedin />,
-      slug: "https://www.linkedin.com/in/alex-leiba-9205801ba?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
+      slug: "https://www.linkedin.com/in/alex-leiba-lapteacru-9205801ba/",
     },
   ];
   return (
