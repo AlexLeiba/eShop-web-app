@@ -217,10 +217,12 @@ router.post("/admin/login", async (req, res) => {
 const otpCode = Math.floor(100000 + Math.random() * 900000);
 router.post("/forgot-password", async (req, res) => {
   const userEmail = req.body.email;
+  console.log("🚀 ~ userEmail:", userEmail);
 
   try {
     const userExists = await User.findOne({ email: userEmail });
 
+    console.log("🚀 ~ userExists:", userExists);
     if (!userExists) {
       return res.status(400).json({ error: "User not found" });
     }
@@ -267,11 +269,9 @@ router.post("/forgot-password", async (req, res) => {
     });
 
     if (!sentEmail) {
-      return res
-        .status(400)
-        .json({
-          error: `Email not sent , ${(sentEmail.status, sentEmail.message)}`,
-        });
+      return res.status(400).json({
+        error: `Email not sent , ${(sentEmail.status, sentEmail.message)}`,
+      });
     }
 
     res
