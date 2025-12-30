@@ -71,7 +71,7 @@ export function Footer() {
         </div>
 
         <div>
-          <h4 className="text-2xl font-bold">{t("contact.title")}</h4>
+          <p className="text-2xl font-bold">{t("contact.title")}</p>
           <Spacer sm={2} md={2} lg={2} />
           {contactLinks.map((link) => {
             return (

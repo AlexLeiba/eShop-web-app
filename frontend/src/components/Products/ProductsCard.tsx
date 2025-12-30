@@ -130,7 +130,10 @@ export function ProductsCard({ data }: Props) {
           </Button>
 
           <Link to={`/product/${data._id}`} title="View Product">
-            <Button className="w-[40px] p-1 bg-black text-white flex items-center justify-center scale-100  hover:scale-110 transition-all ">
+            <Button
+              title="view product"
+              className="w-[40px] p-1 bg-black text-white flex items-center justify-center scale-100  hover:scale-110 transition-all "
+            >
               <IconEye />
             </Button>
           </Link>
