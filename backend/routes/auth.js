@@ -252,18 +252,16 @@ router.post("/forgot-password", async (req, res) => {
 
     const textBody = `Hello ${userUpdated.userName}, <br> You recently requested to reset your password. To reset your password, introduce the following code in your app <br> <b>Code: ${userUpdated.forgotPasswordCode}</b> <br> If you did not request a password reset, please ignore this email. <br> Thank you for using our service. <br> <b>The eShop Team </b>`;
 
-    console.log({
-      SMTP_USER: process.env.SMTP_USER,
-      SMTP_PASSWORD: process.env.SMTP_PASSWORD,
-      SENDER_EMAIL: process.env.SENDER_EMAIL,
-    });
-
     const transporter = nodemailer.createTransport({
       host: "smtp-relay.brevo.com",
       port: 587,
+      secure: false,
       auth: {
         user: process.env.SMTP_USER, //admin gmail
         pass: process.env.SMTP_PASSWORD, // admin password
+      },
+      tls: {
+        rejectUnauthorized: false, // IMPORTANT for Render
       },
     });
 
@@ -274,7 +272,6 @@ router.post("/forgot-password", async (req, res) => {
       html: emailBody,
       text: textBody,
     });
-    console.log("🚀 ~ sentEmail: \n\n\n", sentEmail);
 
     if (!sentEmail) {
       return res.status(400).json({
