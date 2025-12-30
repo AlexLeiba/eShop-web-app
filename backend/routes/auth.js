@@ -258,13 +258,21 @@ router.post("/forgot-password", async (req, res) => {
       },
     });
 
-    await transporter.sendMail({
+    const sentEmail = await transporter.sendMail({
       from: process.env.SENDER_EMAIL, //admin gmail
       to: userEmail, //
       subject: "eShop - Reset password code",
       html: emailBody,
       text: textBody,
     });
+
+    if (!sentEmail) {
+      return res
+        .status(400)
+        .json({
+          error: `Email not sent , ${(sentEmail.status, sentEmail.message)}`,
+        });
+    }
 
     res
       .status(200)
