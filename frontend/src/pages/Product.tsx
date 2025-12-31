@@ -37,13 +37,14 @@ import { StarRate } from "../components/ui/starRate";
 import { Price } from "../components/Reusable/Price";
 import ScrollToTopButton from "../components/Reusable/ScrollToTopButton";
 
+// separate components per feature
 function Product() {
   const [open, setOpen] = React.useState(false);
   const { t } = useTranslation("translation", { keyPrefix: "ProductPage" });
   const dispatch = useDispatch();
 
   const selectedValues = useSelector((state: RootState) => state.filters);
-  
+
   const { productData, isInCart, isInWishlist } = useSelector(
     (state: RootState) => state.products.product
   );
@@ -84,7 +85,7 @@ function Product() {
     }
 
     fetchData();
-  }, []);
+  }, [dispatch, productId, sessionToken]);
 
   async function handleAddToCart() {
     if (

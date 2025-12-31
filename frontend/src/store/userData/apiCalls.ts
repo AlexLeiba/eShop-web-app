@@ -1,4 +1,4 @@
-import type { Action } from '@reduxjs/toolkit';
+import type { Action } from "@reduxjs/toolkit";
 import {
   loginError,
   loginFetching,
@@ -6,12 +6,14 @@ import {
   logoutAction,
   logoutError,
   logoutFetching,
-} from './reducer';
-import type { LoginType, RegisterType } from '../../lib/schemas';
-import { axiosInstance } from '../../lib/axiosInstance';
-import { clearWishList } from '../wishList/reducer';
-import { clearCart } from '../cart/reducer';
-import { jwtDecode } from 'jwt-decode';
+} from "./reducer";
+import type { LoginType, RegisterType } from "../../lib/schemas";
+import { axiosInstance } from "../../lib/axiosInstance";
+import { clearWishList } from "../wishList/reducer";
+import { clearCart } from "../cart/reducer";
+import { jwtDecode } from "jwt-decode";
+
+// Type all payloads from apiCalls
 
 // LOGIN
 type LoginProps = {
@@ -23,9 +25,9 @@ export async function login({ dispatch, user }: LoginProps) {
   try {
     const { data: response } = await axiosInstance({
       url: `/api/login`,
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       data: user,
     });
@@ -39,14 +41,14 @@ export async function login({ dispatch, user }: LoginProps) {
       );
       return { data: response.data, error: null };
     }
-    if (response.status.toString().includes('4')) {
-      throw new Error('Something went wrong');
+    if (response.status.toString().includes("4")) {
+      throw new Error("Something went wrong");
     }
   } catch (error: any) {
-    dispatch(loginError(error.response.data.error || 'Something went wrong'));
+    dispatch(loginError(error.response.data.error || "Something went wrong"));
     return {
       data: null,
-      error: error.response.data.error || 'Something went wrong',
+      error: error.response.data.error || "Something went wrong",
     };
   } finally {
     dispatch(loginFetching(false));
@@ -64,23 +66,23 @@ export async function logout({ dispatch, sessionToken }: LogoutProps) {
     if (decodedUserData.email) {
       const response = await axiosInstance({
         url: `/api/logout`,
-        method: 'POST',
+        method: "POST",
         data: { email: decodedUserData.email },
       });
 
-      if (response.status.toString().startsWith('2')) {
+      if (response.status.toString().startsWith("2")) {
         dispatch(logoutAction());
         dispatch(clearCart());
         dispatch(clearWishList());
-        localStorage.removeItem('persist:root');
+        localStorage.removeItem("persist:root");
         return { data: response.data, error: null };
       }
     }
   } catch (error: any) {
-    dispatch(logoutError(error.response.data.error || 'Something went wrong'));
+    dispatch(logoutError(error.response.data.error || "Something went wrong"));
     return {
       data: null,
-      error: error.response.data.error || 'Something went wrong',
+      error: error.response.data.error || "Something went wrong",
     };
   }
 }
@@ -93,9 +95,9 @@ export async function register({ registerData }: RegisterProps) {
   try {
     const { data: response } = await axiosInstance({
       url: `/api/register`,
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       data: registerData,
     });
@@ -106,7 +108,7 @@ export async function register({ registerData }: RegisterProps) {
   } catch (error: any) {
     return {
       data: null,
-      error: error.response.data.error || 'Something went wrong',
+      error: error.response.data.error || "Something went wrong",
     };
   }
 }
@@ -118,9 +120,9 @@ export async function sendOtpForgotPasswordEmail({ email }: { email: string }) {
   try {
     const { data: response } = await axiosInstance({
       url: `/api/forgot-password`,
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       data: { email },
     });
@@ -131,7 +133,7 @@ export async function sendOtpForgotPasswordEmail({ email }: { email: string }) {
   } catch (error: any) {
     return {
       data: null,
-      error: error.response.data.error || 'Something went wrong',
+      error: error.response.data.error || "Something went wrong",
     };
   }
 }
@@ -147,9 +149,9 @@ export async function checkOtpForgotPasswordFromEmail({
   try {
     const { data: response } = await axiosInstance({
       url: `/api/check-otp`,
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       data: { email, otp },
     });
@@ -160,7 +162,7 @@ export async function checkOtpForgotPasswordFromEmail({
   } catch (error: any) {
     return {
       data: null,
-      error: error.response.data.error || 'Something went wrong',
+      error: error.response.data.error || "Something went wrong",
     };
   }
 }
@@ -176,9 +178,9 @@ export async function resetPasswordFromEmail({
   try {
     const { data: response } = await axiosInstance({
       url: `/api/reset-password`,
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       data: { email, password },
     });
@@ -189,7 +191,7 @@ export async function resetPasswordFromEmail({
   } catch (error: any) {
     return {
       data: null,
-      error: error.response.data.error || 'Something went wrong',
+      error: error.response.data.error || "Something went wrong",
     };
   }
 }

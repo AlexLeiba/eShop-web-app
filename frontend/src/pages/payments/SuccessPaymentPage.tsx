@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
-import { clearCart } from '../../store/cart/reducer';
-import { useSessionToken } from '../../hooks/useSesstionToken';
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { clearCart } from "../../store/cart/reducer";
+import { useSessionToken } from "../../hooks/useSesstionToken";
 
 function SuccessPaymentPage() {
   const { search } = useLocation();
@@ -18,17 +18,17 @@ function SuccessPaymentPage() {
         const response = await fetch(
           `${import.meta.env.VITE_BACKEND_URL}/api/success${search}`,
           {
-            method: 'GET',
+            method: "GET",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
               token: `Bearer ${sessionToken}`,
             },
           }
         );
         if (response.status === 200) {
-          toast.success('Order paid successfully');
+          toast.success("Order paid successfully");
           dispatch(clearCart());
-          navigate('/orders');
+          navigate("/orders");
         }
       } catch (error: any) {
         toast.error(error.message);
@@ -37,9 +37,9 @@ function SuccessPaymentPage() {
     // This effect runs when the component mounts
 
     fetchData();
-  }, []);
+  }, [navigate, dispatch, search, sessionToken]);
   return (
-    <div className='flex flex-col items-center justify-center h-screen'>
+    <div className="flex flex-col items-center justify-center h-screen">
       <h1>Thank you for your purchase!</h1>
       <p>Your payment was successful</p>
     </div>

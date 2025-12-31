@@ -82,7 +82,7 @@ function Cart() {
       newMeta.content = "Shopping app";
       document.head.appendChild(newMeta);
     }
-  }, []);
+  }, [dispatch, sessionToken]);
 
   return (
     <Layout>

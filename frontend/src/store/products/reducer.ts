@@ -51,26 +51,44 @@ const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
-    getProducts: (state, action) => {
+    getProducts: (
+      state,
+      action: { payload: { data: ProductsType[]; count: number } }
+    ) => {
       state.products = action.payload.data;
       state.productsCount = action.payload.count;
     },
-    getFeaturedProducts: (state, action) => {
+    getFeaturedProducts: (
+      state,
+      action: { payload: { data: ProductsType[]; count: number } }
+    ) => {
       state.featuredProducts.data = action.payload.data;
       state.featuredProducts.count = action.payload.count;
     },
-    getProduct: (state, action) => {
+    getProduct: (
+      state,
+      action: {
+        payload: {
+          productData: ProductsType;
+          isInCart: boolean;
+          isInWishlist: boolean;
+        };
+      }
+    ) => {
       state.product.productData = action.payload.productData;
       state.product.isInCart = action.payload.isInCart;
       state.product.isInWishlist = action.payload.isInWishlist;
     },
-    setCart: (state, action) => {
+    setCart: (state, action: { payload: boolean }) => {
       state.product.isInCart = action.payload;
     },
-    setWishlist: (state, action) => {
+    setWishlist: (state, action: { payload: boolean }) => {
       state.product.isInWishlist = action.payload;
     },
-    setRating: (state, action) => {
+    setRating: (
+      state,
+      action: { payload: { userId: string; rating: number }[] }
+    ) => {
       state.product.productData.ratings = action.payload;
     },
   },

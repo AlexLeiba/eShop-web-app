@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { ProductsType } from "../../consts";
 
 export type CartType = {
   quantity: number;
@@ -28,7 +27,10 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    getCartData: (state, action) => {
+    getCartData: (
+      state,
+      action: { payload: { products: CartItemsType[] } }
+    ) => {
       state.products = action.payload.products;
 
       const quantityAndTotalPrice = {
@@ -36,7 +38,7 @@ export const cartSlice = createSlice({
         total: 0,
       };
 
-      action.payload.products?.forEach((item: ProductsType) => {
+      action.payload.products?.forEach((item: CartItemsType) => {
         if (item.quantity === 1) {
           quantityAndTotalPrice.quantity += 1;
           quantityAndTotalPrice.total += item.discountPrice || item.price;
@@ -51,7 +53,7 @@ export const cartSlice = createSlice({
       state.quantity = quantityAndTotalPrice.quantity;
       state.total = quantityAndTotalPrice.total;
     },
-    addToCart: (state, action) => {
+    addToCart: (state, action: { payload: { products: CartItemsType[] } }) => {
       state.products = action.payload.products; //add products to state.products array
 
       const quantityAndTotalPrice = {
@@ -59,7 +61,7 @@ export const cartSlice = createSlice({
         total: 0,
       };
 
-      action.payload.products?.forEach((item: ProductsType) => {
+      action.payload.products?.forEach((item: CartItemsType) => {
         if (item.quantity === 1) {
           quantityAndTotalPrice.quantity += 1;
           quantityAndTotalPrice.total += item.discountPrice || item.price;
@@ -74,7 +76,10 @@ export const cartSlice = createSlice({
       state.quantity = quantityAndTotalPrice.quantity; //add quantity to state.quantity
       state.total = quantityAndTotalPrice.total; //add total to state.total
     },
-    removeFromCart: (state, action) => {
+    removeFromCart: (
+      state,
+      action: { payload: [{ products: CartItemsType[] }] }
+    ) => {
       state.products = action.payload[0].products; //add products to state.products array
 
       const quantityAndTotalPrice = {
@@ -82,7 +87,7 @@ export const cartSlice = createSlice({
         total: 0,
       };
 
-      action.payload[0].products?.forEach((item: ProductsType) => {
+      action.payload[0].products?.forEach((item: CartItemsType) => {
         if (item.quantity === 1) {
           quantityAndTotalPrice.quantity += 1;
           quantityAndTotalPrice.total += item.discountPrice || item.price;
@@ -97,7 +102,10 @@ export const cartSlice = createSlice({
       state.quantity = quantityAndTotalPrice.quantity; //add quantity to state.quantity
       state.total = quantityAndTotalPrice.total; //add total to state.total
     },
-    addQuantityToCart: (state, action) => {
+    addQuantityToCart: (
+      state,
+      action: { payload: { products: CartItemsType[] } }
+    ) => {
       state.products = action.payload.products; //add products to state.products array
 
       const quantityAndTotalPrice = {
@@ -105,7 +113,7 @@ export const cartSlice = createSlice({
         total: 0,
       };
 
-      action.payload.products?.forEach((item: ProductsType) => {
+      action.payload.products?.forEach((item: CartItemsType) => {
         if (item.quantity === 1) {
           quantityAndTotalPrice.quantity += 1;
           quantityAndTotalPrice.total += item.discountPrice || item.price;

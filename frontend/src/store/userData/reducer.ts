@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 export type UserType = {
   data: {
@@ -18,49 +18,55 @@ export type UserDataType = {
   errorMessage: string;
 };
 
+// TODO type all payloads action.
+// Fix forgot password nodemailer
+
 const initialState: UserDataType = {
   userData: {
     data: {
-      _id: '',
-      email: '',
-      name: '',
-      isAdmin: '',
-      userName: '',
-      lastName: '',
+      _id: "",
+      email: "",
+      name: "",
+      isAdmin: "",
+      userName: "",
+      lastName: "",
     },
-    token: '',
+    token: "",
   },
   isFetching: false,
   error: false,
-  errorMessage: '',
+  errorMessage: "",
 };
 const userSlice = createSlice({
-  name: 'userData',
+  name: "userData",
   initialState: initialState,
   reducers: {
-    loginFetching: (state, action) => {
+    loginFetching: (state, action: { payload: boolean }) => {
       state.isFetching = action.payload;
     },
-    loginSuccess: (state, action) => {
+    loginSuccess: (
+      state,
+      action: { payload: { userData: UserType["data"]; token: string } }
+    ) => {
       state.isFetching = false;
       state.userData.data = action.payload.userData;
       state.userData.token = action.payload.token;
     },
-    loginError: (state, action) => {
+    loginError: (state, action: { payload: { error: string } }) => {
       state.isFetching = false;
       state.error = true;
       state.errorMessage = action.payload.error;
     },
-    refreshToken: (state, action) => {
+    refreshToken: (state, action: { payload: { token: string } }) => {
       state.userData.token = action.payload.token;
     },
     logoutAction: (state) => {
       state.userData = initialState.userData;
       state.isFetching = false;
       state.error = false;
-      state.errorMessage = '';
+      state.errorMessage = "";
     },
-    logoutError: (state, action) => {
+    logoutError: (state, action: { payload: { error: string } }) => {
       state.isFetching = false;
       state.error = true;
       state.errorMessage = action.payload.error;

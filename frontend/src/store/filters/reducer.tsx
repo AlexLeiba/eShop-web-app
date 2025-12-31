@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 type FiltersType = {
   color: string;
@@ -7,28 +7,31 @@ type FiltersType = {
   filter: string;
 };
 const initialState: FiltersType = {
-  color: '',
-  size: '',
+  color: "",
+  size: "",
   quantity: 1,
-  filter: '',
+  filter: "",
 };
 
 const filtersSlice = createSlice({
-  name: 'filters',
+  name: "filters",
   initialState: initialState,
   reducers: {
-    selectDefaultValues: (state, action) => {
+    selectDefaultValues: (
+      state,
+      action: { payload: { color: string; size: string; quantity: number } }
+    ) => {
       state.color = action.payload.color;
       state.size = action.payload.size;
       state.quantity = action.payload.quantity;
     },
-    selectColor: (state, action) => {
+    selectColor: (state, action: { payload: string }) => {
       state.color = action.payload;
     },
-    selectSize: (state, action) => {
+    selectSize: (state, action: { payload: string }) => {
       state.size = action.payload;
     },
-    addQuantity: (state, action) => {
+    addQuantity: (state, action: { payload: number }) => {
       state.quantity += action.payload;
     },
     reduceQuantity: (state) => {
@@ -36,7 +39,7 @@ const filtersSlice = createSlice({
         state.quantity = state.quantity - 1;
       }
     },
-    selectFilter: (state, action) => {
+    selectFilter: (state, action: { payload: string }) => {
       state.filter = action.payload;
     },
   },
